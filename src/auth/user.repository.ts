@@ -5,9 +5,13 @@ import { UserEntity } from './user.entity';
 export class UserRepository extends Repository<UserEntity>{
 
   async findOrCreate(loginDto : LoginDTO): Promise<UserEntity>{
-    const user = new UserEntity();
+    let  user = await this.findOne({phone: loginDto.phone})
+    if(user) {return user}
+
+    user = new UserEntity();
     user.phone = loginDto.phone
     await user.save()
+
     return user
   }
 }
