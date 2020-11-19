@@ -40,10 +40,16 @@ describe('Create And Toke User API', ()=>{
     await app.init()
   })
 
+  afterEach(async ()=>{
+    await userRepo.query(`DELETE FROM users;`);
+  })
+
 
   it('auth/token POST Create New Token', async () => {
     JwtService.prototype.sign = jest.fn().mockReturnValue('@1a$A4@SHS5af151ag60kagJAgaaAKjAK1');
-
+    await userRepo.save([{
+      phone: '09129120912'
+    }])
     const { body } = await supertest
       .agent(app.getHttpServer())
       .post('/auth/token')
@@ -56,10 +62,11 @@ describe('Create And Toke User API', ()=>{
       expect(JwtService.prototype.sign).toHaveBeenCalledTimes(1);
     });
 
-  it('should return user with specific phone number', async function() {
+
+  it('/auth/login POST return user with specific phone number', async function() {
     const {body} = await supertest.agent(app.getHttpServer()).post('/auth/login').
     send({phone: '09129120912'}).expect(201)
-    expect(body).toEqual({user: {id:1, phone: '09129120912'}})
+    expect(body).toEqual({user: {id:2, phone: '09129120912'}})
   });
   afterAll(async () => {
     await app.close();

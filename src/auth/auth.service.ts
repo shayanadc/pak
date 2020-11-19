@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { LoginDTO } from './LoginDTO';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
@@ -16,6 +16,10 @@ export class AuthService {
     return await this.userRepo.findOrCreate(loginDTO)
   }
   async retrieveToken(authCredential : AuthCredentialDTO): Promise<{accessToken: string}>{
+    const user = await this.userRepo.findOne({phone: authCredential.phone})
+    if(!user){
+      throw new NotFoundException('User Not Found')
+    }
     const payload: JwtPayload = authCredential;
     const accessToken = await this.jwtService.sign(payload);
     return { accessToken };

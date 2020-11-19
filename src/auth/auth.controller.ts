@@ -16,8 +16,8 @@ export class AuthController {
     return {user: user}
   }
   @Post('token')
-  async getToken(@Body() authCredential: AuthCredentialDTO){
-    return this.authServ.retrieveToken(authCredential)
+  async getToken(@Body() authCredential: AuthCredentialDTO): Promise<{accessToken : string}>{
+    return await this.authServ.retrieveToken(authCredential)
   }
 
 }
