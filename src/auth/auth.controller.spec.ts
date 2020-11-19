@@ -63,7 +63,7 @@ describe('Create And Toke User API', ()=>{
     });
 
 
-  it('/auth/login POST return user with specific phone number', async function() {
+  it('/auth/login POST return created user with specific phone number', async function() {
     const {body} = await supertest.agent(app.getHttpServer()).post('/auth/login').
     send({phone: '09129120912'}).expect(201)
     expect(body).toEqual({user: {id:2, phone: '09129120912'}})

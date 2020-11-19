@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthCredentialDTO } from './authCredential.dto';
+import exp from 'constants';
 
 describe('User Service',  ()=>{
   let app: INestApplication;
@@ -45,8 +46,13 @@ describe('User Service',  ()=>{
     await userRepo.save([{
         phone: '09129120912'
     }])
+    const genSpy = jest.spyOn(authServ, 'generateCode');
+    const cacheSpy = jest.spyOn(authServ, 'setInMemory');
+
     expect(await authServ.findOrCreateUserWithPhone({phone: '09129120912'}))
       .toEqual({id: 1, phone: '09129120912'})
+    expect(genSpy).toBeCalledTimes(1)
+    expect(cacheSpy).toBeCalledTimes(1)
   })
   it('throw exception when user not found', async ()=> {
     const dto : AuthCredentialDTO = { phone: '09129120912', activation_code: 12345 }

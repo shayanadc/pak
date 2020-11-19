@@ -6,6 +6,7 @@ import { UserEntity } from './user.entity';
 import { AuthCredentialDTO } from './authCredential.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
+import { log } from 'util';
 
 @Injectable()
 export class AuthService {
@@ -13,11 +14,12 @@ export class AuthService {
               private jwtService : JwtService) {
   }
   async findOrCreateUserWithPhone(loginDTO: LoginDTO) : Promise<UserEntity>{
+    const code = this.generateCode()
+    this.setInMemory(loginDTO.phone, code)
     return await this.userRepo.findOrCreate(loginDTO)
   }
   isCodeMatch(authCredential : AuthCredentialDTO){
     //Todo : find any activation code for this phone number
-    //Todo : delete after retrieve
     return true
   }
   async retrieveToken(authCredential : AuthCredentialDTO): Promise<{accessToken: string}>{
@@ -27,6 +29,15 @@ export class AuthService {
     }
     const payload: JwtPayload = authCredential;
     const accessToken = await this.jwtService.sign(payload);
+    //Todo : delete activation code after retrieve
     return { accessToken };
+  }
+  generateCode(): number{
+    //Todo: generate 5 digit
+    return 2
+  }
+  setInMemory(phone: string, code: number){
+    //Todo: set in cache
+    return ''
   }
 }
