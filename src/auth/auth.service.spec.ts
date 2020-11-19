@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthCredentialDTO } from './authCredential.dto';
-import exp from 'constants';
+import { PassportModule } from '@nestjs/passport';
 
 describe('User Service',  ()=>{
   let app: INestApplication;
@@ -15,6 +15,7 @@ describe('User Service',  ()=>{
   beforeAll(async ()=>{
     const module : TestingModule = await Test.createTestingModule({
       imports:[
+        PassportModule.register({ defaultStrategy: 'jwt' }),
         JwtModule.register({
           secret: 'topSecret15',
           signOptions: {
