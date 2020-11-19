@@ -15,9 +15,14 @@ export class AuthService {
   async findOrCreateUserWithPhone(loginDTO: LoginDTO) : Promise<UserEntity>{
     return await this.userRepo.findOrCreate(loginDTO)
   }
+  isCodeMatch(authCredential : AuthCredentialDTO){
+    //Todo : find any activation code for this phone number
+    //Todo : delete after retrieve
+    return true
+  }
   async retrieveToken(authCredential : AuthCredentialDTO): Promise<{accessToken: string}>{
     const user = await this.userRepo.findOne({phone: authCredential.phone})
-    if(!user){
+    if(!user || !this.isCodeMatch(authCredential)){
       throw new NotFoundException('User Not Found')
     }
     const payload: JwtPayload = authCredential;

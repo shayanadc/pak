@@ -52,4 +52,13 @@ describe('User Service',  ()=>{
     const dto : AuthCredentialDTO = { phone: '09129120912', activation_code: 12345 }
     await expect(authServ.retrieveToken(dto)).rejects.toBeInstanceOf(NotFoundException)
   })
+
+  it('throw exception when activation code is wrong', async ()=> {
+    await userRepo.save([{
+      phone: '09129120912'
+    }])
+    const dto : AuthCredentialDTO = { phone: '09129120912', activation_code: 12345 }
+    authServ.isCodeMatch = jest.fn().mockReturnValue(false)
+    await expect(authServ.retrieveToken(dto)).rejects.toBeInstanceOf(NotFoundException)
+  })
 })
