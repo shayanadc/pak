@@ -4,7 +4,7 @@ import { UserRepository } from './user.repository';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { INestApplication } from '@nestjs/common';
-import exp from 'constants';
+import { JwtModule } from '@nestjs/jwt';
 
 describe('User Service',  ()=>{
   let app: INestApplication;
@@ -13,6 +13,12 @@ describe('User Service',  ()=>{
   beforeAll(async ()=>{
     const module : TestingModule = await Test.createTestingModule({
       imports:[
+        JwtModule.register({
+          secret: 'topSecret15',
+          signOptions: {
+            expiresIn: 3600,
+          },
+        }),
         TypeOrmModule.forRoot({
           type: 'sqlite',
           database: ':memory:',

@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { LoginDTO } from './LoginDTO';
 import { UserEntity } from './user.entity';
 import { AuthService } from './auth.service';
+import { AuthCredentialDTO } from './authCredential.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,4 +15,9 @@ export class AuthController {
     const user = await this.authServ.findOrCreateUserWithPhone(loginDto)
     return {user: user}
   }
+  @Post('token')
+  async getToken(@Body() authCredential: AuthCredentialDTO){
+    return this.authServ.retrieveToken(authCredential)
+  }
+
 }

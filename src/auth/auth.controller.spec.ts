@@ -6,14 +6,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthService } from './auth.service';
 import { UserRepository } from './user.repository';
 import { Connection } from 'typeorm';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { AuthCredentialDTO } from './authCredential.dto';
 
 describe('Create And Toke User API', ()=>{
   let app: INestApplication
-  // let userRepo : UserRepository
+  let userRepo : UserRepository
   // let connection : Connection
   beforeAll(async ()=> {
     const module : TestingModule = await Test.createTestingModule({
       imports:[
+        JwtModule.register({
+          secret: 'topSecret15',
+          signOptions: {
+            expiresIn: 3600,
+          },
+        }),
         TypeOrmModule.forRoot({
         type: 'sqlite',
         database: ':memory:',
@@ -26,11 +34,28 @@ describe('Create And Toke User API', ()=>{
       controllers: [AuthController],
       providers: [AuthService]
     }).compile();
-    // userRepo = await module.get<UserRepository>(UserRepository)
+    userRepo = await module.get<UserRepository>(UserRepository)
     // connection = module.get(Connection);
     app =  module.createNestApplication()
     await app.init()
   })
+
+
+  it('auth/token POST Create New Token', async () => {
+    JwtService.prototype.sign = jest.fn().mockReturnValue('@1a$A4@SHS5af151ag60kagJAgaaAKjAK1');
+
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .post('/auth/token')
+      .send({
+        phone: '09129120912',
+        activation_code: 123,
+      } as AuthCredentialDTO)
+      .expect(201);
+      expect(body).toEqual({ accessToken: '@1a$A4@SHS5af151ag60kagJAgaaAKjAK1' });
+      expect(JwtService.prototype.sign).toHaveBeenCalledTimes(1);
+    });
+
   it('should return user with specific phone number', async function() {
     const {body} = await supertest.agent(app.getHttpServer()).post('/auth/login').
     send({phone: '09129120912'}).expect(201)
