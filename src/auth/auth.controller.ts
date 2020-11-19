@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { LoginDTO } from './LoginDTO';
+import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { LoginDto } from './login.dto';
 import { UserEntity } from './user.entity';
 import { AuthService } from './auth.service';
 import { AuthCredentialDTO } from './authCredential.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './get-user.decorator';
+import { PhoneValidationPipe } from './phone.validation.pipe';
 
 @Controller('auth')
 export class AuthController {
@@ -13,7 +14,8 @@ export class AuthController {
   }
 
   @Post('login')
-  async findOrCreateUserWithPhone(@Body()  loginDto : LoginDTO ): Promise<{user: UserEntity}>{
+  @UsePipes(ValidationPipe)
+  async findOrCreateUserWithPhone(@Body('phone', PhoneValidationPipe) validPhone : string, @Body()  loginDto : LoginDto): Promise<{user: UserEntity}>{
     const user = await this.authServ.findOrCreateUserWithPhone(loginDto)
     return {user: user}
   }

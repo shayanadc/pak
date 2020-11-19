@@ -75,6 +75,14 @@ describe('Create And Toke User API', () => {
     expect(JwtService.prototype.sign).toHaveBeenCalledTimes(1);
   });
 
+  it('/auth/login POST invalid request', async function() {
+    const { body } = await supertest.agent(app.getHttpServer()).post('/auth/login').send({ phone: '09120912' }).expect(400);
+    expect(body).toEqual({
+          statusCode: 400,
+          error: 'Bad Request',
+          message: 'phone must be a pattern',
+        });
+  });
 
   it('/auth/login POST return created user with specific phone number', async function() {
     const { body } = await supertest.agent(app.getHttpServer()).post('/auth/login').send({ phone: '09129120912' }).expect(201);

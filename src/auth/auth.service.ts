@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { LoginDTO } from './LoginDTO';
+import { LoginDto } from './login.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { UserEntity } from './user.entity';
@@ -12,7 +12,7 @@ export class AuthService {
   constructor(@InjectRepository(UserRepository) private userRepo : UserRepository,
               private jwtService : JwtService) {
   }
-  async findOrCreateUserWithPhone(loginDTO: LoginDTO) : Promise<UserEntity>{
+  async findOrCreateUserWithPhone(loginDTO: LoginDto) : Promise<UserEntity>{
     const code = this.generateCode()
     this.setInMemory(loginDTO.phone, code)
     return await this.userRepo.findOrCreate(loginDTO)
