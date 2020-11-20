@@ -7,6 +7,8 @@ import { INestApplication, NotFoundException } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthCredentialDTO } from './authCredential.dto';
 import { PassportModule } from '@nestjs/passport';
+import { UserEntity } from './user.entity';
+import { AddressEntity } from '../address/address.entity';
 
 describe('User Service',  ()=>{
   let app: INestApplication;
@@ -25,7 +27,7 @@ describe('User Service',  ()=>{
         TypeOrmModule.forRoot({
           type: 'sqlite',
           database: ':memory:',
-          entities: [__dirname + '/**/*.entity.{js,ts}'],
+          entities: [UserEntity,AddressEntity],
           synchronize: true,
           dropSchema: true,
         }),
