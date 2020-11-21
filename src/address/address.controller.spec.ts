@@ -12,11 +12,14 @@ import { UserEntity } from '../auth/user.entity';
 import { AddressEntity } from './address.entity';
 import { StateRepository } from './state.repository';
 import { StateEntity } from './state.entity';
+import { CityEntity } from './city.entity';
+import { CityRepository } from './city.repository';
 
 describe('AddressController', () => {
   let userRepo: UserRepository;
   let addressRepo : AddressRepository;
   let stateRepo : StateRepository
+  let cityRepo: CityRepository
   let app: INestApplication;
   let authUser: UserEntity;
   beforeAll(async () => {
@@ -33,11 +36,11 @@ describe('AddressController', () => {
         TypeOrmModule.forRoot({
           type: 'sqlite',
           database: ':memory:',
-          entities: [UserEntity,AddressEntity,StateEntity],
+          entities: [UserEntity,AddressEntity,StateEntity,CityEntity],
           synchronize: true,
           dropSchema: true,
         }),
-        TypeOrmModule.forFeature([AddressRepository,UserRepository, StateRepository]),
+        TypeOrmModule.forFeature([AddressRepository,UserRepository, StateRepository, CityRepository]),
       ],
       controllers: [AddressController],
       providers: [AddressService],
@@ -48,7 +51,8 @@ describe('AddressController', () => {
           authUser = await userRepo.save({
             phone: '09129120912',
           });
-          const state = await stateRepo.save({title: 'BLOCK 24'})
+          const city = await cityRepo.save({name : 'GORGAN'})
+          const state = await stateRepo.save({title: 'BLOCK 24', city : city})
           await addressRepo.save([
             {description: 'BLAH BLAH', user: authUser, state : state},
           ])
@@ -61,6 +65,7 @@ describe('AddressController', () => {
     userRepo = await module.get<UserRepository>(UserRepository);
     addressRepo = await module.get<AddressRepository>(AddressRepository);
     stateRepo = await module.get<StateRepository>(StateRepository)
+    cityRepo = await module.get<CityRepository>(CityRepository)
 
     // connection = module.get(Connection);
     app = module.createNestApplication();
