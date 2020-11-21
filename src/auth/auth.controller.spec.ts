@@ -9,6 +9,8 @@ import { Connection } from 'typeorm';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthCredentialDTO } from './authCredential.dto';
 import { AuthGuard, PassportModule } from '@nestjs/passport';
+import { UserEntity } from './user.entity';
+import { AddressEntity } from '../address/address.entity';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
@@ -27,7 +29,7 @@ describe('Create And Toke User API', () => {
         TypeOrmModule.forRoot({
           type: 'sqlite',
           database: ':memory:',
-          entities: [__dirname + '/**/*.entity.{js,ts}'],
+          entities: [UserEntity,AddressEntity],
           synchronize: true,
           dropSchema: true,
         }),
