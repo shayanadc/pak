@@ -16,10 +16,18 @@ import { CityEntity } from '../address/city.entity';
 import { StateEntity } from '../address/state.entity';
 import { AddressRepository } from '../address/address.repository';
 import { StateRepository } from '../address/state.repository';
+import SmsInterface from './sms.interface';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
   let userRepo: UserRepository;
+  let smsService: SmsInterface;
+  const smsProvider = {
+    provide: 'SmsInterface',
+    useFactory: () => ({
+      sendMessage: jest.fn(),
+    }),
+  };
   // let connection : Connection
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -46,7 +54,7 @@ describe('Create And Toke User API', () => {
         ]),
       ],
       controllers: [AuthController],
-      providers: [AuthService],
+      providers: [AuthService, smsProvider],
     })
       .overrideGuard(AuthGuard())
       .useValue({
@@ -63,6 +71,7 @@ describe('Create And Toke User API', () => {
       })
       .compile();
     userRepo = await module.get<UserRepository>(UserRepository);
+    smsService = await module.get('SmsInterface');
     // connection = module.get(Connection);
     app = module.createNestApplication();
     await app.init();
