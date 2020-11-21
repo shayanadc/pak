@@ -15,16 +15,24 @@ import { AddressRepository } from '../address/address.repository';
 import { CityEntity } from '../address/city.entity';
 import { StateEntity } from '../address/state.entity';
 import SmsInterface from './sms.interface';
+import CacheInterface from './cache.interface';
 
 describe('User Service', () => {
   let app: INestApplication;
   let userRepo: UserRepository;
   let authServ: AuthService;
   let smsService: SmsInterface;
+  let cacheService: CacheInterface;
   const smsProvider = {
     provide: 'SmsInterface',
     useFactory: () => ({
       sendMessage: jest.fn(),
+    }),
+  };
+  const cacheProvider = {
+    provide: 'CacheInterface',
+    useFactory: () => ({
+      set: jest.fn(),
     }),
   };
   beforeAll(async () => {
@@ -52,11 +60,13 @@ describe('User Service', () => {
         ]),
       ],
       controllers: [AuthController],
-      providers: [AuthService, smsProvider],
+      providers: [AuthService, smsProvider, cacheProvider],
     }).compile();
     userRepo = await module.get<UserRepository>(UserRepository);
     authServ = await module.get<AuthService>(AuthService);
     smsService = await module.get('SmsInterface');
+    cacheService = await module.get('CacheInterface');
+
     // connection = module.get(Connection);
     app = module.createNestApplication();
     await app.init();
@@ -79,6 +89,7 @@ describe('User Service', () => {
     // expect(genSpy).toBeCalledTimes(1);
     // expect(cacheSpy).toBeCalledTimes(1);
     expect(smsService.sendMessage).toBeCalledTimes(1);
+    expect(cacheService.set).toBeCalledTimes(1);
   });
   it('throw exception when user not found', async () => {
     const dto: AuthCredentialDTO = {

@@ -17,15 +17,23 @@ import { StateEntity } from '../address/state.entity';
 import { AddressRepository } from '../address/address.repository';
 import { StateRepository } from '../address/state.repository';
 import SmsInterface from './sms.interface';
+import CacheInterface from './cache.interface';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
   let userRepo: UserRepository;
   let smsService: SmsInterface;
+  let cacheService: CacheInterface;
   const smsProvider = {
     provide: 'SmsInterface',
     useFactory: () => ({
       sendMessage: jest.fn(),
+    }),
+  };
+  const cacheProvider = {
+    provide: 'CacheInterface',
+    useFactory: () => ({
+      set: jest.fn(),
     }),
   };
   // let connection : Connection
@@ -54,7 +62,7 @@ describe('Create And Toke User API', () => {
         ]),
       ],
       controllers: [AuthController],
-      providers: [AuthService, smsProvider],
+      providers: [AuthService, smsProvider, cacheProvider],
     })
       .overrideGuard(AuthGuard())
       .useValue({
@@ -72,6 +80,7 @@ describe('Create And Toke User API', () => {
       .compile();
     userRepo = await module.get<UserRepository>(UserRepository);
     smsService = await module.get('SmsInterface');
+    cacheService = await module.get('CacheInterface');
     // connection = module.get(Connection);
     app = module.createNestApplication();
     await app.init();

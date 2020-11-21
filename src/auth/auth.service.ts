@@ -7,6 +7,7 @@ import { AuthCredentialDTO } from './authCredential.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
 import SmsInterface from './sms.interface';
+import CacheInterface from './cache.interface';
 @Injectable()
 export class AuthService {
   constructor(
@@ -14,10 +15,13 @@ export class AuthService {
     private jwtService: JwtService,
     @Inject('SmsInterface')
     private smsProvider: SmsInterface,
+    @Inject('CacheInterface')
+    private cacheProvider: CacheInterface,
   ) {}
   async findOrCreateUserWithPhone(loginDTO: LoginDto): Promise<UserEntity> {
     const code = this.generateCode();
     this.smsProvider.sendMessage(loginDTO.phone, code);
+    this.cacheProvider.set(loginDTO.phone, code);
     // this.setInMemory(loginDTO.phone, code);
     return await this.userRepo.findOrCreate(loginDTO);
   }
