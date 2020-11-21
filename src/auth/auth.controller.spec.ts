@@ -18,6 +18,7 @@ import { AddressRepository } from '../address/address.repository';
 import { StateRepository } from '../address/state.repository';
 import SmsInterface from './sms.interface';
 import CacheInterface from './cache.interface';
+import CodeGenerator from './code-generator';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
@@ -62,7 +63,7 @@ describe('Create And Toke User API', () => {
         ]),
       ],
       controllers: [AuthController],
-      providers: [AuthService, smsProvider, cacheProvider],
+      providers: [AuthService, smsProvider, cacheProvider, CodeGenerator],
     })
       .overrideGuard(AuthGuard())
       .useValue({
@@ -79,8 +80,6 @@ describe('Create And Toke User API', () => {
       })
       .compile();
     userRepo = await module.get<UserRepository>(UserRepository);
-    smsService = await module.get('SmsInterface');
-    cacheService = await module.get('CacheInterface');
     // connection = module.get(Connection);
     app = module.createNestApplication();
     await app.init();

@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
 import SmsInterface from './sms.interface';
 import CacheInterface from './cache.interface';
+import CodeGenerator from './code-generator';
 @Injectable()
 export class AuthService {
   constructor(
@@ -17,12 +18,12 @@ export class AuthService {
     private smsProvider: SmsInterface,
     @Inject('CacheInterface')
     private cacheProvider: CacheInterface,
+    private codeGen: CodeGenerator,
   ) {}
   async findOrCreateUserWithPhone(loginDTO: LoginDto): Promise<UserEntity> {
-    const code = this.generateCode();
+    const code = this.codeGen.generate();
     this.smsProvider.sendMessage(loginDTO.phone, code);
     this.cacheProvider.set(loginDTO.phone, code);
-    // this.setInMemory(loginDTO.phone, code);
     return await this.userRepo.findOrCreate(loginDTO);
   }
   isCodeMatch(authCredential: AuthCredentialDTO) {
@@ -40,13 +41,5 @@ export class AuthService {
     const accessToken = await this.jwtService.sign(payload);
     //Todo : delete activation code after retrieve
     return { accessToken };
-  }
-  generateCode(): string {
-    //Todo: generate 5 digit
-    return '';
-  }
-  setInMemory(phone: string, code: number) {
-    //Todo: set in cache
-    return '';
   }
 }

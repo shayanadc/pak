@@ -16,6 +16,8 @@ import { CityEntity } from '../address/city.entity';
 import { StateEntity } from '../address/state.entity';
 import SmsInterface from './sms.interface';
 import CacheInterface from './cache.interface';
+import CodeGenerator from './code-generator';
+import exp from 'constants';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -23,6 +25,7 @@ describe('User Service', () => {
   let authServ: AuthService;
   let smsService: SmsInterface;
   let cacheService: CacheInterface;
+  let codeGenServ: CodeGenerator;
   const smsProvider = {
     provide: 'SmsInterface',
     useFactory: () => ({
@@ -60,10 +63,11 @@ describe('User Service', () => {
         ]),
       ],
       controllers: [AuthController],
-      providers: [AuthService, smsProvider, cacheProvider],
+      providers: [AuthService, smsProvider, cacheProvider, CodeGenerator],
     }).compile();
     userRepo = await module.get<UserRepository>(UserRepository);
     authServ = await module.get<AuthService>(AuthService);
+    codeGenServ = await module.get(CodeGenerator);
     smsService = await module.get('SmsInterface');
     cacheService = await module.get('CacheInterface');
 
@@ -80,16 +84,16 @@ describe('User Service', () => {
         phone: '09129120912',
       },
     ]);
-    // const genSpy = jest.spyOn(authServ, 'generateCode');
-    // const cacheSpy = jest.spyOn(authServ, 'setInMemory');
+    const generateSpy = jest.spyOn(codeGenServ, 'generate');
+    generateSpy.mockReturnValue('123456');
 
     expect(
       await authServ.findOrCreateUserWithPhone({ phone: '09129120912' }),
     ).toEqual({ id: 1, phone: '09129120912' });
-    // expect(genSpy).toBeCalledTimes(1);
-    // expect(cacheSpy).toBeCalledTimes(1);
+
     expect(smsService.sendMessage).toBeCalledTimes(1);
     expect(cacheService.set).toBeCalledTimes(1);
+    expect(cacheService.set).toBeCalledWith('09129120912', '123456');
   });
   it('throw exception when user not found', async () => {
     const dto: AuthCredentialDTO = {
