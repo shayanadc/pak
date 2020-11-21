@@ -11,6 +11,11 @@ import { AuthCredentialDTO } from './authCredential.dto';
 import { AuthGuard, PassportModule } from '@nestjs/passport';
 import { UserEntity } from './user.entity';
 import { AddressEntity } from '../address/address.entity';
+import { CityRepository } from '../address/city.repository';
+import { CityEntity } from '../address/city.entity';
+import { StateEntity } from '../address/state.entity';
+import { AddressRepository } from '../address/address.repository';
+import { StateRepository } from '../address/state.repository';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
@@ -29,22 +34,30 @@ describe('Create And Toke User API', () => {
         TypeOrmModule.forRoot({
           type: 'sqlite',
           database: ':memory:',
-          entities: [UserEntity,AddressEntity],
+          entities: [UserEntity, AddressEntity, CityEntity, StateEntity],
           synchronize: true,
           dropSchema: true,
         }),
-        TypeOrmModule.forFeature([UserRepository]),
+        TypeOrmModule.forFeature([
+          UserRepository,
+          AddressRepository,
+          CityRepository,
+          StateRepository,
+        ]),
       ],
       controllers: [AuthController],
       providers: [AuthService],
-    }).overrideGuard(AuthGuard())
+    })
+      .overrideGuard(AuthGuard())
       .useValue({
         canActivate: async (context: ExecutionContext) => {
-          await userRepo.save([{
-            phone: '09129120912',
-          }]);
+          await userRepo.save([
+            {
+              phone: '09129120912',
+            },
+          ]);
           const req = context.switchToHttp().getRequest();
-          req.user = userRepo.findOne({phone: '09129120912'}); // Your user object
+          req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
           return true;
         },
       })
@@ -59,12 +72,15 @@ describe('Create And Toke User API', () => {
     await userRepo.query(`DELETE FROM users;`);
   });
 
-
   it('auth/token POST Create New Token', async () => {
-    JwtService.prototype.sign = jest.fn().mockReturnValue('@1a$A4@SHS5af151ag60kagJAgaaAKjAK1');
-    await userRepo.save([{
-      phone: '09129120912',
-    }]);
+    JwtService.prototype.sign = jest
+      .fn()
+      .mockReturnValue('@1a$A4@SHS5af151ag60kagJAgaaAKjAK1');
+    await userRepo.save([
+      {
+        phone: '09129120912',
+      },
+    ]);
     const { body } = await supertest
       .agent(app.getHttpServer())
       .post('/auth/token')
@@ -78,16 +94,24 @@ describe('Create And Toke User API', () => {
   });
 
   it('/auth/login POST invalid request', async function() {
-    const { body } = await supertest.agent(app.getHttpServer()).post('/auth/login').send({ phone: '09120912' }).expect(400);
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .post('/auth/login')
+      .send({ phone: '09120912' })
+      .expect(400);
     expect(body).toEqual({
-          statusCode: 400,
-          error: 'Bad Request',
-          message: 'phone must be a pattern',
-        });
+      statusCode: 400,
+      error: 'Bad Request',
+      message: 'phone must be a pattern',
+    });
   });
 
   it('/auth/login POST return created user with specific phone number', async function() {
-    const { body } = await supertest.agent(app.getHttpServer()).post('/auth/login').send({ phone: '09129120912' }).expect(201);
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .post('/auth/login')
+      .send({ phone: '09129120912' })
+      .expect(201);
     expect(body).toEqual({ user: { id: 2, phone: '09129120912' } });
   });
 
@@ -97,7 +121,7 @@ describe('Create And Toke User API', () => {
       .get('/auth/user')
       .set('Authorization', 'Bearer AAGAJAHFJAJAFGJIQOQOJHVNMC')
       .expect(200);
-    expect(body).toEqual({user: {id: 3, phone: '09129120912'}})
+    expect(body).toEqual({ user: { id: 3, phone: '09129120912' } });
   });
   afterAll(async () => {
     await app.close();
