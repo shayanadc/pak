@@ -1,4 +1,4 @@
 export interface JwtPayload {
   phone: string;
-  activation_code: number;
+  activation_code: string;
 }

@@ -35,6 +35,7 @@ describe('Create And Toke User API', () => {
     provide: 'CacheInterface',
     useFactory: () => ({
       set: jest.fn(),
+      get: jest.fn(),
     }),
   };
   // let connection : Connection
@@ -103,7 +104,7 @@ describe('Create And Toke User API', () => {
       .post('/auth/token')
       .send({
         phone: '09129120912',
-        activation_code: 123,
+        activation_code: '123',
       } as AuthCredentialDTO)
       .expect(201);
     expect(body).toEqual({ accessToken: '@1a$A4@SHS5af151ag60kagJAgaaAKjAK1' });

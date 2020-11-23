@@ -12,7 +12,8 @@ import CodeGenerator from './code-generator';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserRepository) private userRepo: UserRepository,
+    @InjectRepository(UserRepository)
+    private userRepo: UserRepository,
     private jwtService: JwtService,
     @Inject('SmsInterface')
     private smsProvider: SmsInterface,
@@ -26,9 +27,14 @@ export class AuthService {
     this.cacheProvider.set(loginDTO.phone, code);
     return await this.userRepo.findOrCreate(loginDTO);
   }
-  isCodeMatch(authCredential: AuthCredentialDTO) {
-    //Todo : find any activation code for this phone number
-    return true;
+  async isCodeMatch(authCredential: AuthCredentialDTO) {
+    const savedCode = await this.cacheProvider.get(
+      authCredential.activation_code,
+    );
+    if (savedCode === authCredential.activation_code) {
+      //Todo : find any activation code for this phone number
+      return true;
+    }
   }
   async retrieveToken(
     authCredential: AuthCredentialDTO,

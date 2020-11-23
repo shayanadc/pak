@@ -17,7 +17,6 @@ import { StateEntity } from '../address/state.entity';
 import SmsInterface from './sms.interface';
 import CacheInterface from './cache.interface';
 import CodeGenerator from './code-generator';
-import exp from 'constants';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -36,6 +35,7 @@ describe('User Service', () => {
     provide: 'CacheInterface',
     useFactory: () => ({
       set: jest.fn(),
+      get: jest.fn().mockReturnValue('12345'),
     }),
   };
   beforeAll(async () => {
@@ -95,10 +95,20 @@ describe('User Service', () => {
     expect(cacheService.set).toBeCalledTimes(1);
     expect(cacheService.set).toBeCalledWith('09129120912', '123456');
   });
+  it('should check matching act code', async () => {
+    const authCredential: AuthCredentialDTO = {
+      phone: '09129120912',
+      activation_code: '12345',
+    };
+    const x = await authServ.isCodeMatch(authCredential);
+    console.log(x);
+    expect(cacheService.get).toBeCalledTimes(1);
+    expect(x).toEqual(true);
+  });
   it('throw exception when user not found', async () => {
     const dto: AuthCredentialDTO = {
       phone: '09129120912',
-      activation_code: 12345,
+      activation_code: '12345',
     };
     await expect(authServ.retrieveToken(dto)).rejects.toBeInstanceOf(
       NotFoundException,
@@ -113,7 +123,7 @@ describe('User Service', () => {
     ]);
     const dto: AuthCredentialDTO = {
       phone: '09129120912',
-      activation_code: 12345,
+      activation_code: '12345',
     };
     authServ.isCodeMatch = jest.fn().mockReturnValue(false);
     await expect(authServ.retrieveToken(dto)).rejects.toBeInstanceOf(
