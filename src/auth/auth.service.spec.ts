@@ -17,6 +17,8 @@ import { StateEntity } from '../address/state.entity';
 import SmsInterface from './sms.interface';
 import CodeGenerator from './code-generator';
 import CacheInterface from './cache.interface';
+import { RequestEntity } from '../request/request.entity';
+import { RequestRepository } from '../request/request.repository';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -51,7 +53,13 @@ describe('User Service', () => {
         TypeOrmModule.forRoot({
           type: 'sqlite',
           database: ':memory:',
-          entities: [UserEntity, AddressEntity, CityEntity, StateEntity],
+          entities: [
+            UserEntity,
+            AddressEntity,
+            CityEntity,
+            StateEntity,
+            RequestEntity,
+          ],
           synchronize: true,
           dropSchema: true,
         }),
@@ -60,6 +68,7 @@ describe('User Service', () => {
           AddressRepository,
           CityRepository,
           StateRepository,
+          RequestRepository,
         ]),
       ],
       controllers: [AuthController],

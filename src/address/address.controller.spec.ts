@@ -14,6 +14,8 @@ import { StateRepository } from './state.repository';
 import { StateEntity } from './state.entity';
 import { CityEntity } from './city.entity';
 import { CityRepository } from './city.repository';
+import { RequestRepository } from '../request/request.repository';
+import { RequestEntity } from '../request/request.entity';
 
 describe('AddressController', () => {
   let userRepo: UserRepository;
@@ -36,7 +38,13 @@ describe('AddressController', () => {
         TypeOrmModule.forRoot({
           type: 'sqlite',
           database: ':memory:',
-          entities: [UserEntity, AddressEntity, StateEntity, CityEntity],
+          entities: [
+            UserEntity,
+            AddressEntity,
+            StateEntity,
+            CityEntity,
+            RequestEntity,
+          ],
           synchronize: true,
           dropSchema: true,
         }),
@@ -45,6 +53,7 @@ describe('AddressController', () => {
           UserRepository,
           StateRepository,
           CityRepository,
+          RequestRepository,
         ]),
       ],
       controllers: [AddressController],

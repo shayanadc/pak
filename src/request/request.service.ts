@@ -9,7 +9,9 @@ export class RequestService {
     private requestRepo: RequestRepository,
     private addressRepo: AddressRepository,
   ) {}
-
+  async getAll(user) {
+    return await this.requestRepo.getAll(user);
+  }
   async store(user, body): Promise<RequestEntity> {
     const address = await this.addressRepo.findOne({ id: body.addressId });
     return await this.requestRepo.store(user, address, body);

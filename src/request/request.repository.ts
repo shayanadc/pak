@@ -1,8 +1,15 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { RequestEntity, RequestType } from './request.entity';
+import { UserEntity } from '../auth/user.entity';
 
 @EntityRepository(RequestEntity)
 export class RequestRepository extends Repository<RequestEntity> {
+  async getAll(user): Promise<RequestEntity[]> {
+    return await this.find({
+      relations: ['user'],
+      where: { id: user.id },
+    });
+  }
   async store(user, address, body): Promise<RequestEntity> {
     const request = new RequestEntity();
     request.user = user;

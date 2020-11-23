@@ -75,10 +75,17 @@ describe('Request Controller', () => {
             title: 'BLOCK',
           });
 
-          await addressRepo.save({
+          const address = await addressRepo.save({
             description: 'Addresss.....',
             state: state,
             user: user,
+          });
+
+          await requestRepository.save({
+            user: user,
+            address: address,
+            type: 1,
+            date: '2000-01-01 00:00:00',
           });
           const req = context.switchToHttp().getRequest();
           req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
@@ -101,20 +108,36 @@ describe('Request Controller', () => {
     await stateRepository.query(`DELETE FROM states;`);
     await userRepo.query(`DELETE FROM users;`);
   });
-  it('/request save user request', async () => {
+  it('/request POST save user request', async () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
       .post('/request')
-      .send({ addressId: 1, type: 1, date: '2000-01-01 00:00:00' })
+      .send({ addressId: 1, type: 1, date: '2000-01-01 00:03:00' })
       .expect(201);
     expect(body).toEqual({
       request: {
-        id: 1,
+        id: 2,
         user: { id: 1, phone: '09129120912' },
         address: { id: 1, description: 'Addresss.....' },
         type: 1,
-        date: '2000-01-01 00:00:00',
+        date: '2000-01-01 00:03:00',
       },
+    });
+  });
+  it('/request GET return requests of user', async () => {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .get('/request')
+      .expect(200);
+    expect(body).toEqual({
+      requests: [
+        {
+          date: '1999-12-31T20:30:00.000Z',
+          id: 1,
+          type: 1,
+          user: { id: 1, phone: '09129120912' },
+        },
+      ],
     });
   });
 });

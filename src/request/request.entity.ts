@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -17,12 +18,6 @@ export enum RequestType {
 export class RequestEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  @OneToOne(() => AddressEntity)
-  @JoinColumn()
-  address: AddressEntity;
-  @OneToOne(() => UserEntity)
-  @JoinColumn()
-  user: UserEntity;
   @Column({
     type: 'simple-enum',
     enum: RequestType,
@@ -31,4 +26,16 @@ export class RequestEntity extends BaseEntity {
   //todo : does not work in test
   @Column()
   date: Date;
+
+  @ManyToOne(
+    () => UserEntity,
+    user => user.requests,
+  )
+  user: UserEntity;
+
+  @ManyToOne(
+    () => AddressEntity,
+    address => address.requests,
+  )
+  address: AddressEntity;
 }
