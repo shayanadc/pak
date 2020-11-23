@@ -24,4 +24,8 @@ export class RequestRepository extends Repository<RequestEntity> {
     request.date = body.date;
     return await request.save();
   }
+  async deleteItem(user, body): Promise<void> {
+    //Todo: where requset for this user
+    await this.delete({ id: body.id });
+  }
 }

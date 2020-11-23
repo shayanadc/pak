@@ -16,4 +16,7 @@ export class RequestService {
     const address = await this.addressRepo.findOne({ id: body.addressId });
     return await this.requestRepo.store(user, address, body);
   }
+  async delete(user, body): Promise<void> {
+    return await this.requestRepo.deleteItem(user, body);
+  }
 }
