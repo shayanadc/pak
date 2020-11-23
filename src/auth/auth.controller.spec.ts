@@ -17,8 +17,8 @@ import { StateEntity } from '../address/state.entity';
 import { AddressRepository } from '../address/address.repository';
 import { StateRepository } from '../address/state.repository';
 import SmsInterface from './sms.interface';
-import CacheInterface from './cache.interface';
 import CodeGenerator from './code-generator';
+import CacheInterface from './cache.interface';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;

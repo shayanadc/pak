@@ -15,8 +15,8 @@ import { AddressRepository } from '../address/address.repository';
 import { CityEntity } from '../address/city.entity';
 import { StateEntity } from '../address/state.entity';
 import SmsInterface from './sms.interface';
-import CacheInterface from './cache.interface';
 import CodeGenerator from './code-generator';
+import CacheInterface from './cache.interface';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -101,7 +101,6 @@ describe('User Service', () => {
       activation_code: '12345',
     };
     const x = await authServ.isCodeMatch(authCredential);
-    console.log(x);
     expect(cacheService.get).toBeCalledTimes(1);
     expect(x).toEqual(true);
   });

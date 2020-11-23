@@ -7,8 +7,8 @@ import { AuthCredentialDTO } from './authCredential.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
 import SmsInterface from './sms.interface';
-import CacheInterface from './cache.interface';
 import CodeGenerator from './code-generator';
+import CacheInterface from './cache.interface';
 @Injectable()
 export class AuthService {
   constructor(
