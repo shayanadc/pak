@@ -16,10 +16,28 @@ import { CityEntity } from '../address/city.entity';
 import { StateEntity } from '../address/state.entity';
 import { AddressRepository } from '../address/address.repository';
 import { StateRepository } from '../address/state.repository';
+import SmsInterface from './sms.interface';
+import CacheInterface from './cache.interface';
+import CodeGenerator from './code-generator';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
   let userRepo: UserRepository;
+  let smsService: SmsInterface;
+  let cacheService: CacheInterface;
+  const smsProvider = {
+    provide: 'SmsInterface',
+    useFactory: () => ({
+      sendMessage: jest.fn(),
+    }),
+  };
+  const cacheProvider = {
+    provide: 'CacheInterface',
+    useFactory: () => ({
+      set: jest.fn(),
+      get: jest.fn(),
+    }),
+  };
   // let connection : Connection
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -46,7 +64,7 @@ describe('Create And Toke User API', () => {
         ]),
       ],
       controllers: [AuthController],
-      providers: [AuthService],
+      providers: [AuthService, smsProvider, cacheProvider, CodeGenerator],
     })
       .overrideGuard(AuthGuard())
       .useValue({
@@ -86,7 +104,7 @@ describe('Create And Toke User API', () => {
       .post('/auth/token')
       .send({
         phone: '09129120912',
-        activation_code: 123,
+        activation_code: '123',
       } as AuthCredentialDTO)
       .expect(201);
     expect(body).toEqual({ accessToken: '@1a$A4@SHS5af151ag60kagJAgaaAKjAK1' });
