@@ -118,7 +118,7 @@ describe('Request Controller', () => {
       request: {
         id: 2,
         user: { id: 1, phone: '09129120912' },
-        address: { id: 1, description: 'Addresss.....' },
+        address: { id: 1, description: 'Addresss.....', type: 1 },
         type: 1,
         date: '2000-01-01 00:03:00',
       },
