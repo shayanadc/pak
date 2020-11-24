@@ -103,4 +103,39 @@ describe('MaterialController', () => {
       ],
     });
   });
+  afterAll(async () => {
+    await app.close();
+  });
+  afterEach(async () => {
+    await materialRepo.query(`DELETE FROM materials;`);
+    await userRepo.query(`DELETE FROM users;`);
+  });
+  it('/material/:id PUT update specific material', async () => {
+    materialRepo.save({
+      title: 'IRON',
+      cost: 20000,
+    });
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .put('/material/1')
+      .send({ cost: 1000 })
+      .expect(200);
+    expect(await materialRepo.findOne()).toEqual({
+      id: 1,
+      title: 'IRON',
+      cost: 1000,
+      weight: 1,
+    });
+    //Todo: update result??
+    // expect(body).toStrictEqual({
+    //   materials: [
+    //     {
+    //       id: 1,
+    //       title: 'IRON',
+    //       cost: 1000,
+    //       weight: 1,
+    //     },
+    //   ],
+    // });
+  });
 });

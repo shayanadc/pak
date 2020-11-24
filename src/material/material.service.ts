@@ -9,4 +9,8 @@ export class MaterialService {
   async index(): Promise<MaterialEntity[]> {
     return await this.materialRepo.find();
   }
+  async update(id, body): Promise<any> {
+    const up = await this.materialRepo.update({ id: id }, body);
+    return up;
+  }
 }

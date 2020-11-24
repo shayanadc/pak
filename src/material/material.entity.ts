@@ -1,6 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 @Entity('materials')
+@Unique(['title'])
 export class MaterialEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
