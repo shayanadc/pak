@@ -5,17 +5,17 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from '../auth/user.repository';
 import { ExecutionContext, INestApplication } from '@nestjs/common';
-import supertest = require('supertest');
 import { AddressService } from './address.service';
 import { AddressRepository } from './address.repository';
 import { UserEntity } from '../auth/user.entity';
-import { AddressEntity } from './address.entity';
+import { AddressEntity, BuildingType } from './address.entity';
 import { StateRepository } from './state.repository';
 import { StateEntity } from './state.entity';
 import { CityEntity } from './city.entity';
 import { CityRepository } from './city.repository';
 import { RequestRepository } from '../request/request.repository';
 import { RequestEntity } from '../request/request.entity';
+import supertest = require('supertest');
 
 describe('AddressController', () => {
   let userRepo: UserRepository;
@@ -68,7 +68,11 @@ describe('AddressController', () => {
           const city = await cityRepo.save({ name: 'GORGAN' });
           const state = await stateRepo.save({ title: 'BLOCK 24', city: city });
           await addressRepo.save([
-            { description: 'BLAH BLAH', user: authUser, state: state },
+            {
+              description: 'BLAH BLAH',
+              user: authUser,
+              state: state,
+            },
           ]);
           const req = await context.switchToHttp().getRequest();
           req.user = await userRepo.findOne({ phone: '09129120912' }); // Your user object
@@ -104,6 +108,7 @@ describe('AddressController', () => {
         id: 2,
         description: 'BLAH BLAH',
         user: { id: 2, phone: '09129120912' },
+        type: 1,
       },
     ]);
   });
@@ -115,15 +120,16 @@ describe('AddressController', () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
       .post('/address')
-      .send({ description: 'Address ...', stateId: 1 })
+      .send({ description: 'Address ....', stateId: 1, type: 2 })
       .expect(201);
 
     expect(body).toStrictEqual({
       address: {
         id: 4,
-        description: 'Address ...',
+        description: 'Address ....',
         user: { id: 3, phone: '09129120912' },
         state: { id: 1, title: 'BLOCK 24' },
+        type: 2,
       },
     });
   });
