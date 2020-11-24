@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { MaterialService } from './material.service';
 import { MaterialEntity } from './material.entity';
@@ -11,5 +11,11 @@ export class MaterialController {
   async index(): Promise<{ materials: MaterialEntity[] }> {
     const material = await this.materialServ.index();
     return { materials: material };
+  }
+  @Put(':id')
+  @UseGuards(AuthGuard())
+  async update(@Body() body, @Param() param): Promise<{ any }> {
+    const up = await this.materialServ.update(param.id, body);
+    return up;
   }
 }
