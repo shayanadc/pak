@@ -140,4 +140,10 @@ describe('Request Controller', () => {
       ],
     });
   });
+  it('/request/:id DELETE delete specific request of user', async () => {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .delete('/request/1')
+      .expect(200);
+  });
 });

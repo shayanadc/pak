@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -33,12 +35,12 @@ export class RequestController {
     @GetUser() user: UserEntity,
     @Body() body,
   ): Promise<{ request: RequestEntity }> {
-    try {
-      const req = await this.RequestService.store(user, body);
-      return { request: req };
-    } catch (error) {
-      console.log(error);
-      throw new NotFoundException('da');
-    }
+    const req = await this.RequestService.store(user, body);
+    return { request: req };
+  }
+  @Delete(':id')
+  @UseGuards(AuthGuard())
+  async delete(@GetUser() user: UserEntity, @Param() param): Promise<any> {
+    return this.RequestService.delete(user, param);
   }
 }
