@@ -3,9 +3,10 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AddressModule } from './address/address.module';
 import { RequestModule } from './request/request.module';
+import { MaterialModule } from './material/material.module';
 
 @Module({
-  imports: [AuthModule, AddressModule, RequestModule,
+  imports: [AuthModule, AddressModule, RequestModule, MaterialModule,
     // TypeOrmModule.forRoot({
     //   type: 'postgres',
     //   host: 'localhost',
