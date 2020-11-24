@@ -17,8 +17,10 @@ import { StateEntity } from '../address/state.entity';
 import { AddressRepository } from '../address/address.repository';
 import { StateRepository } from '../address/state.repository';
 import SmsInterface from './sms.interface';
-import CacheInterface from './cache.interface';
 import CodeGenerator from './code-generator';
+import CacheInterface from './cache.interface';
+import { RequestRepository } from '../request/request.repository';
+import { RequestEntity } from '../request/request.entity';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
@@ -52,7 +54,13 @@ describe('Create And Toke User API', () => {
         TypeOrmModule.forRoot({
           type: 'sqlite',
           database: ':memory:',
-          entities: [UserEntity, AddressEntity, CityEntity, StateEntity],
+          entities: [
+            UserEntity,
+            AddressEntity,
+            CityEntity,
+            StateEntity,
+            RequestEntity,
+          ],
           synchronize: true,
           dropSchema: true,
         }),
@@ -61,6 +69,7 @@ describe('Create And Toke User API', () => {
           AddressRepository,
           CityRepository,
           StateRepository,
+          RequestRepository,
         ]),
       ],
       controllers: [AuthController],
