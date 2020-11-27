@@ -14,8 +14,11 @@ export class MaterialController {
   }
   @Put(':id')
   @UseGuards(AuthGuard())
-  async update(@Body() body, @Param() param): Promise<{ any }> {
+  async update(
+    @Body() body,
+    @Param() param,
+  ): Promise<{ material: MaterialEntity }> {
     const up = await this.materialServ.update(param.id, body);
-    return up;
+    return { material: up };
   }
 }

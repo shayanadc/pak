@@ -79,10 +79,6 @@ describe('MaterialController', () => {
     await app.init();
   });
 
-  afterEach(async () => {
-    await userRepo.query(`DELETE FROM users;`);
-  });
-
   it('/material GET return all material', async () => {
     materialRepo.save({
       title: 'IRON',
@@ -117,25 +113,16 @@ describe('MaterialController', () => {
     });
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .put('/material/1')
+      .put('/material/2')
       .send({ cost: 1000 })
       .expect(200);
-    expect(await materialRepo.findOne()).toEqual({
-      id: 1,
-      title: 'IRON',
-      cost: 1000,
-      weight: 1,
+    expect(body).toStrictEqual({
+      material: {
+        id: 2,
+        title: 'IRON',
+        cost: 1000,
+        weight: 1,
+      },
     });
-    //Todo: update result??
-    // expect(body).toStrictEqual({
-    //   materials: [
-    //     {
-    //       id: 1,
-    //       title: 'IRON',
-    //       cost: 1000,
-    //       weight: 1,
-    //     },
-    //   ],
-    // });
   });
 });
