@@ -2,8 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RequestController } from './request.controller';
 import { ExecutionContext, INestApplication } from '@nestjs/common';
 import { UserRepository } from '../auth/user.repository';
-import SmsInterface from '../auth/sms.interface';
-import CacheInterface from '../auth/cache.interface';
 import { AuthGuard, PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,11 +12,8 @@ import { StateEntity } from '../address/state.entity';
 import { AddressRepository } from '../address/address.repository';
 import { CityRepository } from '../address/city.repository';
 import { StateRepository } from '../address/state.repository';
-import { AuthController } from '../auth/auth.controller';
-import { AuthService } from '../auth/auth.service';
-import CodeGenerator from '../auth/code-generator';
+
 import supertest = require('supertest');
-import { AddressController } from '../address/address.controller';
 import { RequestService } from './request.service';
 import { RequestEntity } from './request.entity';
 import { RequestRepository } from './request.repository';
@@ -97,7 +92,6 @@ describe('Request Controller', () => {
     addressRepo = await module.get<AddressRepository>(AddressRepository);
     stateRepository = await module.get<StateRepository>(StateRepository);
     requestRepository = await module.get<RequestRepository>(RequestRepository);
-
     app = module.createNestApplication();
     await app.init();
   });
@@ -142,7 +136,7 @@ describe('Request Controller', () => {
         date: '2000-01-01 00:03:00',
         work_shift: 1,
       })
-      .expect(404);
+      .expect(400);
   });
 
   it('/request GET return requests of user', async () => {

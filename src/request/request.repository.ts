@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { RequestEntity, RequestType, WorkShiftType } from './request.entity';
 import { UserEntity } from '../auth/user.entity';
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 @EntityRepository(RequestEntity)
 export class RequestRepository extends Repository<RequestEntity> {
@@ -24,7 +24,7 @@ export class RequestRepository extends Repository<RequestEntity> {
     }
     if (RequestType[body.type] === 'PERIODIC') {
       if (body.period == undefined) {
-        throw new NotFoundException();
+        throw new BadRequestException();
       }
       request.type = RequestType.PERIODIC;
     }
