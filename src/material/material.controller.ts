@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Put,
+  UseFilters,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { MaterialService } from './material.service';
 import { MaterialEntity } from './material.entity';
-
+import { AllExceptionsFilter } from '../http-exception.filter';
+@UseFilters(AllExceptionsFilter)
 @Controller('material')
 export class MaterialController {
   constructor(private materialServ: MaterialService) {}

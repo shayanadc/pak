@@ -126,9 +126,8 @@ describe('Create And Toke User API', () => {
       .post('/auth/login')
       .send({ phone: '09120912' })
       .expect(400);
-    expect(body).toEqual({
+    expect(body).toMatchObject({
       statusCode: 400,
-      error: 'Bad Request',
       message: 'phone must be a pattern',
     });
   });

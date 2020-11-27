@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -13,7 +14,8 @@ import { GetUser } from '../auth/get-user.decorator';
 import { UserEntity } from '../auth/user.entity';
 import { RequestEntity } from './request.entity';
 import { RequestDto } from './request.dto';
-
+import { AllExceptionsFilter } from '../http-exception.filter';
+@UseFilters(AllExceptionsFilter)
 @Controller('request')
 export class RequestController {
   constructor(private RequestService: RequestService) {}
