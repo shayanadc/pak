@@ -112,7 +112,12 @@ describe('Request Controller', () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
       .post('/request')
-      .send({ addressId: 1, type: 1, date: '2000-01-01 00:03:00' })
+      .send({
+        addressId: 1,
+        type: 1,
+        date: '2000-01-01 00:03:00',
+        work_shift: 1,
+      })
       .expect(201);
     expect(body).toEqual({
       request: {
@@ -120,10 +125,26 @@ describe('Request Controller', () => {
         user: { id: 1, phone: '09129120912' },
         address: { id: 1, description: 'Addresss.....', type: 1 },
         type: 1,
+        work_shift: 1,
         date: '2000-01-01 00:03:00',
+        period: null,
       },
     });
   });
+
+  it('/request POST prevent user to save periodic request with deteriminig day', async () => {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .post('/request')
+      .send({
+        addressId: 1,
+        type: 3,
+        date: '2000-01-01 00:03:00',
+        work_shift: 1,
+      })
+      .expect(404);
+  });
+
   it('/request GET return requests of user', async () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
@@ -133,9 +154,11 @@ describe('Request Controller', () => {
       requests: [
         {
           date: '1999-12-31T20:30:00.000Z',
-          id: 1,
+          id: 4,
           type: 1,
-          user: { id: 1, phone: '09129120912' },
+          user: { id: 3, phone: '09129120912' },
+          period: null,
+          work_shift: 1,
         },
       ],
     });
