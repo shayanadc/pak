@@ -103,14 +103,16 @@ describe('AddressController', () => {
       .agent(app.getHttpServer())
       .get('/address')
       .expect(200);
-    expect(body).toStrictEqual([
-      {
-        id: 2,
-        description: 'BLAH BLAH',
-        user: { id: 2, phone: '09129120912' },
-        type: 1,
-      },
-    ]);
+    expect(body).toStrictEqual({
+      addresses: [
+        {
+          id: 2,
+          description: 'BLAH BLAH',
+          user: { id: 2, phone: '09129120912' },
+          type: 1,
+        },
+      ],
+    });
   });
 
   afterAll(async () => {

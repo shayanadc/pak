@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { AddressEntity } from '../address/address.entity';
 import { UserEntity } from '../auth/user.entity';
+import { ApiProperty } from '@nestjs/swagger';
 export enum RequestType {
   BOX = 1,
   DISCHARGE = 2,
@@ -23,11 +24,13 @@ export enum WorkShiftType {
 @Entity('requests')
 export class RequestEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @ApiProperty()
   id: number;
   @Column({
     type: 'simple-enum',
     enum: RequestType,
   })
+  @ApiProperty()
   type: RequestType;
 
   @Column({
@@ -35,24 +38,28 @@ export class RequestEntity extends BaseEntity {
     enum: WorkShiftType,
     default: WorkShiftType['8-11'],
   })
+  @ApiProperty()
   work_shift: WorkShiftType;
 
   //todo : does not work in test
   @Column()
+  @ApiProperty()
   date: Date;
-
   @Column({ nullable: true })
+  @ApiProperty()
   period: number;
 
   @ManyToOne(
     () => UserEntity,
     user => user.requests,
   )
+  // @ApiProperty()
   user: UserEntity;
 
   @ManyToOne(
     () => AddressEntity,
     address => address.requests,
   )
+  // @ApiProperty()
   address: AddressEntity;
 }
