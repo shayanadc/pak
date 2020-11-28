@@ -11,6 +11,7 @@ import {
 import { UserEntity } from '../auth/user.entity';
 import { StateEntity } from './state.entity';
 import { RequestEntity, RequestType } from '../request/request.entity';
+import { ApiProperty } from '@nestjs/swagger';
 export enum BuildingType {
   HOME = 1,
   APARTMENT = 2,
@@ -19,9 +20,13 @@ export enum BuildingType {
 @Entity('addresses')
 export class AddressEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @ApiProperty()
   id: number;
+
   @Column()
+  @ApiProperty()
   description: string;
+  // @ApiProperty({ type: UserEntity })
   @ManyToOne(
     type => UserEntity,
     user => user.addresses,
@@ -31,8 +36,9 @@ export class AddressEntity extends BaseEntity {
     type => StateEntity,
     state => state.addresses,
   )
+  @ApiProperty()
   state: StateEntity;
-
+  @ApiProperty({ type: RequestEntity })
   @OneToMany(
     () => RequestEntity,
     request => request.address,
@@ -43,5 +49,6 @@ export class AddressEntity extends BaseEntity {
     enum: BuildingType,
     default: BuildingType.HOME,
   })
+  @ApiProperty({ enum: ['HOME', 'APARTMENT', 'OFFICE'] })
   type: BuildingType;
 }

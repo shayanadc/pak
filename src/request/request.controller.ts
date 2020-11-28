@@ -15,11 +15,18 @@ import { UserEntity } from '../auth/user.entity';
 import { RequestEntity } from './request.entity';
 import { RequestDto } from './request.dto';
 import { AllExceptionsFilter } from '../http-exception.filter';
+import { ApiBearerAuth, ApiOkResponse, ApiProperty } from '@nestjs/swagger';
+class requestResponse {
+  @ApiProperty()
+  request: RequestEntity;
+}
 @UseFilters(AllExceptionsFilter)
 @Controller('request')
 export class RequestController {
   constructor(private RequestService: RequestService) {}
   @Get('/')
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: requestResponse })
   @UseGuards(AuthGuard())
   async index(
     @GetUser() user: UserEntity,
@@ -28,6 +35,8 @@ export class RequestController {
     return { requests: req };
   }
   @Post('/')
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: requestResponse })
   @UseGuards(AuthGuard())
   async store(
     @GetUser() user: UserEntity,
@@ -39,6 +48,7 @@ export class RequestController {
   @Delete(':id')
   @UseGuards(AuthGuard())
   async delete(@GetUser() user: UserEntity, @Param() param): Promise<any> {
+    //todo: determine it
     return this.RequestService.delete(user, param);
   }
 }

@@ -13,17 +13,29 @@ import { UserEntity } from '../auth/user.entity';
 import { AddressService } from './address.service';
 import { AddressDto } from './address.dto';
 import { AllExceptionsFilter } from '../http-exception.filter';
+import { ApiBearerAuth, ApiOkResponse, ApiProperty } from '@nestjs/swagger';
+class addressResponse {
+  @ApiProperty()
+  address: AddressEntity;
+}
 @UseFilters(AllExceptionsFilter)
 @Controller('address')
 export class AddressController {
   constructor(private addressServ: AddressService) {}
 
   @Get('/')
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: addressResponse })
   @UseGuards(AuthGuard())
-  async index(@GetUser() user: UserEntity): Promise<AddressEntity[]> {
-    return this.addressServ.getAll(user);
+  async index(
+    @GetUser() user: UserEntity,
+  ): Promise<{ addresses: AddressEntity[] }> {
+    const addresses = await this.addressServ.getAll(user);
+    return { addresses: addresses };
   }
   @Post('/')
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: addressResponse })
   @UseGuards(AuthGuard())
   async store(
     @GetUser() user: UserEntity,
