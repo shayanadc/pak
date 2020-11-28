@@ -6,22 +6,25 @@ import { RequestModule } from './request/request.module';
 import { MaterialModule } from './material/material.module';
 
 @Module({
-  imports: [AuthModule, AddressModule, RequestModule, MaterialModule,
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   host: 'localhost',
-    //   port: 5432,
-    //   username: 'shayan',
-    //   password: 'pg123',
-    //   database: 'togo',
-    //   entities: [__dirname + '/**/*.entity.{js,ts}'],
-    //   synchronize: true,
-    //   migrationsRun: true,
-    //   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
-    //   cli: {
-    //     migrationsDir: 'src/migrations',
-    //   },
-    // }),
+  imports: [
+    AuthModule,
+    AddressModule,
+    RequestModule,
+    MaterialModule,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'postgres',
+      username: 'postgres',
+      password: 'password',
+      database: 'pak',
+      entities: [__dirname + '/**/*.entity.{js,ts}'],
+      synchronize: true,
+      migrationsRun: true,
+      migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+      cli: {
+        migrationsDir: 'src/migrations',
+      },
+    }),
   ],
   controllers: [],
   providers: [],
