@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   UseFilters,
   UseGuards,
@@ -43,5 +46,15 @@ export class AddressController {
   ): Promise<{ address: AddressEntity }> {
     const result = await this.addressServ.store(user, addressDto);
     return { address: result };
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard())
+  async delete(
+    @GetUser() user: UserEntity,
+    @Param('id', ParseIntPipe) param,
+  ): Promise<any> {
+    await this.addressServ.delete(user, param);
+    return { result: 'successful' };
   }
 }
