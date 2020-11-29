@@ -5,6 +5,7 @@ import { AddressModule } from './address/address.module';
 import { RequestModule } from './request/request.module';
 import { MaterialModule } from './material/material.module';
 import { StateModule } from './state/state.module';
+import { CityModule } from './city/city.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { StateModule } from './state/state.module';
       },
     }),
     StateModule,
+    CityModule,
   ],
   controllers: [],
   providers: [],

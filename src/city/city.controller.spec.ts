@@ -1,5 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StateController } from './state.controller';
+import { CityController } from './city.controller';
+import { UserRepository } from '../auth/user.repository';
+import { ExecutionContext, INestApplication } from '@nestjs/common';
+import { StateRepository } from '../address/state.repository';
 import { AuthGuard, PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,21 +11,19 @@ import { AddressEntity } from '../address/address.entity';
 import { CityEntity } from '../address/city.entity';
 import { StateEntity } from '../address/state.entity';
 import { RequestEntity } from '../request/request.entity';
-import { UserRepository } from '../auth/user.repository';
-import { CityRepository } from '../address/city.repository';
-import { StateRepository } from '../address/state.repository';
-import { RequestController } from '../request/request.controller';
-import { RequestService } from '../request/request.service';
-import { ExecutionContext, INestApplication } from '@nestjs/common';
-import supertest = require('supertest');
 import { AddressRepository } from '../address/address.repository';
+import { CityRepository } from '../address/city.repository';
 import { RequestRepository } from '../request/request.repository';
-import { StateService } from './state.service';
+import { StateController } from '../state/state.controller';
+import { StateService } from '../state/state.service';
+import supertest = require('supertest');
+import { CityService } from './city.service';
 
-describe('StateController', () => {
+describe('CityController', () => {
   let userRepo: UserRepository;
   let app: INestApplication;
   let stateRepo: StateRepository;
+  let cityRepo: CityRepository;
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -54,8 +55,8 @@ describe('StateController', () => {
           RequestRepository,
         ]),
       ],
-      controllers: [StateController],
-      providers: [StateService],
+      controllers: [CityController],
+      providers: [CityService],
     })
       .overrideGuard(AuthGuard())
       .useValue({
@@ -71,22 +72,24 @@ describe('StateController', () => {
       .compile();
     userRepo = await module.get<UserRepository>(UserRepository);
     stateRepo = await module.get<StateRepository>(StateRepository);
+    cityRepo = await module.get<CityRepository>(CityRepository);
     app = module.createNestApplication();
     await app.init();
   });
-  it('/request GET return all states', async () => {
-    stateRepo.save({
-      title: 'GRSD',
+
+  it('/city GET return all citiess', async () => {
+    cityRepo.save({
+      name: 'GORGAN',
     });
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/state')
+      .get('/city')
       .expect(200);
     expect(body).toEqual({
-      states: [
+      cities: [
         {
           id: 1,
-          title: 'GRSD',
+          name: 'GORGAN',
         },
       ],
     });
