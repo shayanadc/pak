@@ -1,15 +1,33 @@
-import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserEntity } from '../auth/user.entity';
 import { AddressEntity } from './address.entity';
 import { CityEntity } from './city.entity';
+import { ApiProperty } from '@nestjs/swagger';
 @Entity('states')
-export class StateEntity extends BaseEntity{
+export class StateEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @ApiProperty()
   id: number;
   @Column()
-  title : string
-  @OneToMany(type => AddressEntity, address => address.state)
-  addresses: AddressEntity[]
-  @ManyToOne(type => CityEntity, city=> city.states)
-  city : CityEntity
+  @ApiProperty()
+  title: string;
+  @OneToMany(
+    type => AddressEntity,
+    address => address.state,
+  )
+  @ApiProperty()
+  addresses: AddressEntity[];
+  @ManyToOne(
+    type => CityEntity,
+    city => city.states,
+  )
+  @ApiProperty()
+  city: CityEntity;
 }
