@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AddressModule } from './address/address.module';
 import { RequestModule } from './request/request.module';
 import { MaterialModule } from './material/material.module';
+import { StateModule } from './state/state.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MaterialModule } from './material/material.module';
         migrationsDir: 'src/migrations',
       },
     }),
+    StateModule,
   ],
   controllers: [],
   providers: [],
