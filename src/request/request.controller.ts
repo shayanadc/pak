@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   UseFilters,
   UseGuards,
@@ -47,8 +48,11 @@ export class RequestController {
   }
   @Delete(':id')
   @UseGuards(AuthGuard())
-  async delete(@GetUser() user: UserEntity, @Param() param): Promise<any> {
-    //todo: determine it
-    return this.RequestService.delete(user, param);
+  async delete(
+    @GetUser() user: UserEntity,
+    @Param('id', ParseIntPipe) param,
+  ): Promise<any> {
+    await this.RequestService.delete(user, param);
+    return { result: 'successful' };
   }
 }

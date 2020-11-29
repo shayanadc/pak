@@ -129,8 +129,8 @@ describe('User Service', () => {
       type: 1,
       date: '2000-01-01 00:00:00',
     });
-    const body = { id: 1 };
-    await reqServ.delete(user, body);
+    const id = 1;
+    await reqServ.delete(user, id);
     expect((await requestRepository.find()).length).toEqual(1);
   });
 });

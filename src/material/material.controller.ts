@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Put,
   UseFilters,
   UseGuards,
@@ -35,9 +36,9 @@ export class MaterialController {
   @UseGuards(AuthGuard())
   async update(
     @Body() materialDto: MaterialDto,
-    @Param() param,
+    @Param('id', ParseIntPipe) param,
   ): Promise<{ material: MaterialEntity }> {
-    const up = await this.materialServ.update(param.id, materialDto);
+    const up = await this.materialServ.update(param, materialDto);
     return { material: up };
   }
 }

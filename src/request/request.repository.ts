@@ -37,12 +37,10 @@ export class RequestRepository extends Repository<RequestEntity> {
     if (WorkShiftType[body.work_shift] === '16-21') {
       request.work_shift = WorkShiftType['16-21'];
     }
-    //Todo: check type 3 should have period
     request.date = body.date;
     return await request.save();
   }
-  async deleteItem(user, body): Promise<void> {
-    //Todo: where requset for this user
-    await this.delete({ id: body.id });
+  async deleteItem(user, param): Promise<void> {
+    await this.delete({ id: param });
   }
 }

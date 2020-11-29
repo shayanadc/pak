@@ -135,4 +135,11 @@ describe('AddressController', () => {
       },
     });
   });
+
+  it('/address/:id DELETE delete specific request of usser', async () => {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .delete('/address/1')
+      .expect(200);
+  });
 });
