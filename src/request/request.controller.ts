@@ -21,6 +21,10 @@ class requestResponse {
   @ApiProperty()
   request: RequestEntity;
 }
+class RequestIdDTO {
+  @ApiProperty()
+  id: number;
+}
 @UseFilters(AllExceptionsFilter)
 @Controller('request')
 export class RequestController {
@@ -50,7 +54,7 @@ export class RequestController {
   @UseGuards(AuthGuard())
   async delete(
     @GetUser() user: UserEntity,
-    @Param('id', ParseIntPipe) param,
+    @Param('id', ParseIntPipe) param: RequestIdDTO,
   ): Promise<any> {
     await this.RequestService.delete(user, param);
     return { result: 'successful' };

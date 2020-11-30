@@ -25,7 +25,6 @@ import {
   ApiResponse,
   ApiSecurity,
 } from '@nestjs/swagger';
-import { ApiResponseModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
 
 class userResponse {
   @ApiProperty()

@@ -35,7 +35,6 @@ export class AddressRepository extends Repository<AddressEntity> {
   }
 
   async deleteItem(user, param): Promise<any> {
-    console.log(param);
     const rest = await this.delete({ id: param });
     return rest;
   }

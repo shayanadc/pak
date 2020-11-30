@@ -21,6 +21,10 @@ class addressResponse {
   @ApiProperty()
   address: AddressEntity;
 }
+class AddressIdDTO {
+  @ApiProperty()
+  id: number;
+}
 @UseFilters(AllExceptionsFilter)
 @Controller('address')
 export class AddressController {
@@ -52,7 +56,7 @@ export class AddressController {
   @UseGuards(AuthGuard())
   async delete(
     @GetUser() user: UserEntity,
-    @Param('id', ParseIntPipe) param,
+    @Param('id', ParseIntPipe) param: AddressIdDTO,
   ): Promise<any> {
     await this.addressServ.delete(user, param);
     return { result: 'successful' };
