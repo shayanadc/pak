@@ -15,9 +15,11 @@ import { CityModule } from './city/city.module';
     MaterialModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'postgres',
+      // host: 'postgres',
+      host: 'localhost',
       username: 'postgres',
       password: 'password',
+      port: 15432,
       database: 'pak',
       entities: [__dirname + '/**/*.entity.{js,ts}'],
       synchronize: true,
