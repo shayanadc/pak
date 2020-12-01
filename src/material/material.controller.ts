@@ -13,13 +13,24 @@ import { MaterialService } from './material.service';
 import { MaterialEntity } from './material.entity';
 import { AllExceptionsFilter } from '../http-exception.filter';
 import { MaterialDto } from './material.dto';
-import { ApiBearerAuth, ApiOkResponse, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiProperty,
+  ApiResponse,
+} from '@nestjs/swagger';
+import { BadRequestResponse } from '../api.response.swagger';
 class materialResponse {
   @ApiProperty()
   material: MaterialEntity;
 }
 @UseFilters(AllExceptionsFilter)
 @Controller('material')
+@ApiResponse({
+  status: 400,
+  description: 'Missing Data',
+  type: BadRequestResponse,
+})
 export class MaterialController {
   constructor(private materialServ: MaterialService) {}
   @Get('/')
