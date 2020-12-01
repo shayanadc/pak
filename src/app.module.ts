@@ -6,6 +6,7 @@ import { RequestModule } from './request/request.module';
 import { MaterialModule } from './material/material.module';
 import { StateModule } from './state/state.module';
 import { CityModule } from './city/city.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { CityModule } from './city/city.module';
     StateModule,
     CityModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
