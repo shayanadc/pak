@@ -7,8 +7,10 @@ import {
   ApiOkResponse,
   ApiProperty,
   ApiResponse,
+  getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
+import { MaterialEntity } from '../material/material.entity';
 class cityResponse {
   @ApiProperty()
   cities: CityEntity;
@@ -23,7 +25,20 @@ export class CityController {
   constructor(private cityService: CityService) {}
   @Get('/')
   @ApiBearerAuth()
-  @ApiOkResponse({ type: cityResponse })
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        {
+          properties: {
+            cities: {
+              type: 'array',
+              items: { $ref: getSchemaPath(CityEntity) },
+            },
+          },
+        },
+      ],
+    },
+  })
   @UseGuards(AuthGuard())
   async index(): Promise<{ cities: CityEntity[] }> {
     const cities = await this.cityService.index();

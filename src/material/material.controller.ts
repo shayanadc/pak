@@ -18,11 +18,16 @@ import {
   ApiOkResponse,
   ApiProperty,
   ApiResponse,
+  getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
 class materialResponse {
   @ApiProperty()
   material: MaterialEntity;
+}
+class materialIdDto {
+  @ApiProperty()
+  id: number;
 }
 @UseFilters(AllExceptionsFilter)
 @Controller('material')
@@ -35,7 +40,20 @@ export class MaterialController {
   constructor(private materialServ: MaterialService) {}
   @Get('/')
   @ApiBearerAuth()
-  @ApiOkResponse({ type: materialResponse })
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        {
+          properties: {
+            materials: {
+              type: 'array',
+              items: { $ref: getSchemaPath(MaterialEntity) },
+            },
+          },
+        },
+      ],
+    },
+  })
   @UseGuards(AuthGuard())
   async index(): Promise<{ materials: MaterialEntity[] }> {
     const material = await this.materialServ.index();
@@ -46,8 +64,8 @@ export class MaterialController {
   @ApiOkResponse({ type: materialResponse })
   @UseGuards(AuthGuard())
   async update(
+    @Param('id', ParseIntPipe) param: materialIdDto,
     @Body() materialDto: MaterialDto,
-    @Param('id', ParseIntPipe) param,
   ): Promise<{ material: MaterialEntity }> {
     const up = await this.materialServ.update(param, materialDto);
     return { material: up };

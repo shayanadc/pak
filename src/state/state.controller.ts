@@ -4,13 +4,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { StateEntity } from '../address/state.entity';
 import { StateService } from './state.service';
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOkResponse,
   ApiProperty,
   ApiResponse,
+  getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
+import { MaterialEntity } from '../material/material.entity';
 class stateResponse {
   @ApiProperty()
   states: StateEntity;
@@ -31,7 +32,20 @@ export class StateController {
     description: 'Missing Data',
     type: BadRequestResponse,
   })
-  @ApiOkResponse({ type: stateResponse })
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        {
+          properties: {
+            states: {
+              type: 'array',
+              items: { $ref: getSchemaPath(StateEntity) },
+            },
+          },
+        },
+      ],
+    },
+  })
   @UseGuards(AuthGuard())
   async index(): Promise<{ states: StateEntity[] }> {
     const states = await this.stateService.index();

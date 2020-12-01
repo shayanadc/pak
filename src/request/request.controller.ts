@@ -21,6 +21,7 @@ import {
   ApiOkResponse,
   ApiProperty,
   ApiResponse,
+  getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
 class requestResponse {
@@ -42,7 +43,20 @@ export class RequestController {
   constructor(private RequestService: RequestService) {}
   @Get('/')
   @ApiBearerAuth()
-  @ApiOkResponse({ type: requestResponse })
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        {
+          properties: {
+            requests: {
+              type: 'array',
+              items: { $ref: getSchemaPath(RequestEntity) },
+            },
+          },
+        },
+      ],
+    },
+  })
   @UseGuards(AuthGuard())
   async index(
     @GetUser() user: UserEntity,
