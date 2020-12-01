@@ -16,7 +16,14 @@ import { UserEntity } from '../auth/user.entity';
 import { RequestEntity } from './request.entity';
 import { RequestDto } from './request.dto';
 import { AllExceptionsFilter } from '../http-exception.filter';
-import { ApiBearerAuth, ApiOkResponse, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiProperty,
+  ApiResponse,
+  getSchemaPath,
+} from '@nestjs/swagger';
+import { BadRequestResponse } from '../api.response.swagger';
 class requestResponse {
   @ApiProperty()
   request: RequestEntity;
@@ -27,11 +34,29 @@ class RequestIdDTO {
 }
 @UseFilters(AllExceptionsFilter)
 @Controller('request')
+@ApiResponse({
+  status: 400,
+  description: 'Missing Data',
+  type: BadRequestResponse,
+})
 export class RequestController {
   constructor(private RequestService: RequestService) {}
   @Get('/')
   @ApiBearerAuth()
-  @ApiOkResponse({ type: requestResponse })
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        {
+          properties: {
+            requests: {
+              type: 'array',
+              items: { $ref: getSchemaPath(RequestEntity) },
+            },
+          },
+        },
+      ],
+    },
+  })
   @UseGuards(AuthGuard())
   async index(
     @GetUser() user: UserEntity,

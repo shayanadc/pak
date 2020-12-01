@@ -16,7 +16,13 @@ import { UserEntity } from '../auth/user.entity';
 import { AddressService } from './address.service';
 import { AddressDto } from './address.dto';
 import { AllExceptionsFilter } from '../http-exception.filter';
-import { ApiBearerAuth, ApiOkResponse, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiProperty,
+  getSchemaPath,
+} from '@nestjs/swagger';
+import { MaterialEntity } from '../material/material.entity';
 class addressResponse {
   @ApiProperty()
   address: AddressEntity;
@@ -32,7 +38,20 @@ export class AddressController {
 
   @Get('/')
   @ApiBearerAuth()
-  @ApiOkResponse({ type: addressResponse })
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        {
+          properties: {
+            addresses: {
+              type: 'array',
+              items: { $ref: getSchemaPath(AddressEntity) },
+            },
+          },
+        },
+      ],
+    },
+  })
   @UseGuards(AuthGuard())
   async index(
     @GetUser() user: UserEntity,

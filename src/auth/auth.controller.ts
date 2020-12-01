@@ -25,6 +25,7 @@ import {
   ApiResponse,
   ApiSecurity,
 } from '@nestjs/swagger';
+import { BadRequestResponse } from '../api.response.swagger';
 
 class userResponse {
   @ApiProperty()
@@ -37,6 +38,11 @@ class apiToken {
 
 @UseFilters(AllExceptionsFilter)
 @Controller('auth')
+@ApiResponse({
+  status: 400,
+  description: 'Missing Data',
+  type: BadRequestResponse,
+})
 export class AuthController {
   constructor(private authServ: AuthService) {}
 
