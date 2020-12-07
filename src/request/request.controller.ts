@@ -64,6 +64,31 @@ export class RequestController {
     const req = await this.RequestService.getAll(user);
     return { requests: req };
   }
+
+  @Get('/all')
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        {
+          properties: {
+            requests: {
+              type: 'array',
+              items: { $ref: getSchemaPath(RequestEntity) },
+            },
+          },
+        },
+      ],
+    },
+  })
+  @UseGuards(AuthGuard())
+  async indexAll(
+    @GetUser() user: UserEntity,
+  ): Promise<{ requests: RequestEntity[] }> {
+    const req = await this.RequestService.getAll(user);
+    return { requests: req };
+  }
+
   @Post('/')
   @ApiBearerAuth()
   @ApiOkResponse({ type: requestResponse })

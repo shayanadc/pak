@@ -5,10 +5,15 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 @EntityRepository(RequestEntity)
 export class RequestRepository extends Repository<RequestEntity> {
-  async getAll(user): Promise<RequestEntity[]> {
+  async getAllFor(user): Promise<RequestEntity[]> {
     return await this.find({
       relations: ['user'],
       where: { user: user },
+    });
+  }
+  async getAll(): Promise<RequestEntity[]> {
+    return await this.find({
+      relations: ['user'],
     });
   }
   async store(user, address, body): Promise<RequestEntity> {

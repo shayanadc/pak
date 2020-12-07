@@ -168,6 +168,26 @@ describe('Request Controller', () => {
       ],
     });
   });
+
+  it('/request GET return all requests for driver', async () => {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .get('/request/all')
+      .expect(200);
+    expect(body).toEqual({
+      requests: [
+        {
+          date: '1999-12-31T20:30:00.000Z',
+          id: 6,
+          type: 1,
+          user: { id: 5, phone: '09129120912' },
+          period: null,
+          work_shift: 1,
+        },
+      ],
+    });
+  });
+
   it('/request/:id DELETE delete specific request of user', async () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
