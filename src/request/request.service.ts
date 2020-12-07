@@ -10,7 +10,10 @@ export class RequestService {
     private addressRepo: AddressRepository,
   ) {}
   async getAll(user) {
-    return await this.requestRepo.getAll(user);
+    if (user) {
+      return await this.requestRepo.getAllFor(user);
+    }
+    return await this.requestRepo.getAll();
   }
   async store(user, body): Promise<RequestEntity> {
     const r = await this.requestRepo.findOne({
