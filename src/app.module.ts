@@ -7,6 +7,7 @@ import { MaterialModule } from './material/material.module';
 import { StateModule } from './state/state.module';
 import { CityModule } from './city/city.module';
 import { AppController } from './app.controller';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AppController } from './app.controller';
     }),
     StateModule,
     CityModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [],
