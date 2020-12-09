@@ -8,13 +8,14 @@ import { UserEntity } from '../auth/user.entity';
 export class OrderRepository extends Repository<OrderEntity> {
   async store(
     orderDto: OrderDto,
+    price: number,
     user: UserEntity,
     request: RequestEntity,
   ): Promise<OrderEntity> {
     const order = new OrderEntity();
     order.request = request;
     order.user = user;
-    order.price = 20000;
+    order.price = price;
     return await order.save();
   }
 }

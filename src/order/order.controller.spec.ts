@@ -18,6 +18,8 @@ import { RequestRepository } from '../request/request.repository';
 import { ExecutionContext, INestApplication } from '@nestjs/common';
 import { OrderRepository } from './order.repository';
 import { OrderEntity } from './order.entity';
+import { MaterialEntity } from '../material/material.entity';
+import { MaterialRepository } from '../material/material.repository';
 
 describe('OrderController', () => {
   let app: INestApplication;
@@ -26,6 +28,7 @@ describe('OrderController', () => {
   let addressRepo: AddressRepository;
   let stateRepository: StateRepository;
   let requestRepository: RequestRepository;
+  let materialRepository: MaterialRepository;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -47,6 +50,7 @@ describe('OrderController', () => {
             StateEntity,
             RequestEntity,
             OrderEntity,
+            MaterialEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -58,6 +62,7 @@ describe('OrderController', () => {
           StateRepository,
           RequestRepository,
           OrderRepository,
+          MaterialRepository,
         ]),
       ],
       controllers: [OrderController],
@@ -85,6 +90,14 @@ describe('OrderController', () => {
             type: 1,
             date: '2000-01-01 00:00:00',
           });
+          await materialRepository.save({
+            title: 'Paper',
+            cost: 20000,
+          });
+          await materialRepository.save({
+            title: 'Iron',
+            cost: 10000,
+          });
           const req = context.switchToHttp().getRequest();
           req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
           return true;
@@ -96,6 +109,9 @@ describe('OrderController', () => {
     stateRepository = await module.get<StateRepository>(StateRepository);
     requestRepository = await module.get<RequestRepository>(RequestRepository);
     orderRepository = await module.get<OrderRepository>(OrderRepository);
+    materialRepository = await module.get<MaterialRepository>(
+      MaterialRepository,
+    );
 
     app = module.createNestApplication();
     await app.init();
@@ -105,12 +121,18 @@ describe('OrderController', () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
       .post('/order')
-      .send({ requestId: 1 })
+      .send({
+        requestId: 1,
+        rows: [
+          { materialId: 1, weight: 2 },
+          { materialId: 2, weight: 3 },
+        ],
+      })
       .expect(201);
     expect(body).toEqual({
       order: {
         id: 1,
-        price: 20000,
+        price: 70000,
         request: {
           id: 1,
           type: 1,
