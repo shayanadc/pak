@@ -6,9 +6,11 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { RequestEntity } from '../request/request.entity';
 import { UserEntity } from '../auth/user.entity';
+import { OrderDetailEntity } from './orderDetailEntity';
 
 @Entity('orders')
 export class OrderEntity extends BaseEntity {
@@ -24,4 +26,9 @@ export class OrderEntity extends BaseEntity {
   user: UserEntity;
   @Column()
   price: number;
+  @OneToMany(
+    () => OrderDetailEntity,
+    orderDetails => orderDetails.order,
+  )
+  details: OrderDetailEntity[];
 }

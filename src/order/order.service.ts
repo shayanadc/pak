@@ -4,6 +4,7 @@ import { OrderRepository } from './order.repository';
 import { OrderDto } from './order.dto';
 import { RequestRepository } from '../request/request.repository';
 import { MaterialRepository } from '../material/material.repository';
+import { OrderDetailsRepository } from './order.details.repository';
 
 @Injectable()
 export class OrderService {
@@ -11,17 +12,31 @@ export class OrderService {
     private orderRepo: OrderRepository,
     private requestRepo: RequestRepository,
     private materialRepo: MaterialRepository,
+    private orderDetailRepo: OrderDetailsRepository,
   ) {}
 
   async store(user, orderDto: OrderDto): Promise<OrderEntity> {
     const request = await this.requestRepo.findOne({ id: orderDto.requestId });
     let price = 0;
+    const orderDetails = [];
     for (let i = 0, l = orderDto.rows.length; i < l; i++) {
       const mateiral = await this.materialRepo.findOne({
         id: orderDto.rows[i].materialId,
       });
+      orderDetails.push(
+        await this.orderDetailRepo.save({
+          price: mateiral.cost * orderDto.rows[i].weight,
+          weight: orderDto.rows[i].weight,
+        }),
+      );
       price += mateiral.cost * orderDto.rows[i].weight;
     }
-    return await this.orderRepo.store(orderDto, price, user, request);
+    return await this.orderRepo.store(
+      orderDto,
+      price,
+      user,
+      orderDetails,
+      request,
+    );
   }
 }

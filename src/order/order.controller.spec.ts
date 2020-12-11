@@ -20,6 +20,8 @@ import { OrderRepository } from './order.repository';
 import { OrderEntity } from './order.entity';
 import { MaterialEntity } from '../material/material.entity';
 import { MaterialRepository } from '../material/material.repository';
+import { OrderDetailEntity } from './orderDetailEntity';
+import { OrderDetailsRepository } from './order.details.repository';
 
 describe('OrderController', () => {
   let app: INestApplication;
@@ -29,6 +31,7 @@ describe('OrderController', () => {
   let stateRepository: StateRepository;
   let requestRepository: RequestRepository;
   let materialRepository: MaterialRepository;
+  let orderDetailRepo: OrderDetailsRepository;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -51,6 +54,7 @@ describe('OrderController', () => {
             RequestEntity,
             OrderEntity,
             MaterialEntity,
+            OrderDetailEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -63,6 +67,7 @@ describe('OrderController', () => {
           RequestRepository,
           OrderRepository,
           MaterialRepository,
+          OrderDetailsRepository,
         ]),
       ],
       controllers: [OrderController],
@@ -112,6 +117,9 @@ describe('OrderController', () => {
     materialRepository = await module.get<MaterialRepository>(
       MaterialRepository,
     );
+    orderDetailRepo = await module.get<OrderDetailsRepository>(
+      OrderDetailsRepository,
+    );
 
     app = module.createNestApplication();
     await app.init();
@@ -144,7 +152,12 @@ describe('OrderController', () => {
           id: 1,
           phone: '09129120912',
         },
+        details: [
+          { id: 1, price: 2 * 20000, weight: 2 },
+          { id: 2, price: 3 * 10000, weight: 3 },
+        ],
       },
     });
+    expect((await orderDetailRepo.find()).length).toEqual(2);
   });
 });
