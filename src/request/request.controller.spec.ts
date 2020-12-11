@@ -126,6 +126,7 @@ describe('Request Controller', () => {
         work_shift: 1,
         date: '2000-01-01 00:03:00',
         period: null,
+        done: false,
       },
     });
   });
@@ -168,6 +169,7 @@ describe('Request Controller', () => {
           user: { id: 4, phone: '09129120912' },
           period: null,
           work_shift: 1,
+          done: false,
         },
       ],
     });
@@ -187,6 +189,7 @@ describe('Request Controller', () => {
           user: { id: 5, phone: '09129120912' },
           period: null,
           work_shift: 1,
+          done: false,
         },
       ],
     });

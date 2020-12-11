@@ -63,4 +63,6 @@ export class RequestEntity extends BaseEntity {
   )
   // @ApiProperty()
   address: AddressEntity;
+  @Column({ default: false })
+  done: boolean;
 }

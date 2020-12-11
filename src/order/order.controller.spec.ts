@@ -150,6 +150,7 @@ describe('OrderController', () => {
           work_shift: 1,
           date: '1999-12-31T20:30:00.000Z',
           period: null,
+          done: true,
           user: {
             id: 2,
             phone: '09109120912',
@@ -170,6 +171,6 @@ describe('OrderController', () => {
       },
     });
     expect((await orderDetailRepo.find()).length).toEqual(2);
-    // expect((await requestRepository.findOne({ id: 1 })).done).toBeTruthy();
+    expect((await requestRepository.findOne({ id: 1 })).done).toBeTruthy();
   });
 });

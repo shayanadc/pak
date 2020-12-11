@@ -17,6 +17,8 @@ export class OrderService {
 
   async store(issuer, orderDto: OrderDto): Promise<OrderEntity> {
     const request = await this.requestRepo.findOne({ id: orderDto.requestId });
+    request.done = true;
+    request.save();
     let price = 0;
     const orderDetails = [];
     for (let i = 0, l = orderDto.rows.length; i < l; i++) {
