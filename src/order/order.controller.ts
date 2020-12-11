@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { OrderEntity } from './order.entity';
 import { OrderService } from './order.service';
 import { OrderDto } from './order.dto';
@@ -17,5 +17,27 @@ export class OrderController {
   ): Promise<{ order: OrderEntity }> {
     const order = await this.orderService.store(user, body);
     return { order: order };
+  }
+  @Get('/')
+  @UseGuards(AuthGuard())
+  async index(@GetUser() user: UserEntity): Promise<{ orders: OrderEntity[] }> {
+    const orders = await this.orderService.index({ user: user.id });
+    return { orders: orders };
+  }
+  @Get('/issued')
+  @UseGuards(AuthGuard())
+  async indexIssued(
+    @GetUser() user: UserEntity,
+  ): Promise<{ orders: OrderEntity[] }> {
+    const orders = await this.orderService.index({ issuer: user.id });
+    return { orders: orders };
+  }
+  @Get('/index')
+  @UseGuards(AuthGuard())
+  async indexAll(
+    @GetUser() user: UserEntity,
+  ): Promise<{ orders: OrderEntity[] }> {
+    const orders = await this.orderService.index();
+    return { orders: orders };
   }
 }

@@ -23,4 +23,7 @@ export class OrderRepository extends Repository<OrderEntity> {
     order.details = orderDetail;
     return await order.save();
   }
+  async index(condition?): Promise<OrderEntity[]> {
+    return await this.find(condition);
+  }
 }

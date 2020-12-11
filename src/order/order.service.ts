@@ -14,7 +14,9 @@ export class OrderService {
     private materialRepo: MaterialRepository,
     private orderDetailRepo: OrderDetailsRepository,
   ) {}
-
+  async index(condition?): Promise<OrderEntity[]> {
+    return await this.orderRepo.index(condition);
+  }
   async store(issuer, orderDto: OrderDto): Promise<OrderEntity> {
     const request = await this.requestRepo.findOne({ id: orderDto.requestId });
     request.done = true;
