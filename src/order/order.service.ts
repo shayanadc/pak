@@ -15,7 +15,7 @@ export class OrderService {
     private orderDetailRepo: OrderDetailsRepository,
   ) {}
 
-  async store(user, orderDto: OrderDto): Promise<OrderEntity> {
+  async store(issuer, orderDto: OrderDto): Promise<OrderEntity> {
     const request = await this.requestRepo.findOne({ id: orderDto.requestId });
     let price = 0;
     const orderDetails = [];
@@ -34,7 +34,8 @@ export class OrderService {
     return await this.orderRepo.store(
       orderDto,
       price,
-      user,
+      request.user,
+      issuer,
       orderDetails,
       request,
     );

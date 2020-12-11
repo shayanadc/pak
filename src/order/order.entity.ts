@@ -22,8 +22,17 @@ export class OrderEntity extends BaseEntity {
   @ManyToOne(
     () => UserEntity,
     user => user.orders,
+    { eager: true },
   )
   user: UserEntity;
+
+  @ManyToOne(
+    () => UserEntity,
+    issuer => issuer.orders,
+    { eager: true },
+  )
+  issuer: UserEntity;
+
   @Column()
   price: number;
   @OneToMany(

@@ -76,8 +76,11 @@ describe('OrderController', () => {
       .overrideGuard(AuthGuard())
       .useValue({
         canActivate: async (context: ExecutionContext) => {
-          const user = await userRepo.save({
+          await userRepo.save({
             phone: '09129120912',
+          });
+          const endUser = await userRepo.save({
+            phone: '09109120912',
           });
           const state = await stateRepository.save({
             title: 'BLOCK',
@@ -86,11 +89,11 @@ describe('OrderController', () => {
           const address = await addressRepo.save({
             description: 'Addresss.....',
             state: state,
-            user: user,
+            user: endUser,
           });
 
           await requestRepository.save({
-            user: user,
+            user: endUser,
             address: address,
             type: 1,
             date: '2000-01-01 00:00:00',
@@ -147,8 +150,16 @@ describe('OrderController', () => {
           work_shift: 1,
           date: '1999-12-31T20:30:00.000Z',
           period: null,
+          user: {
+            id: 2,
+            phone: '09109120912',
+          },
         },
         user: {
+          id: 2,
+          phone: '09109120912',
+        },
+        issuer: {
           id: 1,
           phone: '09129120912',
         },
@@ -159,5 +170,6 @@ describe('OrderController', () => {
       },
     });
     expect((await orderDetailRepo.find()).length).toEqual(2);
+    // expect((await requestRepository.findOne({ id: 1 })).done).toBeTruthy();
   });
 });

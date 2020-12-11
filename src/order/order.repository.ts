@@ -11,12 +11,14 @@ export class OrderRepository extends Repository<OrderEntity> {
     orderDto: OrderDto,
     price: number,
     user: UserEntity,
+    issuer: UserEntity,
     orderDetail: OrderDetailEntity[],
     request: RequestEntity,
   ): Promise<OrderEntity> {
     const order = new OrderEntity();
     order.request = request;
     order.user = user;
+    order.issuer = issuer;
     order.price = price;
     order.details = orderDetail;
     return await order.save();
