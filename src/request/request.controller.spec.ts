@@ -17,6 +17,8 @@ import supertest = require('supertest');
 import { RequestService } from './request.service';
 import { RequestEntity } from './request.entity';
 import { RequestRepository } from './request.repository';
+import { OrderEntity } from '../order/order.entity';
+import { OrderDetailEntity } from '../order/orderDetailEntity';
 
 describe('Request Controller', () => {
   let app: INestApplication;
@@ -45,6 +47,8 @@ describe('Request Controller', () => {
             CityEntity,
             StateEntity,
             RequestEntity,
+            OrderEntity,
+            OrderDetailEntity,
           ],
           synchronize: true,
           dropSchema: true,

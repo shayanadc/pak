@@ -21,6 +21,8 @@ import CodeGenerator from './code-generator';
 import CacheInterface from './cache.interface';
 import { RequestRepository } from '../request/request.repository';
 import { RequestEntity } from '../request/request.entity';
+import { OrderEntity } from '../order/order.entity';
+import { OrderDetailEntity } from '../order/orderDetailEntity';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
@@ -60,6 +62,8 @@ describe('Create And Toke User API', () => {
             CityEntity,
             StateEntity,
             RequestEntity,
+            OrderEntity,
+            OrderDetailEntity,
           ],
           synchronize: true,
           dropSchema: true,

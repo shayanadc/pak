@@ -19,6 +19,8 @@ import CodeGenerator from './code-generator';
 import CacheInterface from './cache.interface';
 import { RequestEntity } from '../request/request.entity';
 import { RequestRepository } from '../request/request.repository';
+import { OrderEntity } from '../order/order.entity';
+import { OrderDetailEntity } from '../order/orderDetailEntity';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -59,6 +61,8 @@ describe('User Service', () => {
             CityEntity,
             StateEntity,
             RequestEntity,
+            OrderEntity,
+            OrderDetailEntity,
           ],
           synchronize: true,
           dropSchema: true,

@@ -18,6 +18,8 @@ import supertest = require('supertest');
 import { AddressRepository } from '../address/address.repository';
 import { RequestRepository } from '../request/request.repository';
 import { StateService } from './state.service';
+import { OrderEntity } from '../order/order.entity';
+import { OrderDetailEntity } from '../order/orderDetailEntity';
 
 describe('StateController', () => {
   let userRepo: UserRepository;
@@ -42,6 +44,8 @@ describe('StateController', () => {
             CityEntity,
             StateEntity,
             RequestEntity,
+            OrderEntity,
+            OrderDetailEntity,
           ],
           synchronize: true,
           dropSchema: true,
