@@ -15,6 +15,8 @@ import { RequestEntity } from './request.entity';
 import { CityRepository } from '../address/city.repository';
 import { RequestController } from './request.controller';
 import { RequestService } from './request.service';
+import { OrderDetailEntity } from '../order/orderDetailEntity';
+import { OrderEntity } from '../order/order.entity';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -44,6 +46,8 @@ describe('User Service', () => {
             CityEntity,
             StateEntity,
             RequestEntity,
+            OrderEntity,
+            OrderDetailEntity,
           ],
           synchronize: true,
           dropSchema: true,

@@ -46,6 +46,6 @@ export class RequestRepository extends Repository<RequestEntity> {
     return await request.save();
   }
   async deleteItem(user, param): Promise<void> {
-    await this.delete({ id: param });
+    await this.delete({ id: param, done: false });
   }
 }

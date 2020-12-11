@@ -9,6 +9,7 @@ import {
 import { AddressEntity } from '../address/address.entity';
 import { RequestEntity } from '../request/request.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { OrderEntity } from '../order/order.entity';
 @Entity('users')
 @Unique(['phone'])
 export class UserEntity extends BaseEntity {
@@ -30,4 +31,11 @@ export class UserEntity extends BaseEntity {
   )
   @ApiProperty()
   requests: RequestEntity[];
+
+  @OneToMany(
+    () => OrderEntity,
+    order => order.user,
+  )
+  @ApiProperty()
+  orders: OrderEntity[];
 }

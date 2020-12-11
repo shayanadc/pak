@@ -17,6 +17,8 @@ import supertest = require('supertest');
 import { RequestService } from './request.service';
 import { RequestEntity } from './request.entity';
 import { RequestRepository } from './request.repository';
+import { OrderEntity } from '../order/order.entity';
+import { OrderDetailEntity } from '../order/orderDetailEntity';
 
 describe('Request Controller', () => {
   let app: INestApplication;
@@ -45,6 +47,8 @@ describe('Request Controller', () => {
             CityEntity,
             StateEntity,
             RequestEntity,
+            OrderEntity,
+            OrderDetailEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -122,6 +126,7 @@ describe('Request Controller', () => {
         work_shift: 1,
         date: '2000-01-01 00:03:00',
         period: null,
+        done: false,
       },
     });
   });
@@ -164,6 +169,7 @@ describe('Request Controller', () => {
           user: { id: 4, phone: '09129120912' },
           period: null,
           work_shift: 1,
+          done: false,
         },
       ],
     });
@@ -183,6 +189,7 @@ describe('Request Controller', () => {
           user: { id: 5, phone: '09129120912' },
           period: null,
           work_shift: 1,
+          done: false,
         },
       ],
     });

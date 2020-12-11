@@ -18,6 +18,8 @@ import { CityRepository } from '../address/city.repository';
 import { MaterialRepository } from './material.repository';
 import { MaterialEntity } from './material.entity';
 import { MaterialService } from './material.service';
+import { OrderDetailEntity } from '../order/orderDetailEntity';
+import { OrderEntity } from '../order/order.entity';
 
 describe('MaterialController', () => {
   let app: INestApplication;
@@ -44,6 +46,8 @@ describe('MaterialController', () => {
             StateEntity,
             RequestEntity,
             MaterialEntity,
+            OrderDetailEntity,
+            OrderEntity,
           ],
           synchronize: true,
           dropSchema: true,
