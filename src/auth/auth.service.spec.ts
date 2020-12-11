@@ -21,6 +21,11 @@ import { RequestEntity } from '../request/request.entity';
 import { RequestRepository } from '../request/request.repository';
 import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetailEntity';
+import { OrderService } from '../order/order.service';
+import { OrderRepository } from '../order/order.repository';
+import { OrderDetailsRepository } from '../order/order.details.repository';
+import { MaterialRepository } from '../material/material.repository';
+import { MaterialEntity } from '../material/material.entity';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -61,6 +66,7 @@ describe('User Service', () => {
             CityEntity,
             StateEntity,
             RequestEntity,
+            MaterialEntity,
             OrderEntity,
             OrderDetailEntity,
           ],
@@ -73,10 +79,19 @@ describe('User Service', () => {
           CityRepository,
           StateRepository,
           RequestRepository,
+          MaterialRepository,
+          OrderRepository,
+          OrderDetailsRepository,
         ]),
       ],
       controllers: [AuthController],
-      providers: [AuthService, smsProvider, cacheProvider, CodeGenerator],
+      providers: [
+        AuthService,
+        smsProvider,
+        cacheProvider,
+        CodeGenerator,
+        OrderService,
+      ],
     }).compile();
     userRepo = await module.get<UserRepository>(UserRepository);
     authServ = await module.get<AuthService>(AuthService);
