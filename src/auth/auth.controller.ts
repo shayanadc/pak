@@ -26,10 +26,12 @@ import {
   ApiSecurity,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
+import { OrderService } from '../order/order.service';
 
 class userResponse {
   @ApiProperty()
   user: UserEntity;
+  credit: any;
 }
 class apiToken {
   @ApiProperty()
@@ -44,7 +46,7 @@ class apiToken {
   type: BadRequestResponse,
 })
 export class AuthController {
-  constructor(private authServ: AuthService) {}
+  constructor(private authServ: AuthService, private orderServ: OrderService) {}
 
   @Post('login')
   @ApiOkResponse({ type: userResponse })
@@ -69,6 +71,6 @@ export class AuthController {
   @ApiOkResponse({ type: userResponse })
   @UseGuards(AuthGuard())
   async getAuthUser(@GetUser() user: UserEntity): Promise<userResponse> {
-    return { user: user };
+    return { user: user, credit: await this.orderServ.getCredit(user) };
   }
 }

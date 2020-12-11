@@ -19,6 +19,7 @@ export class OrderDetailEntity extends BaseEntity {
   @ManyToOne(
     () => OrderEntity,
     order => order.details,
+    { eager: true },
   )
   order: OrderEntity;
 }

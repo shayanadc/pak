@@ -17,6 +17,14 @@ export class OrderService {
   async index(condition?): Promise<OrderEntity[]> {
     return await this.orderRepo.index(condition);
   }
+  async getCredit(user): Promise<any> {
+    const { sum } = await this.orderRepo
+      .createQueryBuilder('orders')
+      .where('userId = :id', { id: user.id })
+      .select('SUM(orders.price)', 'sum')
+      .getRawOne();
+    return { total: { amount: sum } };
+  }
   async store(issuer, orderDto: OrderDto): Promise<OrderEntity> {
     const request = await this.requestRepo.findOne({ id: orderDto.requestId });
     request.done = true;
