@@ -27,12 +27,21 @@ import {
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
 import { OrderService } from '../order/order.service';
-
+class AmountType {
+  @ApiProperty({ example: 2000 })
+  amount: number;
+}
+class CreditType {
+  @ApiProperty()
+  total: AmountType;
+}
 class userResponse {
   @ApiProperty()
   user: UserEntity;
-  credit: any;
+  @ApiProperty()
+  credit: CreditType;
 }
+
 class apiToken {
   @ApiProperty()
   token: string;
