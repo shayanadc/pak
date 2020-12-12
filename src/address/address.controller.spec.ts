@@ -17,7 +17,7 @@ import { RequestRepository } from '../request/request.repository';
 import { RequestEntity } from '../request/request.entity';
 import supertest = require('supertest');
 import { OrderEntity } from '../order/order.entity';
-import { OrderDetailEntity } from '../order/orderDetailEntity';
+import { OrderDetailEntity } from '../order/orderDetail.entity';
 
 describe('AddressController', () => {
   let userRepo: UserRepository;

@@ -20,7 +20,7 @@ import { OrderRepository } from './order.repository';
 import { OrderEntity } from './order.entity';
 import { MaterialEntity } from '../material/material.entity';
 import { MaterialRepository } from '../material/material.repository';
-import { OrderDetailEntity } from './orderDetailEntity';
+import { OrderDetailEntity } from './orderDetail.entity';
 import { OrderDetailsRepository } from './order.details.repository';
 
 describe('OrderController', () => {

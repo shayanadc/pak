@@ -19,7 +19,7 @@ import { AddressRepository } from '../address/address.repository';
 import { RequestRepository } from '../request/request.repository';
 import { StateService } from './state.service';
 import { OrderEntity } from '../order/order.entity';
-import { OrderDetailEntity } from '../order/orderDetailEntity';
+import { OrderDetailEntity } from '../order/orderDetail.entity';
 
 describe('StateController', () => {
   let userRepo: UserRepository;

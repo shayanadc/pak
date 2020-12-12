@@ -13,9 +13,14 @@ import CodeGenerator from './code-generator';
 import { SmsProvider } from './sms.provider';
 import { CacheProvider } from './cache.provider';
 import { JwtStrategy } from './jwt.strategy';
+import { OrderRepository } from '../order/order.repository';
+import { OrderDetailsRepository } from '../order/order.details.repository';
+import { OrderService } from '../order/order.service';
+import { MaterialRepository } from '../material/material.repository';
 
 @Module({
   imports: [
+    OrderRepository,
     CacheModule.register(),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
@@ -30,12 +35,16 @@ import { JwtStrategy } from './jwt.strategy';
       CityRepository,
       StateRepository,
       RequestRepository,
+      MaterialRepository,
+      OrderRepository,
+      OrderDetailsRepository,
     ]),
   ],
   controllers: [AuthController],
   providers: [
     AuthService,
     CodeGenerator,
+    OrderService,
     JwtStrategy,
     {
       // You can switch useClass to different implementation

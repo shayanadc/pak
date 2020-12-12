@@ -2,6 +2,7 @@ version: '3.7'
 services:
   pak-api:
     container_name: pak_pak-api
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile

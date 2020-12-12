@@ -18,7 +18,7 @@ import { RequestService } from './request.service';
 import { RequestEntity } from './request.entity';
 import { RequestRepository } from './request.repository';
 import { OrderEntity } from '../order/order.entity';
-import { OrderDetailEntity } from '../order/orderDetailEntity';
+import { OrderDetailEntity } from '../order/orderDetail.entity';
 
 describe('Request Controller', () => {
   let app: INestApplication;

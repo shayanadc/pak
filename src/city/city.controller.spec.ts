@@ -18,7 +18,7 @@ import { StateController } from '../state/state.controller';
 import { StateService } from '../state/state.service';
 import supertest = require('supertest');
 import { CityService } from './city.service';
-import { OrderDetailEntity } from '../order/orderDetailEntity';
+import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { OrderEntity } from '../order/order.entity';
 
 describe('CityController', () => {

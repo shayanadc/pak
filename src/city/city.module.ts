@@ -9,8 +9,9 @@ import { AddressRepository } from '../address/address.repository';
 import { CityRepository } from '../address/city.repository';
 import { StateRepository } from '../address/state.repository';
 import { RequestRepository } from '../request/request.repository';
-import { RequestController } from '../request/request.controller';
-import { RequestService } from '../request/request.service';
+
+import { OrderRepository } from '../order/order.repository';
+import { OrderDetailsRepository } from '../order/order.details.repository';
 
 @Module({
   imports: [
@@ -27,6 +28,8 @@ import { RequestService } from '../request/request.service';
       CityRepository,
       StateRepository,
       RequestRepository,
+      OrderRepository,
+      OrderDetailsRepository,
     ]),
   ],
   controllers: [CityController],
