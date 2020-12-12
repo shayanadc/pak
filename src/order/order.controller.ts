@@ -21,7 +21,6 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
-import { RequestEntity } from '../request/request.entity';
 class orderResponse {
   @ApiProperty()
   order: OrderEntity;
