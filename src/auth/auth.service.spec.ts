@@ -20,7 +20,7 @@ import CacheInterface from './cache.interface';
 import { RequestEntity } from '../request/request.entity';
 import { RequestRepository } from '../request/request.repository';
 import { OrderEntity } from '../order/order.entity';
-import { OrderDetailEntity } from '../order/orderDetailEntity';
+import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { OrderService } from '../order/order.service';
 import { OrderRepository } from '../order/order.repository';
 import { OrderDetailsRepository } from '../order/order.details.repository';

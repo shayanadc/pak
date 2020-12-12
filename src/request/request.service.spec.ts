@@ -15,7 +15,7 @@ import { RequestEntity } from './request.entity';
 import { CityRepository } from '../address/city.repository';
 import { RequestController } from './request.controller';
 import { RequestService } from './request.service';
-import { OrderDetailEntity } from '../order/orderDetailEntity';
+import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { OrderEntity } from '../order/order.entity';
 
 describe('User Service', () => {

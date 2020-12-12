@@ -22,7 +22,7 @@ import CacheInterface from './cache.interface';
 import { RequestRepository } from '../request/request.repository';
 import { RequestEntity } from '../request/request.entity';
 import { OrderEntity } from '../order/order.entity';
-import { OrderDetailEntity } from '../order/orderDetailEntity';
+import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { MaterialRepository } from '../material/material.repository';
 import { OrderDetailsRepository } from '../order/order.details.repository';
 import { OrderRepository } from '../order/order.repository';
@@ -98,7 +98,6 @@ describe('Create And Toke User API', () => {
         smsProvider,
         cacheProvider,
         CodeGenerator,
-        OrderService,
         OrderService,
       ],
     })

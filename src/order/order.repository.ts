@@ -3,7 +3,7 @@ import { OrderEntity } from './order.entity';
 import { OrderDto } from './order.dto';
 import { RequestEntity } from '../request/request.entity';
 import { UserEntity } from '../auth/user.entity';
-import { OrderDetailEntity } from './orderDetailEntity';
+import { OrderDetailEntity } from './orderDetail.entity';
 
 @EntityRepository(OrderEntity)
 export class OrderRepository extends Repository<OrderEntity> {
