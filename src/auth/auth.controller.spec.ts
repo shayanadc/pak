@@ -234,7 +234,6 @@ describe('Create And Toke User API', () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
       .get('/auth/user')
-      .set('Authorization', 'Bearer AAGAJAHFJAJAFGJIQOQOJHVNMC')
       .expect(200);
     expect(body).toEqual({
       user: { id: 3, phone: '09129120912' },

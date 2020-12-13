@@ -7,6 +7,7 @@ import { MaterialRepository } from '../material/material.repository';
 import { OrderDetailsRepository } from './order.details.repository';
 import { UserRepository } from '../auth/user.repository';
 import { OrderDetailEntity } from './orderDetail.entity';
+import { PhoneParamDto } from './order.controller';
 
 @Injectable()
 export class OrderService {
@@ -17,22 +18,23 @@ export class OrderService {
     private orderDetailRepo: OrderDetailsRepository,
     private userRepo: UserRepository,
   ) {}
-  async aggregate(phone: string): Promise<any> {
+  async aggregate(phone): Promise<any> {
     const user = await this.userRepo.findOne({ phone: phone });
     const orders = await this.orderRepo.find({
       relations: ['issuer'],
       select: ['id'],
       where: { issuer: user },
     });
+    const ids = orders.map(value => value.id);
     const details = await this.orderDetailRepo
       .createQueryBuilder('details')
       .leftJoinAndSelect('details.material', 'material')
       .select('details.materialId')
       .addSelect('SUM(details.weight)', 'weight')
       .addSelect('material.title', 'title')
+      .where('details.orderId IN (:...orderIds)', { orderIds: ids })
       .groupBy('details.materialId')
       .getRawMany();
-    console.log(details);
     return details;
   }
   async index(condition?): Promise<OrderEntity[]> {
@@ -41,7 +43,7 @@ export class OrderService {
   async getCredit(user): Promise<any> {
     const { sum } = await this.orderRepo
       .createQueryBuilder('orders')
-      .where('userId = :id', { id: user.id })
+      .where('orders.userId = :id', { id: user.id })
       .select('SUM(orders.price)', 'sum')
       .getRawOne();
     return { total: { amount: sum } };
