@@ -20,6 +20,7 @@ import { RequestRepository } from '../request/request.repository';
 import { StateService } from './state.service';
 import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
+import { MaterialEntity } from '../material/material.entity';
 
 describe('StateController', () => {
   let userRepo: UserRepository;
@@ -46,6 +47,7 @@ describe('StateController', () => {
             RequestEntity,
             OrderEntity,
             OrderDetailEntity,
+            MaterialEntity,
           ],
           synchronize: true,
           dropSchema: true,

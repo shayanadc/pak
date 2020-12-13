@@ -19,6 +19,8 @@ import { RequestEntity } from './request.entity';
 import { RequestRepository } from './request.repository';
 import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
+import { MaterialEntity } from '../material/material.entity';
+import { MaterialRepository } from '../material/material.repository';
 
 describe('Request Controller', () => {
   let app: INestApplication;
@@ -47,6 +49,7 @@ describe('Request Controller', () => {
             CityEntity,
             StateEntity,
             RequestEntity,
+            MaterialEntity,
             OrderEntity,
             OrderDetailEntity,
           ],
@@ -59,6 +62,7 @@ describe('Request Controller', () => {
           CityRepository,
           StateRepository,
           RequestRepository,
+          MaterialRepository,
         ]),
       ],
       controllers: [RequestController],

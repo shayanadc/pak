@@ -22,6 +22,7 @@ import { MaterialEntity } from '../material/material.entity';
 import { MaterialRepository } from '../material/material.repository';
 import { OrderDetailEntity } from './orderDetail.entity';
 import { OrderDetailsRepository } from './order.details.repository';
+import { getConnection } from 'typeorm';
 
 describe('OrderController', () => {
   let app: INestApplication;
@@ -33,7 +34,7 @@ describe('OrderController', () => {
   let materialRepository: MaterialRepository;
   let orderDetailRepo: OrderDetailsRepository;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -76,7 +77,7 @@ describe('OrderController', () => {
       .overrideGuard(AuthGuard())
       .useValue({
         canActivate: async (context: ExecutionContext) => {
-          await userRepo.save({
+          const adminUser = await userRepo.save({
             phone: '09129120912',
           });
           const endUser = await userRepo.save({
@@ -91,21 +92,72 @@ describe('OrderController', () => {
             state: state,
             user: endUser,
           });
-
           await requestRepository.save({
+            user: endUser,
+            address: address,
+            type: 3,
+            date: '2000-01-01 00:00:00',
+          });
+          const request1 = await requestRepository.save({
             user: endUser,
             address: address,
             type: 1,
             date: '2000-01-01 00:00:00',
           });
-          await materialRepository.save({
+          const request2 = await requestRepository.save({
+            user: endUser,
+            address: address,
+            type: 2,
+            date: '2000-01-01 00:00:00',
+          });
+          const mat1 = await materialRepository.save({
             title: 'Paper',
             cost: 20000,
           });
-          await materialRepository.save({
+          const mat2 = await materialRepository.save({
             title: 'Iron',
             cost: 10000,
           });
+          const detail1 = await orderDetailRepo.save([
+            {
+              material: mat1,
+              weight: 2,
+              price: 4000,
+            },
+            {
+              material: mat2,
+              weight: 3,
+              price: 4000,
+            },
+          ]);
+          const detail2 = await orderDetailRepo.save([
+            {
+              material: mat1,
+              weight: 4,
+              price: 1000,
+            },
+            {
+              material: mat2,
+              weight: 1,
+              price: 1000,
+            },
+          ]);
+          await orderRepository.save([
+            {
+              user: endUser,
+              issuer: adminUser,
+              request: request1,
+              price: 4000,
+              details: detail1,
+            },
+            {
+              user: endUser,
+              issuer: adminUser,
+              request: request2,
+              price: 9000,
+              details: detail2,
+            },
+          ]);
           const req = context.switchToHttp().getRequest();
           req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
           return true;
@@ -128,6 +180,23 @@ describe('OrderController', () => {
     await app.init();
   });
 
+  afterEach(async () => {
+    const defaultConnection = getConnection('default');
+    await defaultConnection.close();
+  });
+
+  it('/order/aggregate return aggregate order', async function() {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .get('/order/09129120912/aggregate')
+      .expect(200);
+    expect(body).toEqual({
+      orders: [
+        { materialId: 1, title: 'Paper', weight: 6 },
+        { materialId: 2, title: 'Iron', weight: 4 },
+      ],
+    });
+  });
   it('/order Post save new order ', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
@@ -142,11 +211,11 @@ describe('OrderController', () => {
       .expect(201);
     expect(body).toEqual({
       order: {
-        id: 1,
+        id: 3,
         price: 70000,
         request: {
           id: 1,
-          type: 1,
+          type: 3,
           work_shift: 1,
           date: '1999-12-31T20:30:00.000Z',
           period: null,
@@ -165,12 +234,22 @@ describe('OrderController', () => {
           phone: '09129120912',
         },
         details: [
-          { id: 1, price: 2 * 20000, weight: 2 },
-          { id: 2, price: 3 * 10000, weight: 3 },
+          {
+            id: 5,
+            price: 2 * 20000,
+            weight: 2,
+            material: { cost: 20000, id: 1, title: 'Paper', weight: 1 },
+          },
+          {
+            id: 6,
+            price: 3 * 10000,
+            weight: 3,
+            material: { cost: 10000, id: 2, title: 'Iron', weight: 1 },
+          },
         ],
       },
     });
-    expect((await orderDetailRepo.find()).length).toEqual(2);
+    expect((await orderDetailRepo.find()).length).toEqual(6);
     expect((await requestRepository.findOne({ id: 1 })).done).toBeTruthy();
   });
 });

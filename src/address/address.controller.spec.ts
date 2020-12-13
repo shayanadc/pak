@@ -18,6 +18,7 @@ import { RequestEntity } from '../request/request.entity';
 import supertest = require('supertest');
 import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
+import { MaterialEntity } from '../material/material.entity';
 
 describe('AddressController', () => {
   let userRepo: UserRepository;
@@ -46,6 +47,7 @@ describe('AddressController', () => {
             StateEntity,
             CityEntity,
             RequestEntity,
+            MaterialEntity,
             OrderEntity,
             OrderDetailEntity,
           ],

@@ -143,12 +143,12 @@ describe('Create And Toke User API', () => {
             },
           ]);
           const detail1 = await orderDetailRepo.save({
-            material: mat[0].id,
+            material: mat[0],
             weight: 2,
             price: 4000,
           });
           const detail2 = await orderDetailRepo.save({
-            material: mat[1].id,
+            material: mat[1],
             weight: 3,
             price: 9000,
           });
@@ -234,7 +234,6 @@ describe('Create And Toke User API', () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
       .get('/auth/user')
-      .set('Authorization', 'Bearer AAGAJAHFJAJAFGJIQOQOJHVNMC')
       .expect(200);
     expect(body).toEqual({
       user: { id: 3, phone: '09129120912' },
