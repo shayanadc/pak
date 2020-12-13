@@ -17,6 +17,7 @@ import { RequestController } from './request.controller';
 import { RequestService } from './request.service';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { OrderEntity } from '../order/order.entity';
+import { MaterialEntity } from '../material/material.entity';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -48,6 +49,7 @@ describe('User Service', () => {
             RequestEntity,
             OrderEntity,
             OrderDetailEntity,
+            MaterialEntity,
           ],
           synchronize: true,
           dropSchema: true,

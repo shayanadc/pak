@@ -2,10 +2,12 @@ import {
   BaseEntity,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { OrderDetailEntity } from '../order/orderDetail.entity';
 
 @Entity('materials')
 @Unique(['title'])
@@ -22,4 +24,9 @@ export class MaterialEntity extends BaseEntity {
   @Column({ default: 1 })
   @ApiProperty()
   weight: number;
+  @OneToMany(
+    () => OrderDetailEntity,
+    details => details.material,
+  )
+  details: OrderDetailEntity[];
 }

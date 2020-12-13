@@ -5,6 +5,8 @@ import { OrderDto } from './order.dto';
 import { RequestRepository } from '../request/request.repository';
 import { MaterialRepository } from '../material/material.repository';
 import { OrderDetailsRepository } from './order.details.repository';
+import { UserRepository } from '../auth/user.repository';
+import { OrderDetailEntity } from './orderDetail.entity';
 
 @Injectable()
 export class OrderService {
@@ -13,7 +15,26 @@ export class OrderService {
     private requestRepo: RequestRepository,
     private materialRepo: MaterialRepository,
     private orderDetailRepo: OrderDetailsRepository,
+    private userRepo: UserRepository,
   ) {}
+  async aggregate(phone: string): Promise<any> {
+    const user = await this.userRepo.findOne({ phone: phone });
+    const orders = await this.orderRepo.find({
+      relations: ['issuer'],
+      select: ['id'],
+      where: { issuer: user },
+    });
+    const details = await this.orderDetailRepo
+      .createQueryBuilder('details')
+      .leftJoinAndSelect('details.material', 'material')
+      .select('details.materialId')
+      .addSelect('SUM(details.weight)', 'weight')
+      .addSelect('material.title', 'title')
+      .groupBy('details.materialId')
+      .getRawMany();
+    console.log(details);
+    return details;
+  }
   async index(condition?): Promise<OrderEntity[]> {
     return await this.orderRepo.index(condition);
   }
@@ -32,16 +53,17 @@ export class OrderService {
     let price = 0;
     const orderDetails = [];
     for (let i = 0, l = orderDto.rows.length; i < l; i++) {
-      const mateiral = await this.materialRepo.findOne({
+      const material = await this.materialRepo.findOne({
         id: orderDto.rows[i].materialId,
       });
       orderDetails.push(
         await this.orderDetailRepo.save({
-          price: mateiral.cost * orderDto.rows[i].weight,
+          price: material.cost * orderDto.rows[i].weight,
           weight: orderDto.rows[i].weight,
+          material: material,
         }),
       );
-      price += mateiral.cost * orderDto.rows[i].weight;
+      price += material.cost * orderDto.rows[i].weight;
     }
     return await this.orderRepo.store(
       orderDto,

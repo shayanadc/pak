@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   UseFilters,
   UseGuards,
@@ -110,6 +112,15 @@ export class OrderController {
     @GetUser() user: UserEntity,
   ): Promise<{ orders: OrderEntity[] }> {
     const orders = await this.orderService.index();
+    return { orders: orders };
+  }
+  @Get('/:phone/aggregate')
+  @UseGuards(AuthGuard())
+  async aggregate(
+    @GetUser() user: UserEntity,
+    @Param('phone') phone,
+  ): Promise<{ orders: any }> {
+    const orders = await this.orderService.aggregate(phone);
     return { orders: orders };
   }
 }
