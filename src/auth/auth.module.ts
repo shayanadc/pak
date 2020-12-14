@@ -26,7 +26,7 @@ import { MaterialRepository } from '../material/material.repository';
     JwtModule.register({
       secret: 'topSecret15',
       signOptions: {
-        expiresIn: 3600,
+        // expiresIn: 3600,
       },
     }),
     TypeOrmModule.forFeature([
