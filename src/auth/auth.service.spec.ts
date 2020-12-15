@@ -113,7 +113,7 @@ describe('User Service', () => {
       },
     ]);
     const generateSpy = jest.spyOn(codeGenServ, 'generate');
-    generateSpy.mockReturnValue('123456');
+    generateSpy.mockReturnValue('12345');
 
     expect(
       await authServ.findOrCreateUserWithPhone({ phone: '09129120912' }),
@@ -121,7 +121,7 @@ describe('User Service', () => {
 
     expect(smsService.sendMessage).toBeCalledTimes(1);
     expect(cacheService.set).toBeCalledTimes(1);
-    expect(cacheService.set).toBeCalledWith('09129120912', '123456');
+    expect(cacheService.set).toBeCalledWith('09129120912', '12345');
   });
   it('should check matching act code', async () => {
     const authCredential: AuthCredentialDTO = {
