@@ -28,5 +28,6 @@ export class MaterialEntity extends BaseEntity {
     () => OrderDetailEntity,
     details => details.material,
   )
+  @ApiProperty()
   details: OrderDetailEntity[];
 }

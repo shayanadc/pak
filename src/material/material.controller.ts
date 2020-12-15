@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Post,
   Put,
   UseFilters,
   UseGuards,
@@ -21,6 +22,10 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
+import { GetUser } from '../auth/get-user.decorator';
+import { UserEntity } from '../auth/user.entity';
+import { StateDto } from '../state/state.dto';
+import { StateEntity } from '../address/state.entity';
 class materialResponse {
   @ApiProperty()
   material: MaterialEntity;
@@ -69,5 +74,16 @@ export class MaterialController {
   ): Promise<{ material: MaterialEntity }> {
     const up = await this.materialServ.update(param, materialDto);
     return { material: up };
+  }
+  @Post('/')
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: materialResponse })
+  @UseGuards(AuthGuard())
+  async store(
+    @GetUser() user: UserEntity,
+    @Body() body: MaterialDto,
+  ): Promise<{ material: MaterialEntity }> {
+    const material = await this.materialServ.store(body);
+    return { material: material };
   }
 }
