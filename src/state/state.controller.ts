@@ -11,14 +11,12 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
-import { MaterialEntity } from '../material/material.entity';
 import { GetUser } from '../auth/get-user.decorator';
 import { UserEntity } from '../auth/user.entity';
-import { RequestDto } from '../request/request.dto';
 import { StateDto } from './state.dto';
-class stateResponse {
+class StateResponse {
   @ApiProperty()
-  states: StateEntity;
+  state: StateEntity;
 }
 
 @ApiResponse({
@@ -52,6 +50,7 @@ export class StateController {
   }
   @Post('/')
   @ApiBearerAuth()
+  @ApiOkResponse({ type: StateResponse })
   @UseGuards(AuthGuard())
   async store(
     @GetUser() user: UserEntity,
