@@ -21,12 +21,14 @@ import { StateService } from './state.service';
 import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { MaterialEntity } from '../material/material.entity';
+import { getConnection } from 'typeorm';
 
 describe('StateController', () => {
   let userRepo: UserRepository;
   let app: INestApplication;
   let stateRepo: StateRepository;
-  beforeAll(async () => {
+  let cityRepo: CityRepository;
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -77,10 +79,35 @@ describe('StateController', () => {
       .compile();
     userRepo = await module.get<UserRepository>(UserRepository);
     stateRepo = await module.get<StateRepository>(StateRepository);
+    cityRepo = await module.get<CityRepository>(CityRepository);
     app = module.createNestApplication();
     await app.init();
   });
-  it('/request GET return all states', async () => {
+  afterEach(async () => {
+    const defaultConnection = getConnection('default');
+    await defaultConnection.close();
+  });
+  it('/state POST save new state', async () => {
+    const city = await cityRepo.save({
+      name: 'GORGAN',
+    });
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .post('/state')
+      .send({ cityId: city.id, title: 'GORGANPARS' })
+      .expect(201);
+    expect(body).toEqual({
+      state: {
+        id: 1,
+        title: 'GORGANPARS',
+        city: {
+          id: city.id,
+          name: 'GORGAN',
+        },
+      },
+    });
+  });
+  it('/state GET return all states', async () => {
     stateRepo.save({
       title: 'GRSD',
     });

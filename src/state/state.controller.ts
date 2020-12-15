@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { StateRepository } from '../address/state.repository';
 import { AuthGuard } from '@nestjs/passport';
 import { StateEntity } from '../address/state.entity';
@@ -11,10 +11,12 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
-import { MaterialEntity } from '../material/material.entity';
-class stateResponse {
+import { GetUser } from '../auth/get-user.decorator';
+import { UserEntity } from '../auth/user.entity';
+import { StateDto } from './state.dto';
+class StateResponse {
   @ApiProperty()
-  states: StateEntity;
+  state: StateEntity;
 }
 
 @ApiResponse({
@@ -27,11 +29,6 @@ export class StateController {
   constructor(private stateService: StateService) {}
   @Get('/')
   @ApiBearerAuth()
-  @ApiResponse({
-    status: 400,
-    description: 'Missing Data',
-    type: BadRequestResponse,
-  })
   @ApiOkResponse({
     schema: {
       allOf: [
@@ -50,5 +47,16 @@ export class StateController {
   async index(): Promise<{ states: StateEntity[] }> {
     const states = await this.stateService.index();
     return { states: states };
+  }
+  @Post('/')
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: StateResponse })
+  @UseGuards(AuthGuard())
+  async store(
+    @GetUser() user: UserEntity,
+    @Body() body: StateDto,
+  ): Promise<{ state: StateEntity }> {
+    const state = await this.stateService.store(body);
+    return { state: state };
   }
 }
