@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { StateRepository } from '../address/state.repository';
 import { AuthGuard } from '@nestjs/passport';
 import { StateEntity } from '../address/state.entity';
 import { StateService } from './state.service';

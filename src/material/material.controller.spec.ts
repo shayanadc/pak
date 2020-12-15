@@ -20,13 +20,14 @@ import { MaterialEntity } from './material.entity';
 import { MaterialService } from './material.service';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { OrderEntity } from '../order/order.entity';
+import { getConnection } from 'typeorm';
 
 describe('MaterialController', () => {
   let app: INestApplication;
   let userRepo: UserRepository;
   let materialRepo: MaterialRepository;
   // let connection : Connection
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -82,6 +83,21 @@ describe('MaterialController', () => {
     app = module.createNestApplication();
     await app.init();
   });
+  it('/material POST save new material', async () => {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .post('/material')
+      .send({ cost: 21015, title: 'PAPER' })
+      .expect(201);
+    expect(body).toEqual({
+      material: {
+        id: 1,
+        title: 'PAPER',
+        cost: 21015,
+        weight: 1,
+      },
+    });
+  });
 
   it('/material GET return all material', async () => {
     materialRepo.save({
@@ -103,26 +119,23 @@ describe('MaterialController', () => {
       ],
     });
   });
-  afterAll(async () => {
-    await app.close();
-  });
   afterEach(async () => {
-    await materialRepo.query(`DELETE FROM materials;`);
-    await userRepo.query(`DELETE FROM users;`);
+    const defaultConnection = getConnection('default');
+    await defaultConnection.close();
   });
   it('/material/:id PUT update specific material', async () => {
-    materialRepo.save({
+    const mat = await materialRepo.save({
       title: 'IRON',
       cost: 20000,
     });
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .put('/material/2')
+      .put('/material/1')
       .send({ cost: 1000 })
       .expect(200);
     expect(body).toStrictEqual({
       material: {
-        id: 2,
+        id: mat.id,
         title: 'IRON',
         cost: 1000,
         weight: 1,
