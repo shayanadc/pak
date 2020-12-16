@@ -1,5 +1,11 @@
 import { RequestType, WorkShiftType } from './request.entity';
-import { IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
+import {
+  IsDate,
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RequestDto {
@@ -10,7 +16,7 @@ export class RequestDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsNumber()
+  @IsDateString()
   date: Date;
 
   @ApiProperty({ enum: [1, 2, 3] })
