@@ -61,6 +61,7 @@ export class RequestEntity extends BaseEntity {
   @ManyToOne(
     () => AddressEntity,
     address => address.requests,
+    { eager: true },
   )
   // @ApiProperty()
   address: AddressEntity;

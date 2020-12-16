@@ -33,6 +33,7 @@ describe('OrderController', () => {
   let requestRepository: RequestRepository;
   let materialRepository: MaterialRepository;
   let orderDetailRepo: OrderDetailsRepository;
+  let cityRepo: CityRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -83,10 +84,13 @@ describe('OrderController', () => {
           const endUser = await userRepo.save({
             phone: '09109120912',
           });
+          const city = await cityRepo.save({
+            name: 'GORGAN',
+          });
           const state = await stateRepository.save({
             title: 'BLOCK',
+            city: await cityRepo.findOne({ id: city.id }),
           });
-
           const address = await addressRepo.save({
             description: 'Addresss.....',
             state: state,
@@ -169,6 +173,7 @@ describe('OrderController', () => {
     stateRepository = await module.get<StateRepository>(StateRepository);
     requestRepository = await module.get<RequestRepository>(RequestRepository);
     orderRepository = await module.get<OrderRepository>(OrderRepository);
+    cityRepo = await module.get<CityRepository>(CityRepository);
     materialRepository = await module.get<MaterialRepository>(
       MaterialRepository,
     );
@@ -220,6 +225,16 @@ describe('OrderController', () => {
           date: '1999-12-31T20:30:00.000Z',
           period: null,
           done: true,
+          address: {
+            type: 1,
+            description: 'Addresss.....',
+            id: 1,
+            state: {
+              city: { id: 1, name: 'GORGAN' },
+              id: 1,
+              title: 'BLOCK',
+            },
+          },
           user: {
             id: 2,
             phone: '09109120912',
