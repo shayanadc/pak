@@ -21,10 +21,10 @@ import { OrderModule } from './order/order.module';
       // host: 'localhost',
       username: 'postgres',
       password: 'password',
-      // port: 15432,
+      // port: 25432,
       database: 'pak',
       entities: [__dirname + '/**/*.entity.{js,ts}'],
-      synchronize: true,
+      synchronize: false,
       migrationsRun: true,
       migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
       cli: {

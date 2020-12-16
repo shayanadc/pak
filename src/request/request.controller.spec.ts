@@ -125,7 +125,7 @@ describe('Request Controller', () => {
         addressId: 1,
         type: 2,
         date: '2000-01-01 00:03:00',
-        work_shift: 1,
+        work_shift: 2,
       })
       .expect(201);
     expect(body).toEqual({
@@ -139,7 +139,7 @@ describe('Request Controller', () => {
           state: { id: 1, title: 'BLOCK', city: { id: 1, name: 'GORG' } },
         },
         type: 2,
-        work_shift: 1,
+        work_shift: 2,
         date: '2000-01-01 00:03:00',
         period: null,
         done: false,
