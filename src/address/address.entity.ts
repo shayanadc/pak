@@ -2,15 +2,13 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from '../auth/user.entity';
 import { StateEntity } from './state.entity';
-import { RequestEntity, RequestType } from '../request/request.entity';
+import { RequestEntity } from '../request/request.entity';
 import { ApiProperty } from '@nestjs/swagger';
 export enum BuildingType {
   HOME = 1,

@@ -27,6 +27,7 @@ export class OrderEntity extends BaseEntity {
     user => user.orders,
     { eager: true },
   )
+  @ApiProperty({ type: () => UserEntity })
   user: UserEntity;
 
   @ManyToOne(
@@ -34,6 +35,7 @@ export class OrderEntity extends BaseEntity {
     issuer => issuer.orders,
     { eager: true },
   )
+  @ApiProperty({ type: () => UserEntity })
   issuer: UserEntity;
 
   @Column()
@@ -43,5 +45,6 @@ export class OrderEntity extends BaseEntity {
     () => OrderDetailEntity,
     orderDetails => orderDetails.order,
   )
+  @ApiProperty()
   details: OrderDetailEntity[];
 }
