@@ -55,16 +55,16 @@ export class RequestEntity extends BaseEntity {
     user => user.requests,
     { eager: true },
   )
-  // @ApiProperty()
+  @ApiProperty({ type: () => UserEntity })
   user: UserEntity;
 
   @ManyToOne(
     () => AddressEntity,
     address => address.requests,
-    { eager: true },
   )
-  // @ApiProperty()
+  @ApiProperty({ type: () => AddressEntity })
   address: AddressEntity;
   @Column({ default: false })
+  @ApiProperty()
   done: boolean;
 }
