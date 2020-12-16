@@ -35,6 +35,7 @@ export class AddressEntity extends BaseEntity {
   @ManyToOne(
     type => StateEntity,
     state => state.addresses,
+    { eager: true },
   )
   @ApiProperty()
   state: StateEntity;

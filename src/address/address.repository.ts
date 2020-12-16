@@ -3,14 +3,13 @@ import { AddressEntity, BuildingType } from './address.entity';
 import { UserEntity } from '../auth/user.entity';
 import { AddressDto } from './address.dto';
 import { StateEntity } from './state.entity';
-import { RequestType } from '../request/request.entity';
 
 @EntityRepository(AddressEntity)
 export class AddressRepository extends Repository<AddressEntity> {
   async getAll(user: UserEntity): Promise<AddressEntity[]> {
     return await this.find({
       relations: ['user'],
-      where: { id: user.id },
+      where: { user: user },
     });
   }
   async store(

@@ -19,6 +19,7 @@ import supertest = require('supertest');
 import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { MaterialEntity } from '../material/material.entity';
+import { getConnection } from 'typeorm';
 
 describe('AddressController', () => {
   let userRepo: UserRepository;
@@ -27,7 +28,7 @@ describe('AddressController', () => {
   let cityRepo: CityRepository;
   let app: INestApplication;
   let authUser: UserEntity;
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         UserRepository,
@@ -78,6 +79,13 @@ describe('AddressController', () => {
               description: 'BLAH BLAH',
               user: authUser,
               state: state,
+              type: 1,
+            },
+            {
+              description: 'HALAN HALAM',
+              user: authUser,
+              state: state,
+              type: 2,
             },
           ]);
           const req = await context.switchToHttp().getRequest();
@@ -96,9 +104,8 @@ describe('AddressController', () => {
     await app.init();
   });
   afterEach(async () => {
-    // await stateRepo.query(`DELETE FROM states;`)
-    await addressRepo.query(`DELETE FROM addresses;`);
-    await userRepo.query(`DELETE FROM users;`);
+    const defaultConnection = getConnection('default');
+    await defaultConnection.close();
   });
 
   it('/address GET return addresses of auth user', async function() {
@@ -115,14 +122,18 @@ describe('AddressController', () => {
           id: 2,
           description: 'BLAH BLAH',
           user: { id: 2, phone: '09129120912' },
+          state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
           type: 1,
+        },
+        {
+          id: 3,
+          description: 'HALAN HALAM',
+          user: { id: 2, phone: '09129120912' },
+          state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
+          type: 2,
         },
       ],
     });
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
   it('/address POST create new address for auth user', async function() {
     const { body } = await supertest
@@ -133,10 +144,10 @@ describe('AddressController', () => {
 
     expect(body).toStrictEqual({
       address: {
-        id: 4,
+        id: 3,
         description: 'Address ....',
-        user: { id: 3, phone: '09129120912' },
-        state: { id: 1, title: 'BLOCK 24' },
+        user: { id: 1, phone: '09129120912' },
+        state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
         type: 2,
       },
     });

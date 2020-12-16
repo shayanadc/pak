@@ -27,6 +27,7 @@ export class StateEntity extends BaseEntity {
   @ManyToOne(
     type => CityEntity,
     city => city.states,
+    { eager: true, cascade: true },
   )
   @ApiProperty()
   city: CityEntity;
