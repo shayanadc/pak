@@ -7,7 +7,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 export class RequestRepository extends Repository<RequestEntity> {
   async getAllFor(user): Promise<RequestEntity[]> {
     return await this.find({
-      relations: ['user'],
+      relations: ['user', 'address'],
       where: { user: user },
     });
   }
