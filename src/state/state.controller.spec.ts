@@ -108,8 +108,12 @@ describe('StateController', () => {
     });
   });
   it('/state GET return all states', async () => {
-    stateRepo.save({
+    await cityRepo.save({
+      name: 'GORGAN',
+    });
+    await stateRepo.save({
       title: 'GRSD',
+      city: await cityRepo.findOne({ id: 1 }),
     });
     const { body } = await supertest
       .agent(app.getHttpServer())
@@ -120,6 +124,7 @@ describe('StateController', () => {
         {
           id: 1,
           title: 'GRSD',
+          city: { id: 1, name: 'GORGAN' },
         },
       ],
     });

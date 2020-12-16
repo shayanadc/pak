@@ -21,6 +21,7 @@ import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { MaterialEntity } from '../material/material.entity';
 import { MaterialRepository } from '../material/material.repository';
+import { getConnection } from 'typeorm';
 
 describe('Request Controller', () => {
   let app: INestApplication;
@@ -28,9 +29,10 @@ describe('Request Controller', () => {
   let addressRepo: AddressRepository;
   let stateRepository: StateRepository;
   let requestRepository: RequestRepository;
+  let cityRepo: CityRepository;
 
   // let connection : Connection
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -74,10 +76,15 @@ describe('Request Controller', () => {
           const user = await userRepo.save({
             phone: '09129120912',
           });
-          const state = await stateRepository.save({
-            title: 'BLOCK',
+          await cityRepo.save({
+            name: 'GORG',
           });
-
+          const city = await cityRepo.findOne({ name: 'GORG' });
+          await stateRepository.save({
+            title: 'BLOCK',
+            city: await cityRepo.findOne({ id: city.id }),
+          });
+          const state = await stateRepository.findOne({ id: 1 });
           const address = await addressRepo.save({
             description: 'Addresss.....',
             state: state,
@@ -100,16 +107,16 @@ describe('Request Controller', () => {
     addressRepo = await module.get<AddressRepository>(AddressRepository);
     stateRepository = await module.get<StateRepository>(StateRepository);
     requestRepository = await module.get<RequestRepository>(RequestRepository);
+    cityRepo = await module.get<CityRepository>(CityRepository);
     app = module.createNestApplication();
     await app.init();
   });
 
   afterEach(async () => {
-    await requestRepository.query(`DELETE FROM requests;`);
-    await addressRepo.query(`DELETE FROM addresses;`);
-    await stateRepository.query(`DELETE FROM states;`);
-    await userRepo.query(`DELETE FROM users;`);
+    const defaultConnection = getConnection('default');
+    await defaultConnection.close();
   });
+
   it('/request POST save user request', async () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
@@ -125,7 +132,12 @@ describe('Request Controller', () => {
       request: {
         id: 2,
         user: { id: 1, phone: '09129120912' },
-        address: { id: 1, description: 'Addresss.....', type: 1 },
+        address: {
+          id: 1,
+          description: 'Addresss.....',
+          type: 1,
+          state: { id: 1, title: 'BLOCK', city: { id: 1, name: 'GORG' } },
+        },
         type: 2,
         work_shift: 1,
         date: '2000-01-01 00:03:00',
@@ -167,10 +179,10 @@ describe('Request Controller', () => {
     expect(body).toEqual({
       requests: [
         {
-          date: '1999-12-31T20:30:00.000Z',
-          id: 5,
+          id: 1,
           type: 1,
-          user: { id: 4, phone: '09129120912' },
+          user: { id: 1, phone: '09129120912' },
+          date: '1999-12-31T20:30:00.000Z',
           period: null,
           work_shift: 1,
           done: false,
@@ -187,10 +199,10 @@ describe('Request Controller', () => {
     expect(body).toEqual({
       requests: [
         {
-          date: '1999-12-31T20:30:00.000Z',
-          id: 6,
+          id: 1,
           type: 1,
-          user: { id: 5, phone: '09129120912' },
+          user: { id: 1, phone: '09129120912' },
+          date: '1999-12-31T20:30:00.000Z',
           period: null,
           work_shift: 1,
           done: false,
