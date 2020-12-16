@@ -225,16 +225,6 @@ describe('OrderController', () => {
           date: '1999-12-31T20:30:00.000Z',
           period: null,
           done: true,
-          address: {
-            type: 1,
-            description: 'Addresss.....',
-            id: 1,
-            state: {
-              city: { id: 1, name: 'GORGAN' },
-              id: 1,
-              title: 'BLOCK',
-            },
-          },
           user: {
             id: 2,
             phone: '09109120912',
