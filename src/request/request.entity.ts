@@ -45,6 +45,7 @@ export class RequestEntity extends BaseEntity {
   @Column()
   @ApiProperty()
   date: Date;
+
   @Column({ nullable: true })
   @ApiProperty()
   period: number;
