@@ -16,13 +16,13 @@ export class RequestService {
     return await this.requestRepo.getAll();
   }
   async store(user, body): Promise<RequestEntity> {
+    const address = await this.addressRepo.findOne({ id: body.addressId });
     const r = await this.requestRepo.findOne({
-      where: { user: user, type: body.type },
+      where: { address: address, type: body.type, done: false },
     });
     if (r) {
       throw new BadRequestException('Duplicated Request is not acceptable');
     }
-    const address = await this.addressRepo.findOne({ id: body.addressId });
     const res = await this.requestRepo.store(user, address, body);
     return res;
   }
