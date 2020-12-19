@@ -9,7 +9,7 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthService } from './auth.service';
 import { UserRepository } from './user.repository';
-import { Connection } from 'typeorm';
+import { Connection, getConnection } from 'typeorm';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthCredentialDTO } from './authCredential.dto';
 import { AuthGuard, PassportModule } from '@nestjs/passport';
@@ -59,7 +59,7 @@ describe('Create And Toke User API', () => {
     }),
   };
   // let connection : Connection
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -185,12 +185,8 @@ describe('Create And Toke User API', () => {
   });
 
   afterEach(async () => {
-    await orderDetailRepo.query(`DELETE FROM order_details;`);
-    await orderRepo.query(`DELETE FROM orders;`);
-    await requestRepository.query(`DELETE FROM requests;`);
-    await addressRepo.query(`DELETE FROM addresses;`);
-    await stateRepository.query(`DELETE FROM states;`);
-    await userRepo.query(`DELETE FROM users;`);
+    const defaultConnection = getConnection('default');
+    await defaultConnection.close();
   });
 
   it('auth/token POST Create New Token', async () => {
@@ -232,7 +228,7 @@ describe('Create And Toke User API', () => {
       .post('/auth/login')
       .send({ phone: '09129120912' })
       .expect(201);
-    expect(body).toEqual({ user: { id: 2, phone: '09129120912' } });
+    expect(body).toEqual({ user: { id: 1, phone: '09129120912' } });
   });
 
   it('/auth/user return authenticated user', async () => {
@@ -241,11 +237,8 @@ describe('Create And Toke User API', () => {
       .get('/auth/user')
       .expect(200);
     expect(body).toEqual({
-      user: { id: 3, phone: '09129120912' },
+      user: { id: 1, phone: '09129120912' },
       credit: { total: { amount: 13000 } },
     });
-  });
-  afterAll(async () => {
-    await app.close();
   });
 });

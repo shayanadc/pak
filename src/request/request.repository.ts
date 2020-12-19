@@ -28,9 +28,6 @@ export class RequestRepository extends Repository<RequestEntity> {
       request.type = RequestType.DISCHARGE;
     }
     if (RequestType[body.type] === 'PERIODIC') {
-      if (body.period == undefined) {
-        throw new BadRequestException();
-      }
       request.type = RequestType.PERIODIC;
     }
     if (WorkShiftType[body.work_shift] === '8-11') {
