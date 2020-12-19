@@ -15,7 +15,11 @@ import { AddressRepository } from '../address/address.repository';
 import { CityRepository } from '../address/city.repository';
 import { StateRepository } from '../address/state.repository';
 import { RequestRepository } from '../request/request.repository';
-import { ExecutionContext, INestApplication } from '@nestjs/common';
+import {
+  ExecutionContext,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { OrderRepository } from './order.repository';
 import { OrderEntity } from './order.entity';
 import { MaterialEntity } from '../material/material.entity';
@@ -182,6 +186,7 @@ describe('OrderController', () => {
     );
 
     app = module.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
 

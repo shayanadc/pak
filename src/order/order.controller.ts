@@ -61,8 +61,12 @@ export class OrderController {
     @GetUser() user: UserEntity,
     @Body() body: OrderDto,
   ): Promise<{ order: OrderEntity }> {
-    const order = await this.orderService.store(user, body);
-    return { order: order };
+    try {
+      const order = await this.orderService.store(user, body);
+      return { order: order };
+    } catch (error) {
+      console.log(error);
+    }
   }
   @Get('/')
   @ApiBearerAuth()

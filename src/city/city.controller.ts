@@ -10,11 +10,10 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
-import { MaterialEntity } from '../material/material.entity';
-class cityResponse {
-  @ApiProperty()
-  cities: CityEntity;
-}
+// class cityResponse {
+//   @ApiProperty()
+//   cities: CityEntity;
+// }
 @Controller('city')
 @ApiResponse({
   status: 400,

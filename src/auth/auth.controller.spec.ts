@@ -1,5 +1,9 @@
 import supertest = require('supertest');
-import { ExecutionContext, INestApplication } from '@nestjs/common';
+import {
+  ExecutionContext,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -176,6 +180,7 @@ describe('Create And Toke User API', () => {
     );
     // connection = module.get(Connection);
     app = module.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
 

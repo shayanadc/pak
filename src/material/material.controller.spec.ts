@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MaterialController } from './material.controller';
 import supertest = require('supertest');
-import { ExecutionContext, INestApplication } from '@nestjs/common';
+import {
+  ExecutionContext,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { UserRepository } from '../auth/user.repository';
 import { AddressRepository } from '../address/address.repository';
 import { StateRepository } from '../address/state.repository';
@@ -81,6 +85,7 @@ describe('MaterialController', () => {
     materialRepo = await module.get<MaterialRepository>(MaterialRepository);
 
     app = module.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
   it('/material POST save new material', async () => {
