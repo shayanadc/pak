@@ -7,7 +7,7 @@ import * as path from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
+  app.enableCors();
   const options = new DocumentBuilder()
     .setTitle('DigiMop API')
     .setDescription('The API description')
