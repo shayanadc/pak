@@ -99,7 +99,7 @@ describe('Request Controller', () => {
             user: user,
             address: address,
             type: 1,
-            date: '2000-01-01 00:00:00',
+            date: '1999-12-31T20:30:00.000Z',
           });
           const req = context.switchToHttp().getRequest();
           req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
@@ -158,7 +158,7 @@ describe('Request Controller', () => {
       .send({
         addressId: 1,
         type: 1,
-        date: '2000-01-01 00:03:00',
+        date: '1999-12-31T20:30:00.000Z',
         work_shift: 1,
       })
       .expect(400);
@@ -170,7 +170,7 @@ describe('Request Controller', () => {
       .send({
         addressId: 1,
         type: 3,
-        date: '2000-01-01 00:03:00',
+        date: '1999-12-31T20:30:00.000Z',
         work_shift: 1,
       })
       .expect(400);

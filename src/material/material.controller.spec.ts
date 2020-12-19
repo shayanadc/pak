@@ -88,6 +88,10 @@ describe('MaterialController', () => {
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
+  afterEach(async () => {
+    const defaultConnection = getConnection('default');
+    await defaultConnection.close();
+  });
   it('/material POST save new material', async () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
@@ -124,10 +128,7 @@ describe('MaterialController', () => {
       ],
     });
   });
-  afterEach(async () => {
-    const defaultConnection = getConnection('default');
-    await defaultConnection.close();
-  });
+
   it('/material/:id PUT update specific material', async () => {
     const mat = await materialRepo.save({
       title: 'IRON',

@@ -25,13 +25,14 @@ import { CityService } from './city.service';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { OrderEntity } from '../order/order.entity';
 import { MaterialEntity } from '../material/material.entity';
+import { getConnection } from 'typeorm';
 
 describe('CityController', () => {
   let userRepo: UserRepository;
   let app: INestApplication;
   let stateRepo: StateRepository;
   let cityRepo: CityRepository;
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -87,7 +88,10 @@ describe('CityController', () => {
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
-
+  afterEach(async () => {
+    const defaultConnection = getConnection('default');
+    await defaultConnection.close();
+  });
   it('/city GET return all citiess', async () => {
     cityRepo.save({
       name: 'GORGAN',
