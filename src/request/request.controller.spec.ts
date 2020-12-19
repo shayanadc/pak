@@ -151,7 +151,7 @@ describe('Request Controller', () => {
       },
     });
   });
-  it('/request POST prevent saving duplicate request to save box request', async () => {
+  it('/request POST prevent saving duplicate request to save box request for specific address', async () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
       .post('/request')

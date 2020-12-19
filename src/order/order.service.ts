@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { OrderEntity } from './order.entity';
 import { OrderRepository } from './order.repository';
 import { OrderDto } from './order.dto';
@@ -6,8 +6,7 @@ import { RequestRepository } from '../request/request.repository';
 import { MaterialRepository } from '../material/material.repository';
 import { OrderDetailsRepository } from './order.details.repository';
 import { UserRepository } from '../auth/user.repository';
-import { OrderDetailEntity } from './orderDetail.entity';
-import { PhoneParamDto } from './order.controller';
+import { RequestType } from '../request/request.entity';
 
 @Injectable()
 export class OrderService {
@@ -50,6 +49,9 @@ export class OrderService {
   }
   async store(issuer, orderDto: OrderDto): Promise<OrderEntity> {
     const request = await this.requestRepo.findOne({ id: orderDto.requestId });
+    if (request.type == RequestType.BOX || request.done) {
+      throw new Error('Could not create order for this request');
+    }
     request.done = true;
     request.save();
     let price = 0;
