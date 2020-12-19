@@ -1,11 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class MaterialDto {
+export class MaterialUpdateDto {
   @ApiProperty()
   @IsNumber()
+  @IsOptional()
   cost: number;
   @ApiProperty()
   @IsString()
+  @IsOptional()
   title: string;
 }

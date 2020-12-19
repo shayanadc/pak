@@ -8,6 +8,8 @@ import {
   Put,
   UseFilters,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { MaterialService } from './material.service';
@@ -24,8 +26,7 @@ import {
 import { BadRequestResponse } from '../api.response.swagger';
 import { GetUser } from '../auth/get-user.decorator';
 import { UserEntity } from '../auth/user.entity';
-import { StateDto } from '../state/state.dto';
-import { StateEntity } from '../address/state.entity';
+import { MaterialUpdateDto } from './material.update.dto';
 class materialResponse {
   @ApiProperty()
   material: MaterialEntity;
@@ -68,9 +69,11 @@ export class MaterialController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: materialResponse })
   @UseGuards(AuthGuard())
+  // @UsePipes(new ValidationPipe({ skipMissingProperties: true }))
   async update(
     @Param('id', ParseIntPipe) param: materialIdDto,
-    @Body() materialDto: MaterialDto,
+    @Body()
+    materialDto: MaterialUpdateDto,
   ): Promise<{ material: MaterialEntity }> {
     const up = await this.materialServ.update(param, materialDto);
     return { material: up };

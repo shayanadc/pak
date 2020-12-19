@@ -13,7 +13,11 @@ import { CityRepository } from '../address/city.repository';
 import { StateRepository } from '../address/state.repository';
 import { RequestController } from '../request/request.controller';
 import { RequestService } from '../request/request.service';
-import { ExecutionContext, INestApplication } from '@nestjs/common';
+import {
+  ExecutionContext,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import supertest = require('supertest');
 import { AddressRepository } from '../address/address.repository';
 import { RequestRepository } from '../request/request.repository';
@@ -81,6 +85,7 @@ describe('StateController', () => {
     stateRepo = await module.get<StateRepository>(StateRepository);
     cityRepo = await module.get<CityRepository>(CityRepository);
     app = module.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
   afterEach(async () => {

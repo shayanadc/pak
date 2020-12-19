@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CityController } from './city.controller';
 import { UserRepository } from '../auth/user.repository';
-import { ExecutionContext, INestApplication } from '@nestjs/common';
+import {
+  ExecutionContext,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { StateRepository } from '../address/state.repository';
 import { AuthGuard, PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
@@ -80,6 +84,7 @@ describe('CityController', () => {
     stateRepo = await module.get<StateRepository>(StateRepository);
     cityRepo = await module.get<CityRepository>(CityRepository);
     app = module.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
 

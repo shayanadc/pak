@@ -4,7 +4,11 @@ import { AuthGuard, PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from '../auth/user.repository';
-import { ExecutionContext, INestApplication } from '@nestjs/common';
+import {
+  ExecutionContext,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AddressService } from './address.service';
 import { AddressRepository } from './address.repository';
 import { UserEntity } from '../auth/user.entity';
@@ -101,6 +105,7 @@ describe('AddressController', () => {
 
     // connection = module.get(Connection);
     app = module.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
   afterEach(async () => {

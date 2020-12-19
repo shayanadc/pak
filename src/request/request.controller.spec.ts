@@ -1,6 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RequestController } from './request.controller';
-import { ExecutionContext, INestApplication } from '@nestjs/common';
+import {
+  ExecutionContext,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { UserRepository } from '../auth/user.repository';
 import { AuthGuard, PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
@@ -109,6 +113,7 @@ describe('Request Controller', () => {
     requestRepository = await module.get<RequestRepository>(RequestRepository);
     cityRepo = await module.get<CityRepository>(CityRepository);
     app = module.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
 
@@ -124,7 +129,7 @@ describe('Request Controller', () => {
       .send({
         addressId: 1,
         type: 2,
-        date: '2000-01-01 00:03:00',
+        date: '2019-09-03T00:00:00.000Z',
         work_shift: 2,
       })
       .expect(201);
@@ -140,7 +145,7 @@ describe('Request Controller', () => {
         },
         type: 2,
         work_shift: 2,
-        date: '2000-01-01 00:03:00',
+        date: '2019-09-03T00:00:00.000Z',
         period: null,
         done: false,
       },
