@@ -7,6 +7,7 @@ import { MaterialRepository } from '../material/material.repository';
 import { OrderDetailsRepository } from './order.details.repository';
 import { UserRepository } from '../auth/user.repository';
 import { RequestType } from '../request/request.entity';
+import { getManager } from 'typeorm';
 
 @Injectable()
 export class OrderService {
@@ -19,22 +20,40 @@ export class OrderService {
   ) {}
   async aggregate(phone): Promise<any> {
     const user = await this.userRepo.findOne({ phone: phone });
+    if (!user) {
+      throw new Error('Could not find user');
+    }
     const orders = await this.orderRepo.find({
       relations: ['issuer'],
-      select: ['id'],
       where: { issuer: user },
     });
+    if (orders.length == 0) {
+      throw new Error('You don have any order');
+    }
     const ids = orders.map(value => value.id);
-    const details = await this.orderDetailRepo
+    // const details = await this.orderDetailRepo.find({
+    //   where: [{ order: orders[0] }],
+    // });
+    // console.log(details);
+    const agg = await this.orderDetailRepo
       .createQueryBuilder('details')
-      .leftJoinAndSelect('details.material', 'material')
+      .select('details.orderId')
       .select('details.materialId')
+      // .leftJoinAndSelect('material', 'material')
       .addSelect('SUM(details.weight)', 'weight')
-      .addSelect('material.title', 'title')
+      // .addSelect('material.title', 'title')
       .where('details.orderId IN (:...orderIds)', { orderIds: ids })
       .groupBy('details.materialId')
       .getRawMany();
-    return details;
+    const x = agg;
+    for (let i = 0, l = x.length; i < l; i++) {
+      const matObject = await this.materialRepo.findOne({
+        id: x[i].materialId,
+        // select: ['title'],
+      });
+      x[i].title = matObject.title;
+    }
+    return x;
   }
   async index(condition?): Promise<OrderEntity[]> {
     return await this.orderRepo.index(condition);
