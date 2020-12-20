@@ -52,6 +52,7 @@ export class OrderService {
         // select: ['title'],
       });
       x[i].title = matObject.title;
+      x[i].weight = parseFloat(x[i].weight);
     }
     return x;
   }
