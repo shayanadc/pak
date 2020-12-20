@@ -23,6 +23,7 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
+import { request } from 'express';
 class SumType {
   @ApiProperty()
   title: string;
@@ -40,9 +41,9 @@ class orderResponse {
   @ApiProperty()
   order: OrderEntity;
 }
-export class PhoneParamDto {
+class PhoneParamDto {
   @ApiProperty()
-  phone: string;
+  phone: any;
 }
 @UseFilters(AllExceptionsFilter)
 @Controller('order')
@@ -131,14 +132,15 @@ export class OrderController {
     const orders = await this.orderService.index();
     return { orders: orders };
   }
-  @Get('/:phone/aggregate')
+  @Get(':phone/aggregate')
   @ApiBearerAuth()
   @ApiOkResponse({ type: AggType })
   @UseGuards(AuthGuard())
   async aggregate(
     @GetUser() user: UserEntity,
-    @Param('phone') phone: PhoneParamDto,
+    @Param('phone') phone: string,
   ): Promise<{ orders: AggType }> {
+    console.log(phone);
     const orders = await this.orderService.aggregate(phone);
     return { orders: orders };
   }
