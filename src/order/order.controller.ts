@@ -32,7 +32,7 @@ class SumType {
   materialId: number;
 }
 class AggType {
-  @ApiProperty()
+  @ApiProperty({ type: [SumType] })
   orders: SumType;
 }
 
