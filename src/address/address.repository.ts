@@ -21,14 +21,7 @@ export class AddressRepository extends Repository<AddressEntity> {
     address.description = addressDto.description;
     address.user = user;
     address.state = state;
-    let type = BuildingType.OFFICE;
-    if (BuildingType[addressDto.type] === 'HOME') {
-      type = BuildingType.HOME;
-    }
-    if (BuildingType[addressDto.type] === 'APARTMENT') {
-      type = BuildingType.APARTMENT;
-    }
-    address.type = type;
+    address.type = addressDto.type;
     await address.save();
     return address;
   }

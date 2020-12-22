@@ -26,6 +26,7 @@ import { OrderRepository } from '../order/order.repository';
 import { OrderDetailsRepository } from '../order/order.details.repository';
 import { MaterialRepository } from '../material/material.repository';
 import { MaterialEntity } from '../material/material.entity';
+import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -138,7 +139,7 @@ describe('User Service', () => {
       activation_code: '12345',
     };
     await expect(authServ.retrieveToken(dto)).rejects.toBeInstanceOf(
-      NotFoundException,
+      EntityNotFoundError,
     );
   });
 

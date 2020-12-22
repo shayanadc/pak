@@ -11,10 +11,7 @@ export class StateService {
     private cityRepo: CityRepository,
   ) {}
   async store(request: StateDto): Promise<StateEntity> {
-    const city = await this.cityRepo.findOne({ id: request.cityId });
-    if (!city) {
-      throw new NotFoundException('Could not find city for this id');
-    }
+    const city = await this.cityRepo.findOneOrFail({ id: request.cityId });
     return await this.stateRepo.store(request, city);
   }
   async index(): Promise<StateEntity[]> {

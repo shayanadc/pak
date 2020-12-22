@@ -10,6 +10,7 @@ import { UserEntity } from '../auth/user.entity';
 import { StateEntity } from './state.entity';
 import { RequestEntity } from '../request/request.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum } from 'class-validator';
 export enum BuildingType {
   HOME = 1,
   APARTMENT = 2,
@@ -49,5 +50,6 @@ export class AddressEntity extends BaseEntity {
     default: BuildingType.HOME,
   })
   @ApiProperty({ enum: ['HOME', 'APARTMENT', 'OFFICE'] })
+  @IsEnum(BuildingType)
   type: BuildingType;
 }
