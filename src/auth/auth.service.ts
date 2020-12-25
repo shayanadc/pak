@@ -39,13 +39,15 @@ export class AuthService {
   async retrieveToken(
     authCredential: AuthCredentialDTO,
   ): Promise<{ accessToken: string }> {
-    const user = await this.userRepo.findOne({ phone: authCredential.phone });
-    if (!user || !this.isCodeMatch(authCredential)) {
-      throw new NotFoundException('User Not Found');
+    const user = await this.userRepo.findOneOrFail({
+      phone: authCredential.phone,
+    });
+    if (!this.isCodeMatch(authCredential)) {
+      throw new NotFoundException('Code is not Valid');
     }
     const payload: JwtPayload = authCredential;
     const accessToken = await this.jwtService.sign(payload);
-    //Todo : delete activation code after retrieve
+    //Todo : remove activation code after retrieve from cache
     return { accessToken };
   }
 }

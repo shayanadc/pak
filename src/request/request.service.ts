@@ -16,7 +16,9 @@ export class RequestService {
     return await this.requestRepo.getAll();
   }
   async store(user, body): Promise<RequestEntity> {
-    const address = await this.addressRepo.findOne({ id: body.addressId });
+    const address = await this.addressRepo.findOneOrFail({
+      id: body.addressId,
+    });
     const r = await this.requestRepo.findOne({
       where: { address: address, type: body.type, done: false },
     });

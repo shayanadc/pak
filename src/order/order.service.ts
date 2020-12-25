@@ -1,4 +1,9 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  NotFoundException,
+  Req,
+} from '@nestjs/common';
 import { OrderEntity } from './order.entity';
 import { OrderRepository } from './order.repository';
 import { OrderDto } from './order.dto';
@@ -19,22 +24,15 @@ export class OrderService {
     private userRepo: UserRepository,
   ) {}
   async aggregate(phone): Promise<any> {
-    const user = await this.userRepo.findOne({ phone: phone });
-    if (!user) {
-      throw new Error('Could not find user');
-    }
+    const user = await this.userRepo.findOneOrFail({ phone: phone });
     const orders = await this.orderRepo.find({
       relations: ['issuer'],
       where: { issuer: user },
     });
     if (orders.length == 0) {
-      throw new Error('You don have any order');
+      throw new NotFoundException('You don have any order');
     }
     const ids = orders.map(value => value.id);
-    // const details = await this.orderDetailRepo.find({
-    //   where: [{ order: orders[0] }],
-    // });
-    // console.log(details);
     const agg = await this.orderDetailRepo
       .createQueryBuilder('details')
       .select('details.orderId')
@@ -68,7 +66,9 @@ export class OrderService {
     return { total: { amount: sum } };
   }
   async store(issuer, orderDto: OrderDto): Promise<OrderEntity> {
-    const request = await this.requestRepo.findOne({ id: orderDto.requestId });
+    const request = await this.requestRepo.findOneOrFail({
+      id: orderDto.requestId,
+    });
     if (request.type == RequestType.BOX || request.done) {
       throw new Error('Could not create order for this request');
     }
@@ -77,7 +77,7 @@ export class OrderService {
     let price = 0;
     const orderDetails = [];
     for (let i = 0, l = orderDto.rows.length; i < l; i++) {
-      const material = await this.materialRepo.findOne({
+      const material = await this.materialRepo.findOneOrFail({
         id: orderDto.rows[i].materialId,
       });
       orderDetails.push(
