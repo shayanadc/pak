@@ -21,11 +21,11 @@ export class RequestDto {
   date: Date;
 
   @ApiProperty({ enum: [1, 2, 3] })
-  // @IsEnum(RequestType)
+  @IsEnum(RequestType)
   type: RequestType;
 
   @ApiProperty({ enum: [1, 2, 3] })
-  // @IsEnum(WorkShiftType)
+  @IsEnum(WorkShiftType)
   work_shift: WorkShiftType;
   @ValidateIf(o => RequestType[o.type] === 'PERIODIC')
   @IsNotEmpty()

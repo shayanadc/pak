@@ -20,25 +20,24 @@ export class RequestRepository extends Repository<RequestEntity> {
     const request = new RequestEntity();
     request.user = user;
     request.address = address;
-
-    if (RequestType[body.type] === 'BOX') {
-      request.type = RequestType.BOX;
-    }
-    if (RequestType[body.type] === 'DISCHARGE') {
-      request.type = RequestType.DISCHARGE;
-    }
-    if (RequestType[body.type] === 'PERIODIC') {
-      request.type = RequestType.PERIODIC;
-    }
-    if (WorkShiftType[body.work_shift] === '8-11') {
-      request.work_shift = WorkShiftType['8-11'];
-    }
-    if (WorkShiftType[body.work_shift] === '11-16') {
-      request.work_shift = WorkShiftType['11-16'];
-    }
-    if (WorkShiftType[body.work_shift] === '16-21') {
-      request.work_shift = WorkShiftType['16-21'];
-    }
+    // if (RequestType[body.type] === 'BOX') {
+    request.type = body.type;
+    // }
+    // if (RequestType[body.type] === 'DISCHARGE') {
+    //   request.type = RequestType.DISCHARGE;
+    // }
+    // if (RequestType[body.type] === 'PERIODIC') {
+    //   request.type = RequestType.PERIODIC;
+    // }
+    // if (WorkShiftType[body.work_shift] === '8-11') {
+    request.work_shift = body.work_shift;
+    // }
+    // if (WorkShiftType[body.work_shift] === '11-16') {
+    //   request.work_shift = WorkShiftType['11-16'];
+    // }
+    // if (WorkShiftType[body.work_shift] === '16-21') {
+    //   request.work_shift = WorkShiftType['16-21'];
+    // }
     request.date = body.date;
     return await request.save();
   }
