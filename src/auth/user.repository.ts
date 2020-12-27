@@ -18,9 +18,7 @@ export class UserRepository extends Repository<UserEntity> {
   }
 
   async store(body: UserDto): Promise<UserEntity> {
-    console.log('****');
     const user = new UserEntity();
-    console.log('@@@@');
     user.name = body.name;
     user.lname = body.lname;
     user.phone = body.phone;

@@ -9,6 +9,9 @@ import { UpdateuserDto } from './updateuser.dto';
 @Injectable()
 export class UserService {
   constructor(private userRepo: UserRepository) {}
+  async index(query): Promise<UserEntity[]> {
+    return await this.userRepo.find(query);
+  }
   async store(body: UserDto): Promise<UserEntity> {
     return await this.userRepo.store(body);
   }

@@ -1,15 +1,23 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
+  ParseBoolPipe,
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { StateService } from '../state/state.service';
 import { UserService } from './user.service';
-import { ApiBearerAuth, ApiOkResponse, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiProperty,
+  getSchemaPath,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
 import { UserEntity } from '../auth/user.entity';
@@ -19,13 +27,41 @@ import { UserDto } from './user.dto';
 import { MaterialUpdateDto } from '../material/material.update.dto';
 import { MaterialEntity } from '../material/material.entity';
 import { UpdateuserDto } from './updateuser.dto';
+import { Type } from 'class-transformer';
 class userIdDto {
   @ApiProperty()
   id: number;
 }
+class UserFilterDTo {
+  @Type(() => Boolean)
+  disable: boolean;
+  phone: string;
+}
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
+
+  @Get('/')
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        {
+          properties: {
+            users: {
+              type: 'array',
+              items: { $ref: getSchemaPath(UserEntity) },
+            },
+          },
+        },
+      ],
+    },
+  })
+  @UseGuards(AuthGuard())
+  async index(@Query() query: UserFilterDTo): Promise<{ users: UserEntity[] }> {
+    const users = await this.userService.index(query);
+    return { users: users };
+  }
   @Post('/')
   @ApiBearerAuth()
   // @ApiOkResponse({ type: StateResponse })

@@ -136,4 +136,37 @@ describe('UserController', () => {
       },
     });
   });
+
+  it('/user GET return all user with attributes filter', async () => {
+    const user = await userRepo.save([
+      {
+        phone: '09109100910',
+        name: 'jack',
+        lname: 'sparraw',
+        disable: true,
+      },
+      {
+        phone: '09000000000',
+        name: 'joe',
+        lname: 'terribiani',
+        disable: false,
+      },
+    ]);
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .get('/user?phone=09109100910&disable=1')
+      .expect(200);
+
+    expect(body).toEqual({
+      users: [
+        {
+          id: 1,
+          phone: '09109100910',
+          name: 'jack',
+          lname: 'sparraw',
+          disable: true,
+        },
+      ],
+    });
+  });
 });
