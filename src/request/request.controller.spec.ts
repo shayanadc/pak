@@ -136,7 +136,13 @@ describe('Request Controller', () => {
     expect(body).toEqual({
       request: {
         id: 2,
-        user: { id: 1, phone: '09129120912' },
+        user: {
+          id: 1,
+          phone: '09129120912',
+          name: null,
+          lname: null,
+          disable: false,
+        },
         address: {
           id: 1,
           description: 'Addresss.....',
@@ -186,7 +192,13 @@ describe('Request Controller', () => {
         {
           id: 1,
           type: 1,
-          user: { id: 1, phone: '09129120912' },
+          user: {
+            id: 1,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+          },
           address: {
             id: 1,
             type: 1,
@@ -212,7 +224,13 @@ describe('Request Controller', () => {
         {
           id: 1,
           type: 1,
-          user: { id: 1, phone: '09129120912' },
+          user: {
+            id: 1,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+          },
           date: '1999-12-31T20:30:00.000Z',
           address: {
             type: 1,

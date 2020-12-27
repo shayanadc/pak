@@ -121,19 +121,31 @@ describe('AddressController', () => {
       .agent(app.getHttpServer())
       .get('/address')
       .expect(200);
-    expect(body).toContainEqual({
+    expect(body).toEqual({
       addresses: [
         {
           id: 2,
           description: 'BLAH BLAH',
-          user: { id: 2, phone: '09129120912' },
+          user: {
+            id: 2,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+          },
           state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
           type: 1,
         },
         {
           id: 3,
           description: 'HALAN HALAM',
-          user: { id: 2, phone: '09129120912' },
+          user: {
+            id: 2,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+          },
           state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
           type: 2,
         },
@@ -151,7 +163,13 @@ describe('AddressController', () => {
       address: {
         id: 3,
         description: 'Address ....',
-        user: { id: 1, phone: '09129120912' },
+        user: {
+          id: 1,
+          phone: '09129120912',
+          name: null,
+          lname: null,
+          disable: false,
+        },
         state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
         type: 2,
       },
