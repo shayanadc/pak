@@ -121,7 +121,7 @@ describe('AddressController', () => {
       .agent(app.getHttpServer())
       .get('/address')
       .expect(200);
-    expect(body).toStrictEqual({
+    expect(body).toContainEqual({
       addresses: [
         {
           id: 2,

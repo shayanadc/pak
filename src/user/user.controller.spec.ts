@@ -111,4 +111,29 @@ describe('UserController', () => {
       },
     });
   });
+
+  it('/user PUT change existed user attributes', async () => {
+    const user = await userRepo.save({
+      phone: '09109100910',
+      name: 'joe',
+      lname: 'terribiani',
+      disable: false,
+    });
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .put('/user/2')
+      .send({
+        name: 'summerset',
+        lname: 'muam',
+        // disable: true,
+      })
+      .expect(200);
+    expect(body).toEqual({
+      user: {
+        id: 2,
+        name: 'summerset',
+        lname: 'muam',
+      },
+    });
+  });
 });
