@@ -140,7 +140,6 @@ export class OrderController {
     @GetUser() user: UserEntity,
     @Param('phone') phone: string,
   ): Promise<{ orders: AggType }> {
-    console.log(phone);
     const orders = await this.orderService.aggregate(phone);
     return { orders: orders };
   }

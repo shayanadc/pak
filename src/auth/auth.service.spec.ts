@@ -118,7 +118,13 @@ describe('User Service', () => {
 
     expect(
       await authServ.findOrCreateUserWithPhone({ phone: '09129120912' }),
-    ).toEqual({ id: 1, phone: '09129120912' });
+    ).toEqual({
+      id: 1,
+      phone: '09129120912',
+      name: null,
+      lname: null,
+      disable: false,
+    });
 
     expect(smsService.sendMessage).toBeCalledTimes(1);
     expect(cacheService.set).toBeCalledTimes(1);

@@ -233,15 +233,24 @@ describe('OrderController', () => {
           user: {
             id: 2,
             phone: '09109120912',
+            name: null,
+            lname: null,
+            disable: false,
           },
         },
         user: {
           id: 2,
           phone: '09109120912',
+          name: null,
+          lname: null,
+          disable: false,
         },
         issuer: {
           id: 1,
           phone: '09129120912',
+          name: null,
+          lname: null,
+          disable: false,
         },
         details: [
           {

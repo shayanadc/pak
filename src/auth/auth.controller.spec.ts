@@ -228,7 +228,15 @@ describe('Create And Toke User API', () => {
       .post('/auth/login')
       .send({ phone: '09129120912' })
       .expect(201);
-    expect(body).toEqual({ user: { id: 1, phone: '09129120912' } });
+    expect(body).toEqual({
+      user: {
+        id: 1,
+        phone: '09129120912',
+        name: null,
+        lname: null,
+        disable: false,
+      },
+    });
   });
 
   it('/auth/user return authenticated user', async () => {
@@ -237,7 +245,13 @@ describe('Create And Toke User API', () => {
       .get('/auth/user')
       .expect(200);
     expect(body).toEqual({
-      user: { id: 1, phone: '09129120912' },
+      user: {
+        id: 1,
+        phone: '09129120912',
+        name: null,
+        lname: null,
+        disable: false,
+      },
       credit: { total: { amount: 13000 } },
     });
   });
