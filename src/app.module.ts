@@ -8,6 +8,7 @@ import { StateModule } from './state/state.module';
 import { CityModule } from './city/city.module';
 import { AppController } from './app.controller';
 import { OrderModule } from './order/order.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { OrderModule } from './order/order.module';
     StateModule,
     CityModule,
     OrderModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [],

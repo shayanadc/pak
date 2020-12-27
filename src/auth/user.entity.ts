@@ -38,4 +38,10 @@ export class UserEntity extends BaseEntity {
   )
   @ApiProperty()
   orders: OrderEntity[];
+  @Column({ nullable: true })
+  name: string;
+  @Column({ nullable: true })
+  lname: string;
+  @Column({ default: false })
+  disable: boolean;
 }
