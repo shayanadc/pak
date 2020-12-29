@@ -124,6 +124,7 @@ describe('User Service', () => {
       name: null,
       lname: null,
       disable: false,
+      roles: ['admin'],
     });
 
     expect(smsService.sendMessage).toBeCalledTimes(1);

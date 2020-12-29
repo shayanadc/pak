@@ -21,11 +21,11 @@ import { AddressRepository } from '../address/address.repository';
 import { CityRepository } from '../address/city.repository';
 import { StateRepository } from '../address/state.repository';
 import { RequestRepository } from '../request/request.repository';
-import { StateController } from '../state/state.controller';
-import { StateService } from '../state/state.service';
 import { UserService } from './user.service';
 import { getConnection } from 'typeorm';
 import supertest = require('supertest');
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from '../role/roles.guard';
 
 describe('UserController', () => {
   let app: INestApplication;
@@ -108,6 +108,7 @@ describe('UserController', () => {
         name: 'joe',
         lname: 'tribiani',
         disable: false,
+        roles: ['admin'],
       },
     });
   });
@@ -118,6 +119,7 @@ describe('UserController', () => {
       name: 'joe',
       lname: 'terribiani',
       disable: false,
+      roles: ['admin'],
     });
     const { body } = await supertest
       .agent(app.getHttpServer())
@@ -165,6 +167,7 @@ describe('UserController', () => {
           name: 'jack',
           lname: 'sparraw',
           disable: true,
+          roles: ['admin'],
         },
       ],
     });

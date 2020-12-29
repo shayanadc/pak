@@ -32,13 +32,16 @@ import { OrderDetailsRepository } from '../order/order.details.repository';
 import { OrderRepository } from '../order/order.repository';
 import { MaterialEntity } from '../material/material.entity';
 import { OrderService } from '../order/order.service';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from '../role/roles.guard';
+import { Roles } from '../role/role.decorator';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
   let userRepo: UserRepository;
   let smsService: SmsInterface;
   let cacheService: CacheInterface;
-
+  let guard: RolesGuard;
   let addressRepo: AddressRepository;
   let stateRepository: StateRepository;
   let requestRepository: RequestRepository;
@@ -162,7 +165,7 @@ describe('Create And Toke User API', () => {
           ]);
 
           const req = context.switchToHttp().getRequest();
-          req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
+          req.user = await userRepo.findOne({ phone: '09129120912' }); // Your user object
           return true;
         },
       })
@@ -235,6 +238,7 @@ describe('Create And Toke User API', () => {
         name: null,
         lname: null,
         disable: false,
+        roles: ['admin'],
       },
     });
   });
@@ -251,6 +255,7 @@ describe('Create And Toke User API', () => {
         name: null,
         lname: null,
         disable: false,
+        roles: ['admin'],
       },
       credit: { total: { amount: 13000 } },
     });
