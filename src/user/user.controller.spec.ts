@@ -128,6 +128,7 @@ describe('UserController', () => {
         name: 'summerset',
         lname: 'muam',
         // disable: true,
+        roles: ['user', 'admin'],
       })
       .expect(200);
     expect(body).toEqual({
@@ -135,6 +136,7 @@ describe('UserController', () => {
         id: 2,
         name: 'summerset',
         lname: 'muam',
+        roles: ['user', 'admin'],
       },
     });
   });
