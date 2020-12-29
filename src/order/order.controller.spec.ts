@@ -106,6 +106,13 @@ describe('OrderController', () => {
             type: 3,
             date: '2000-01-01 00:00:00',
           });
+          await requestRepository.save({
+            user: endUser,
+            address: address,
+            type: 1,
+            done: true,
+            date: '2000-01-01 00:00:00',
+          });
           const request1 = await requestRepository.save({
             user: endUser,
             address: address,
@@ -273,5 +280,23 @@ describe('OrderController', () => {
     });
     expect((await orderDetailRepo.find()).length).toEqual(6);
     expect((await requestRepository.findOne({ id: 1 })).done).toBeTruthy();
+  });
+
+  it('/order Post prevent save new order for done orders', async function() {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .post('/order')
+      .send({
+        requestId: 2,
+        rows: [
+          { materialId: 1, weight: 2 },
+          { materialId: 2, weight: 3 },
+        ],
+      })
+      .expect(400);
+    expect(body).toMatchObject({
+      statusCode: 400,
+      message: ['Could not create order for done or box request'],
+    });
   });
 });

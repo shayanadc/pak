@@ -39,6 +39,7 @@ class RequestIdDTO {
   description: 'Missing Data',
   type: BadRequestResponse,
 })
+@UseFilters(AllExceptionsFilter)
 export class RequestController {
   constructor(private RequestService: RequestService) {}
   @Get('/')

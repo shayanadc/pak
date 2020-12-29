@@ -23,7 +23,6 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
-import { request } from 'express';
 class SumType {
   @ApiProperty()
   title: string;

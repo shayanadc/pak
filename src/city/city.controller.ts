@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseFilters, UseGuards } from '@nestjs/common';
 import { CityEntity } from '../address/city.entity';
 import { CityService } from './city.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -10,10 +10,12 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
+import { AllExceptionsFilter } from '../http-exception.filter';
 // class cityResponse {
 //   @ApiProperty()
 //   cities: CityEntity;
 // }
+@UseFilters(AllExceptionsFilter)
 @Controller('city')
 @ApiResponse({
   status: 400,

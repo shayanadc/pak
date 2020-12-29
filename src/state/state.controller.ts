@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseFilters,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { StateEntity } from '../address/state.entity';
 import { StateService } from './state.service';
@@ -13,6 +20,7 @@ import { BadRequestResponse } from '../api.response.swagger';
 import { GetUser } from '../auth/get-user.decorator';
 import { UserEntity } from '../auth/user.entity';
 import { StateDto } from './state.dto';
+import { AllExceptionsFilter } from '../http-exception.filter';
 class StateResponse {
   @ApiProperty()
   state: StateEntity;
@@ -23,6 +31,7 @@ class StateResponse {
   description: 'Missing Data',
   type: BadRequestResponse,
 })
+@UseFilters(AllExceptionsFilter)
 @Controller('state')
 export class StateController {
   constructor(private stateService: StateService) {}

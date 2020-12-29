@@ -39,7 +39,6 @@ describe('Create And Toke User API', () => {
   let userRepo: UserRepository;
   let smsService: SmsInterface;
   let cacheService: CacheInterface;
-  let guard: RolesGuard;
   let addressRepo: AddressRepository;
   let stateRepository: StateRepository;
   let requestRepository: RequestRepository;
@@ -211,15 +210,15 @@ describe('Create And Toke User API', () => {
     expect(JwtService.prototype.sign).toHaveBeenCalledTimes(1);
   });
 
-  it('/auth/login POST invalid request', async function() {
+  it('/auth/token POST invalid request', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .post('/auth/login')
-      .send({ phone: '09120912' })
+      .post('/auth/token')
+      .send({ phone: 1245, activation_code: 12445 })
       .expect(400);
     expect(body).toMatchObject({
       statusCode: 400,
-      message: 'phone must be a pattern',
+      message: ['phone must be a string', 'activation_code must be a string'],
     });
   });
 

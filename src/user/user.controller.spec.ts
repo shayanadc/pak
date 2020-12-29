@@ -172,4 +172,21 @@ describe('UserController', () => {
       ],
     });
   });
+  it('/user POST prevent save user with duplicate phone', async () => {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .post('/user')
+      .send({
+        phone: '09129120912',
+        name: 'joe',
+        lname: 'tribiani',
+        disable: false,
+        roles: ['user', 'admin'],
+      })
+      .expect(400);
+    expect(body).toMatchObject({
+      statusCode: 400,
+      message: ['Database Error'],
+    });
+  });
 });
