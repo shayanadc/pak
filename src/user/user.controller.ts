@@ -16,6 +16,8 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiProperty,
+  ApiQuery,
+  ApiResponse,
   getSchemaPath,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
@@ -28,21 +30,43 @@ import { MaterialUpdateDto } from '../material/material.update.dto';
 import { MaterialEntity } from '../material/material.entity';
 import { UpdateuserDto } from './updateuser.dto';
 import { Type } from 'class-transformer';
+import { BadRequestResponse } from '../api.response.swagger';
 class userIdDto {
   @ApiProperty()
   id: number;
 }
 class UserFilterDTo {
+  @ApiProperty({ example: [1, 0] })
   @Type(() => Boolean)
   disable: boolean;
+  @ApiProperty()
   phone: string;
 }
+
+class UserResponse {
+  @ApiProperty()
+  user: UserEntity;
+}
+
+@ApiResponse({
+  status: 400,
+  description: 'Missing Data',
+  type: BadRequestResponse,
+})
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('/')
   @ApiBearerAuth()
+  @ApiQuery({
+    name: 'filters',
+    schema: {
+      items: {
+        $ref: getSchemaPath(UserFilterDTo),
+      },
+    },
+  })
   @ApiOkResponse({
     schema: {
       allOf: [
@@ -64,7 +88,7 @@ export class UserController {
   }
   @Post('/')
   @ApiBearerAuth()
-  // @ApiOkResponse({ type: StateResponse })
+  @ApiOkResponse({ type: UserResponse })
   @UseGuards(AuthGuard())
   async store(
     @GetUser() user: UserEntity,
@@ -76,13 +100,12 @@ export class UserController {
 
   @Put(':id')
   @ApiBearerAuth()
-  // @ApiOkResponse({ type: materialResponse })
+  @ApiOkResponse({ type: UserResponse })
   @UseGuards(AuthGuard())
   // @UsePipes(new ValidationPipe({ skipMissingProperties: true }))
   async update(
     @Param('id', ParseIntPipe) param: userIdDto,
-    @Body()
-    updateuserDto: UpdateuserDto,
+    @Body() updateuserDto: UpdateuserDto,
   ): Promise<{ user: UserEntity }> {
     const updateUser = await this.userService.update(param, updateuserDto);
     return { user: updateUser };

@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Header,
   Post,
   UseFilters,
   UseGuards,
@@ -19,14 +18,16 @@ import { PhoneValidationPipe } from './phone.validation.pipe';
 import { AllExceptionsFilter } from '../http-exception.filter';
 import {
   ApiBearerAuth,
-  ApiHeader,
   ApiOkResponse,
   ApiProperty,
   ApiResponse,
-  ApiSecurity,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
 import { OrderService } from '../order/order.service';
+import { Roles } from '../role/role.decorator';
+import { Role } from '../role/role.enum';
+import { RolesGuard } from '../role/roles.guard';
+
 class AmountType {
   @ApiProperty({ example: 2000 })
   amount: number;
@@ -78,7 +79,8 @@ export class AuthController {
   @Get('user')
   @ApiBearerAuth()
   @ApiOkResponse({ type: userResponse })
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), RolesGuard)
+  @Roles(Role.User)
   async getAuthUser(@GetUser() user: UserEntity): Promise<userResponse> {
     return { user: user, credit: await this.orderServ.getCredit(user) };
   }

@@ -32,13 +32,14 @@ import { OrderDetailsRepository } from '../order/order.details.repository';
 import { OrderRepository } from '../order/order.repository';
 import { MaterialEntity } from '../material/material.entity';
 import { OrderService } from '../order/order.service';
+import { RolesGuard } from '../role/roles.guard';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
   let userRepo: UserRepository;
   let smsService: SmsInterface;
   let cacheService: CacheInterface;
-
+  let guard: RolesGuard;
   let addressRepo: AddressRepository;
   let stateRepository: StateRepository;
   let requestRepository: RequestRepository;
@@ -162,7 +163,7 @@ describe('Create And Toke User API', () => {
           ]);
 
           const req = context.switchToHttp().getRequest();
-          req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
+          req.user = await userRepo.findOne({ phone: '09129120912' }); // Your user object
           return true;
         },
       })
@@ -235,6 +236,7 @@ describe('Create And Toke User API', () => {
         name: null,
         lname: null,
         disable: false,
+        roles: ['user'],
       },
     });
   });
@@ -251,6 +253,7 @@ describe('Create And Toke User API', () => {
         name: null,
         lname: null,
         disable: false,
+        roles: ['user'],
       },
       credit: { total: { amount: 13000 } },
     });

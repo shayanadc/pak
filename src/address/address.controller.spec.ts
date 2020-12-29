@@ -12,7 +12,7 @@ import {
 import { AddressService } from './address.service';
 import { AddressRepository } from './address.repository';
 import { UserEntity } from '../auth/user.entity';
-import { AddressEntity, BuildingType } from './address.entity';
+import { AddressEntity } from './address.entity';
 import { StateRepository } from './state.repository';
 import { StateEntity } from './state.entity';
 import { CityEntity } from './city.entity';
@@ -132,6 +132,7 @@ describe('AddressController', () => {
             name: null,
             lname: null,
             disable: false,
+            roles: ['user'],
           },
           state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
           type: 1,
@@ -145,6 +146,7 @@ describe('AddressController', () => {
             name: null,
             lname: null,
             disable: false,
+            roles: ['user'],
           },
           state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
           type: 2,
@@ -169,6 +171,7 @@ describe('AddressController', () => {
           name: null,
           lname: null,
           disable: false,
+          roles: ['user'],
         },
         state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
         type: 2,

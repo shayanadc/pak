@@ -21,8 +21,6 @@ import { AddressRepository } from '../address/address.repository';
 import { CityRepository } from '../address/city.repository';
 import { StateRepository } from '../address/state.repository';
 import { RequestRepository } from '../request/request.repository';
-import { StateController } from '../state/state.controller';
-import { StateService } from '../state/state.service';
 import { UserService } from './user.service';
 import { getConnection } from 'typeorm';
 import supertest = require('supertest');
@@ -99,6 +97,7 @@ describe('UserController', () => {
         name: 'joe',
         lname: 'tribiani',
         disable: false,
+        roles: ['user', 'admin'],
       })
       .expect(201);
     expect(body).toEqual({
@@ -108,6 +107,7 @@ describe('UserController', () => {
         name: 'joe',
         lname: 'tribiani',
         disable: false,
+        roles: ['user', 'admin'],
       },
     });
   });
@@ -126,6 +126,7 @@ describe('UserController', () => {
         name: 'summerset',
         lname: 'muam',
         // disable: true,
+        roles: ['user', 'admin'],
       })
       .expect(200);
     expect(body).toEqual({
@@ -133,6 +134,7 @@ describe('UserController', () => {
         id: 2,
         name: 'summerset',
         lname: 'muam',
+        roles: ['user', 'admin'],
       },
     });
   });
@@ -165,6 +167,7 @@ describe('UserController', () => {
           name: 'jack',
           lname: 'sparraw',
           disable: true,
+          roles: ['user'],
         },
       ],
     });

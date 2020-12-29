@@ -10,6 +10,7 @@ import { AddressEntity } from '../address/address.entity';
 import { RequestEntity } from '../request/request.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { OrderEntity } from '../order/order.entity';
+import { Role } from '../role/role.enum';
 @Entity('users')
 @Unique(['phone'])
 export class UserEntity extends BaseEntity {
@@ -39,9 +40,15 @@ export class UserEntity extends BaseEntity {
   @ApiProperty()
   orders: OrderEntity[];
   @Column({ nullable: true })
+  @ApiProperty()
   name: string;
   @Column({ nullable: true })
+  @ApiProperty()
   lname: string;
   @Column({ default: false })
+  @ApiProperty()
   disable: boolean;
+  @Column('simple-array', { default: Role.User })
+  @ApiProperty()
+  roles: string[];
 }
