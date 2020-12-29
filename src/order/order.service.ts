@@ -1,9 +1,4 @@
-import {
-  HttpException,
-  Injectable,
-  NotFoundException,
-  Req,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { OrderEntity } from './order.entity';
 import { OrderRepository } from './order.repository';
 import { OrderDto } from './order.dto';
@@ -12,7 +7,6 @@ import { MaterialRepository } from '../material/material.repository';
 import { OrderDetailsRepository } from './order.details.repository';
 import { UserRepository } from '../auth/user.repository';
 import { RequestType } from '../request/request.entity';
-import { getManager } from 'typeorm';
 
 @Injectable()
 export class OrderService {
@@ -30,7 +24,7 @@ export class OrderService {
       where: { issuer: user },
     });
     if (orders.length == 0) {
-      throw new NotFoundException('You don have any order');
+      throw new NotFoundException(['You don have any order']);
     }
     const ids = orders.map(value => value.id);
     const agg = await this.orderDetailRepo
@@ -70,7 +64,9 @@ export class OrderService {
       id: orderDto.requestId,
     });
     if (request.type == RequestType.BOX || request.done) {
-      throw new Error('Could not create order for this request');
+      throw new NotFoundException([
+        'Could not create order for done or box request',
+      ]);
     }
     request.done = true;
     request.save();

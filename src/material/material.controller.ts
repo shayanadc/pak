@@ -42,6 +42,7 @@ class materialIdDto {
   description: 'Missing Data',
   type: BadRequestResponse,
 })
+@UseFilters(AllExceptionsFilter)
 export class MaterialController {
   constructor(private materialServ: MaterialService) {}
   @Get('/')

@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import { StateService } from '../state/state.service';
@@ -31,6 +32,7 @@ import { MaterialEntity } from '../material/material.entity';
 import { UpdateuserDto } from './updateuser.dto';
 import { Type } from 'class-transformer';
 import { BadRequestResponse } from '../api.response.swagger';
+import { AllExceptionsFilter } from '../http-exception.filter';
 class userIdDto {
   @ApiProperty()
   id: number;
@@ -53,6 +55,7 @@ class UserResponse {
   description: 'Missing Data',
   type: BadRequestResponse,
 })
+@UseFilters(AllExceptionsFilter)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}

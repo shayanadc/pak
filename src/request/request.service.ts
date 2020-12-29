@@ -1,4 +1,9 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { RequestRepository } from './request.repository';
 import { AddressRepository } from '../address/address.repository';
 import { RequestEntity } from './request.entity';
@@ -23,7 +28,7 @@ export class RequestService {
       where: { address: address, type: body.type, done: false },
     });
     if (r) {
-      throw new BadRequestException('Duplicated Request is not acceptable');
+      throw new NotFoundException(['Duplicated Request is not acceptable']);
     }
     const res = await this.requestRepo.store(user, address, body);
     return res;
