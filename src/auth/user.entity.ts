@@ -40,12 +40,15 @@ export class UserEntity extends BaseEntity {
   @ApiProperty()
   orders: OrderEntity[];
   @Column({ nullable: true })
+  @ApiProperty()
   name: string;
   @Column({ nullable: true })
+  @ApiProperty()
   lname: string;
   @Column({ default: false })
+  @ApiProperty()
   disable: boolean;
-
   @Column('simple-array', { default: Role.Admin })
+  @ApiProperty()
   roles: string[];
 }
