@@ -23,6 +23,7 @@ export class UserRepository extends Repository<UserEntity> {
     user.lname = body.lname;
     user.phone = body.phone;
     user.disable = body.disable;
+    user.roles = body.roles;
     await user.save();
     return user;
   }

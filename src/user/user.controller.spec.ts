@@ -99,6 +99,7 @@ describe('UserController', () => {
         name: 'joe',
         lname: 'tribiani',
         disable: false,
+        roles: ['user', 'admin'],
       })
       .expect(201);
     expect(body).toEqual({
@@ -108,7 +109,7 @@ describe('UserController', () => {
         name: 'joe',
         lname: 'tribiani',
         disable: false,
-        roles: ['admin'],
+        roles: ['user', 'admin'],
       },
     });
   });
@@ -119,7 +120,6 @@ describe('UserController', () => {
       name: 'joe',
       lname: 'terribiani',
       disable: false,
-      roles: ['admin'],
     });
     const { body } = await supertest
       .agent(app.getHttpServer())
