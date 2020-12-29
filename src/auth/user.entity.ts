@@ -48,7 +48,7 @@ export class UserEntity extends BaseEntity {
   @Column({ default: false })
   @ApiProperty()
   disable: boolean;
-  @Column('simple-array', { default: Role.Admin })
+  @Column('simple-array', { default: Role.User })
   @ApiProperty()
   roles: string[];
 }

@@ -236,7 +236,7 @@ describe('OrderController', () => {
             name: null,
             lname: null,
             disable: false,
-            roles: ['admin'],
+            roles: ['user'],
           },
         },
         user: {
@@ -245,7 +245,7 @@ describe('OrderController', () => {
           name: null,
           lname: null,
           disable: false,
-          roles: ['admin'],
+          roles: ['user'],
         },
         issuer: {
           id: 1,
@@ -253,7 +253,7 @@ describe('OrderController', () => {
           name: null,
           lname: null,
           disable: false,
-          roles: ['admin'],
+          roles: ['user'],
         },
         details: [
           {

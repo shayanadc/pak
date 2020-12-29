@@ -24,8 +24,6 @@ import { RequestRepository } from '../request/request.repository';
 import { UserService } from './user.service';
 import { getConnection } from 'typeorm';
 import supertest = require('supertest');
-import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from '../role/roles.guard';
 
 describe('UserController', () => {
   let app: INestApplication;
@@ -169,7 +167,7 @@ describe('UserController', () => {
           name: 'jack',
           lname: 'sparraw',
           disable: true,
-          roles: ['admin'],
+          roles: ['user'],
         },
       ],
     });

@@ -142,7 +142,7 @@ describe('Request Controller', () => {
           name: null,
           lname: null,
           disable: false,
-          roles: ['admin'],
+          roles: ['user'],
         },
         address: {
           id: 1,
@@ -199,7 +199,7 @@ describe('Request Controller', () => {
             name: null,
             lname: null,
             disable: false,
-            roles: ['admin'],
+            roles: ['user'],
           },
           address: {
             id: 1,
@@ -232,7 +232,7 @@ describe('Request Controller', () => {
             name: null,
             lname: null,
             disable: false,
-            roles: ['admin'],
+            roles: ['user'],
           },
           date: '1999-12-31T20:30:00.000Z',
           address: {

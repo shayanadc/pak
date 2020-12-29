@@ -80,7 +80,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: userResponse })
   @UseGuards(AuthGuard(), RolesGuard)
-  @Roles(Role.Admin)
+  @Roles(Role.User)
   async getAuthUser(@GetUser() user: UserEntity): Promise<userResponse> {
     return { user: user, credit: await this.orderServ.getCredit(user) };
   }

@@ -11,8 +11,6 @@ import { RequestEntity } from '../request/request.entity';
 import { UserRepository } from '../auth/user.repository';
 import { CityRepository } from '../address/city.repository';
 import { StateRepository } from '../address/state.repository';
-import { RequestController } from '../request/request.controller';
-import { RequestService } from '../request/request.service';
 import {
   ExecutionContext,
   INestApplication,

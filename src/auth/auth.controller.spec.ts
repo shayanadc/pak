@@ -32,9 +32,7 @@ import { OrderDetailsRepository } from '../order/order.details.repository';
 import { OrderRepository } from '../order/order.repository';
 import { MaterialEntity } from '../material/material.entity';
 import { OrderService } from '../order/order.service';
-import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from '../role/roles.guard';
-import { Roles } from '../role/role.decorator';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
@@ -238,7 +236,7 @@ describe('Create And Toke User API', () => {
         name: null,
         lname: null,
         disable: false,
-        roles: ['admin'],
+        roles: ['user'],
       },
     });
   });
@@ -255,7 +253,7 @@ describe('Create And Toke User API', () => {
         name: null,
         lname: null,
         disable: false,
-        roles: ['admin'],
+        roles: ['user'],
       },
       credit: { total: { amount: 13000 } },
     });
