@@ -18,6 +18,8 @@ import { RequestService } from './request.service';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { OrderEntity } from '../order/order.entity';
 import { MaterialEntity } from '../material/material.entity';
+import { getConnection } from 'typeorm';
+import { ProvinceEntity } from '../city/province.entity';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -28,7 +30,7 @@ describe('User Service', () => {
   let reqServ: RequestService;
 
   // let connection : Connection
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -50,6 +52,7 @@ describe('User Service', () => {
             OrderEntity,
             OrderDetailEntity,
             MaterialEntity,
+            ProvinceEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -105,10 +108,8 @@ describe('User Service', () => {
   });
 
   afterEach(async () => {
-    await requestRepository.query(`DELETE FROM requests;`);
-    await addressRepo.query(`DELETE FROM addresses;`);
-    await stateRepository.query(`DELETE FROM states;`);
-    await userRepo.query(`DELETE FROM users;`);
+    const defaultConnection = getConnection('default');
+    await defaultConnection.close();
   });
   it('delete user request item', async () => {
     const user = await userRepo.save({

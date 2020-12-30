@@ -27,6 +27,7 @@ import { MaterialRepository } from '../material/material.repository';
 import { OrderDetailEntity } from './orderDetail.entity';
 import { OrderDetailsRepository } from './order.details.repository';
 import { getConnection } from 'typeorm';
+import { ProvinceEntity } from '../city/province.entity';
 
 describe('OrderController', () => {
   let app: INestApplication;
@@ -61,6 +62,7 @@ describe('OrderController', () => {
             OrderEntity,
             MaterialEntity,
             OrderDetailEntity,
+            ProvinceEntity,
           ],
           synchronize: true,
           dropSchema: true,

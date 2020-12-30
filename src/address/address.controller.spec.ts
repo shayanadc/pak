@@ -24,6 +24,7 @@ import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { MaterialEntity } from '../material/material.entity';
 import { getConnection } from 'typeorm';
+import { ProvinceEntity } from '../city/province.entity';
 
 describe('AddressController', () => {
   let userRepo: UserRepository;
@@ -55,6 +56,7 @@ describe('AddressController', () => {
             MaterialEntity,
             OrderEntity,
             OrderDetailEntity,
+            ProvinceEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -136,7 +138,11 @@ describe('AddressController', () => {
             disable: false,
             roles: ['user'],
           },
-          state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
+          state: {
+            id: 1,
+            title: 'BLOCK 24',
+            city: { id: 1, name: 'GORGAN', province: null },
+          },
           type: 1,
         },
         {
@@ -151,7 +157,11 @@ describe('AddressController', () => {
             disable: false,
             roles: ['user'],
           },
-          state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
+          state: {
+            id: 1,
+            title: 'BLOCK 24',
+            city: { id: 1, name: 'GORGAN', province: null },
+          },
           type: 2,
         },
       ],
@@ -178,7 +188,11 @@ describe('AddressController', () => {
           disable: false,
           roles: ['user'],
         },
-        state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
+        state: {
+          id: 1,
+          title: 'BLOCK 24',
+          city: { id: 1, name: 'GORGAN', province: null },
+        },
         type: 2,
       },
     });

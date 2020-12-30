@@ -24,6 +24,7 @@ import { RequestRepository } from '../request/request.repository';
 import { UserService } from './user.service';
 import { getConnection } from 'typeorm';
 import supertest = require('supertest');
+import { ProvinceEntity } from '../city/province.entity';
 
 describe('UserController', () => {
   let app: INestApplication;
@@ -50,6 +51,7 @@ describe('UserController', () => {
             OrderEntity,
             OrderDetailEntity,
             MaterialEntity,
+            ProvinceEntity,
           ],
           synchronize: true,
           dropSchema: true,
