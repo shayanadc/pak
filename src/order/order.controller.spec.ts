@@ -208,6 +208,7 @@ describe('OrderController', () => {
       .get('/order/09129120912/aggregate')
       .expect(200);
     expect(body).toEqual({
+      message: 'all of order report for this user ',
       orders: [
         { materialId: 1, title: 'Paper', weight: 6 },
         { materialId: 2, title: 'Iron', weight: 4 },
@@ -227,6 +228,7 @@ describe('OrderController', () => {
       })
       .expect(201);
     expect(body).toEqual({
+      message: 'create new order',
       order: {
         id: 3,
         price: 70000,

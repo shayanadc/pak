@@ -22,8 +22,15 @@ import {
   ApiProperty,
   getSchemaPath,
 } from '@nestjs/swagger';
-import { MaterialEntity } from '../material/material.entity';
+class DeletedAddressResponse {
+  @ApiProperty()
+  message: string;
+  @ApiProperty()
+  result: string;
+}
 class addressResponse {
+  @ApiProperty()
+  message: string;
   @ApiProperty()
   address: AddressEntity;
 }
@@ -43,6 +50,9 @@ export class AddressController {
       allOf: [
         {
           properties: {
+            message: {
+              type: 'string',
+            },
             addresses: {
               type: 'array',
               items: { $ref: getSchemaPath(AddressEntity) },
@@ -55,9 +65,9 @@ export class AddressController {
   @UseGuards(AuthGuard())
   async index(
     @GetUser() user: UserEntity,
-  ): Promise<{ addresses: AddressEntity[] }> {
+  ): Promise<{ message: string; addresses: AddressEntity[] }> {
     const addresses = await this.addressServ.getAll(user);
-    return { addresses: addresses };
+    return { message: 'All Addresses', addresses: addresses };
   }
   @Post('/')
   @ApiBearerAuth()
@@ -66,18 +76,19 @@ export class AddressController {
   async store(
     @GetUser() user: UserEntity,
     @Body() addressDto: AddressDto,
-  ): Promise<{ address: AddressEntity }> {
+  ): Promise<{ message: string; address: AddressEntity }> {
     const result = await this.addressServ.store(user, addressDto);
-    return { address: result };
+    return { message: 'New Address Has Created', address: result };
   }
 
   @Delete(':id')
+  @ApiOkResponse({ type: DeletedAddressResponse })
   @UseGuards(AuthGuard())
   async delete(
     @GetUser() user: UserEntity,
     @Param('id', ParseIntPipe) param: AddressIdDTO,
-  ): Promise<any> {
+  ): Promise<{ message: string; result: any }> {
     await this.addressServ.delete(user, param);
-    return { result: 'successful' };
+    return { message: 'Your Address Has Deleted', result: 'successful' };
   }
 }

@@ -38,6 +38,8 @@ class AggType {
 
 class orderResponse {
   @ApiProperty()
+  message: string;
+  @ApiProperty()
   order: OrderEntity;
 }
 class PhoneParamDto {
@@ -60,9 +62,9 @@ export class OrderController {
   async store(
     @GetUser() user: UserEntity,
     @Body() body: OrderDto,
-  ): Promise<{ order: OrderEntity }> {
+  ): Promise<{ message: string; order: OrderEntity }> {
     const order = await this.orderService.store(user, body);
-    return { order: order };
+    return { message: 'create new order', order: order };
   }
   @Get('/')
   @ApiBearerAuth()
@@ -71,6 +73,7 @@ export class OrderController {
       allOf: [
         {
           properties: {
+            message: { type: 'string' },
             orders: {
               type: 'array',
               items: { $ref: getSchemaPath(OrderEntity) },
@@ -81,9 +84,11 @@ export class OrderController {
     },
   })
   @UseGuards(AuthGuard())
-  async index(@GetUser() user: UserEntity): Promise<{ orders: OrderEntity[] }> {
+  async index(
+    @GetUser() user: UserEntity,
+  ): Promise<{ message: string; orders: OrderEntity[] }> {
     const orders = await this.orderService.index({ user: user.id });
-    return { orders: orders };
+    return { message: 'return all index', orders: orders };
   }
   @Get('/issued')
   @ApiBearerAuth()
@@ -92,6 +97,9 @@ export class OrderController {
       allOf: [
         {
           properties: {
+            message: {
+              type: 'string',
+            },
             orders: {
               type: 'array',
               items: { $ref: getSchemaPath(OrderEntity) },
@@ -104,9 +112,9 @@ export class OrderController {
   @UseGuards(AuthGuard())
   async indexIssued(
     @GetUser() user: UserEntity,
-  ): Promise<{ orders: OrderEntity[] }> {
+  ): Promise<{ message: string; orders: OrderEntity[] }> {
     const orders = await this.orderService.index({ issuer: user.id });
-    return { orders: orders };
+    return { message: 'all order that is issued by this user', orders: orders };
   }
   @Get('/index')
   @ApiBearerAuth()
@@ -115,6 +123,9 @@ export class OrderController {
       allOf: [
         {
           properties: {
+            message: {
+              type: 'string',
+            },
             orders: {
               type: 'array',
               items: { $ref: getSchemaPath(OrderEntity) },
@@ -127,9 +138,9 @@ export class OrderController {
   @UseGuards(AuthGuard())
   async indexAll(
     @GetUser() user: UserEntity,
-  ): Promise<{ orders: OrderEntity[] }> {
+  ): Promise<{ message: string; orders: OrderEntity[] }> {
     const orders = await this.orderService.index();
-    return { orders: orders };
+    return { message: 'return all orders for this user', orders: orders };
   }
   @Get(':phone/aggregate')
   @ApiBearerAuth()
@@ -138,8 +149,8 @@ export class OrderController {
   async aggregate(
     @GetUser() user: UserEntity,
     @Param('phone') phone: string,
-  ): Promise<{ orders: AggType }> {
+  ): Promise<{ message: string; orders: AggType }> {
     const orders = await this.orderService.aggregate(phone);
-    return { orders: orders };
+    return { message: 'all of order report for this user ', orders: orders };
   }
 }

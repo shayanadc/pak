@@ -38,12 +38,16 @@ class CreditType {
 }
 class userResponse {
   @ApiProperty()
+  message: string;
+  @ApiProperty()
   user: UserEntity;
   @ApiProperty()
   credit: CreditType;
 }
 
 class apiToken {
+  @ApiProperty()
+  message: string;
   @ApiProperty()
   token: string;
 }
@@ -64,16 +68,23 @@ export class AuthController {
   async findOrCreateUserWithPhone(
     @Body('phone', PhoneValidationPipe) validPhone: string,
     @Body() loginDto: LoginDto,
-  ): Promise<{ user: UserEntity }> {
+  ): Promise<{ message: string; user: UserEntity }> {
     const user = await this.authServ.findOrCreateUserWithPhone(loginDto);
-    return { user: user };
+    return {
+      message: 'the activation code sent for your customer',
+      user: user,
+    };
   }
   @Post('token')
   @ApiOkResponse({ type: apiToken })
   async getToken(
     @Body() authCredential: AuthCredentialDTO,
-  ): Promise<{ accessToken: string }> {
-    return await this.authServ.retrieveToken(authCredential);
+  ): Promise<{ message: string; accessToken: string }> {
+    const { accessToken } = await this.authServ.retrieveToken(authCredential);
+    return {
+      message: 'return access token',
+      accessToken: accessToken,
+    };
   }
 
   @Get('user')
@@ -82,6 +93,10 @@ export class AuthController {
   @UseGuards(AuthGuard(), RolesGuard)
   @Roles(Role.User)
   async getAuthUser(@GetUser() user: UserEntity): Promise<userResponse> {
-    return { user: user, credit: await this.orderServ.getCredit(user) };
+    return {
+      message: 'current user',
+      user: user,
+      credit: await this.orderServ.getCredit(user),
+    };
   }
 }

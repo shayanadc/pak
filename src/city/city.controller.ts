@@ -31,6 +31,9 @@ export class CityController {
       allOf: [
         {
           properties: {
+            message: {
+              type: 'string',
+            },
             cities: {
               type: 'array',
               items: { $ref: getSchemaPath(CityEntity) },
@@ -41,8 +44,8 @@ export class CityController {
     },
   })
   @UseGuards(AuthGuard())
-  async index(): Promise<{ cities: CityEntity[] }> {
+  async index(): Promise<{ message: string; cities: CityEntity[] }> {
     const cities = await this.cityService.index();
-    return { cities: cities };
+    return { message: 'All Cities', cities: cities };
   }
 }

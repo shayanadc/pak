@@ -101,6 +101,7 @@ describe('CityController', () => {
       .get('/city')
       .expect(200);
     expect(body).toEqual({
+      message: 'All Cities',
       cities: [
         {
           id: 1,

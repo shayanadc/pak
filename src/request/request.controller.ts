@@ -26,6 +26,8 @@ import {
 import { BadRequestResponse } from '../api.response.swagger';
 class requestResponse {
   @ApiProperty()
+  message: string;
+  @ApiProperty()
   request: RequestEntity;
 }
 class RequestIdDTO {
@@ -49,6 +51,9 @@ export class RequestController {
       allOf: [
         {
           properties: {
+            message: {
+              type: 'string',
+            },
             requests: {
               type: 'array',
               items: { $ref: getSchemaPath(RequestEntity) },
@@ -61,9 +66,9 @@ export class RequestController {
   @UseGuards(AuthGuard())
   async index(
     @GetUser() user: UserEntity,
-  ): Promise<{ requests: RequestEntity[] }> {
+  ): Promise<{ message: string; requests: RequestEntity[] }> {
     const req = await this.RequestService.getAll(user);
-    return { requests: req };
+    return { message: 'all request', requests: req };
   }
 
   @Get('/all')
@@ -85,9 +90,9 @@ export class RequestController {
   @UseGuards(AuthGuard())
   async indexAll(
     @GetUser() user: UserEntity,
-  ): Promise<{ requests: RequestEntity[] }> {
+  ): Promise<{ message: string; requests: RequestEntity[] }> {
     const req = await this.RequestService.getAll(user);
-    return { requests: req };
+    return { message: 'return all index', requests: req };
   }
 
   @Post('/')
@@ -97,17 +102,18 @@ export class RequestController {
   async store(
     @GetUser() user: UserEntity,
     @Body() body: RequestDto,
-  ): Promise<{ request: RequestEntity }> {
+  ): Promise<{ message: string; request: RequestEntity }> {
     const req = await this.RequestService.store(user, body);
-    return { request: req };
+    return { message: 'new request created', request: req };
   }
   @Delete(':id')
   @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   async delete(
     @GetUser() user: UserEntity,
     @Param('id', ParseIntPipe) param: RequestIdDTO,
-  ): Promise<any> {
+  ): Promise<{ message: string; result: string }> {
     await this.RequestService.delete(user, param);
-    return { result: 'successful' };
+    return { message: 'deleted', result: 'successful' };
   }
 }

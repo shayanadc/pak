@@ -122,6 +122,7 @@ describe('AddressController', () => {
       .get('/address')
       .expect(200);
     expect(body).toEqual({
+      message: 'All Addresses',
       addresses: [
         {
           id: 2,
@@ -162,6 +163,7 @@ describe('AddressController', () => {
       .expect(201);
 
     expect(body).toStrictEqual({
+      message: 'New Address Has Created',
       address: {
         id: 3,
         description: 'Address ....',

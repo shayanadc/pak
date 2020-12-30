@@ -32,7 +32,6 @@ import { OrderDetailsRepository } from '../order/order.details.repository';
 import { OrderRepository } from '../order/order.repository';
 import { MaterialEntity } from '../material/material.entity';
 import { OrderService } from '../order/order.service';
-import { RolesGuard } from '../role/roles.guard';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
@@ -206,7 +205,10 @@ describe('Create And Toke User API', () => {
         activation_code: '12345',
       } as AuthCredentialDTO)
       .expect(201);
-    expect(body).toEqual({ accessToken: '@1a$A4@SHS5af151ag60kagJAgaaAKjAK1' });
+    expect(body).toEqual({
+      message: 'return access token',
+      accessToken: '@1a$A4@SHS5af151ag60kagJAgaaAKjAK1',
+    });
     expect(JwtService.prototype.sign).toHaveBeenCalledTimes(1);
   });
 
@@ -229,6 +231,7 @@ describe('Create And Toke User API', () => {
       .send({ phone: '09129120912' })
       .expect(201);
     expect(body).toEqual({
+      message: 'the activation code sent for your customer',
       user: {
         id: 1,
         phone: '09129120912',
@@ -246,6 +249,7 @@ describe('Create And Toke User API', () => {
       .get('/auth/user')
       .expect(200);
     expect(body).toEqual({
+      message: 'current user',
       user: {
         id: 1,
         phone: '09129120912',
