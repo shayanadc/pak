@@ -29,6 +29,8 @@ import { UserEntity } from '../auth/user.entity';
 import { MaterialUpdateDto } from './material.update.dto';
 class materialResponse {
   @ApiProperty()
+  message: string;
+  @ApiProperty()
   material: MaterialEntity;
 }
 class materialIdDto {
@@ -52,6 +54,9 @@ export class MaterialController {
       allOf: [
         {
           properties: {
+            message: {
+              type: 'string',
+            },
             materials: {
               type: 'array',
               items: { $ref: getSchemaPath(MaterialEntity) },
@@ -62,9 +67,9 @@ export class MaterialController {
     },
   })
   @UseGuards(AuthGuard())
-  async index(): Promise<{ materials: MaterialEntity[] }> {
+  async index(): Promise<{ message: string; materials: MaterialEntity[] }> {
     const material = await this.materialServ.index();
-    return { materials: material };
+    return { message: 'All materials', materials: material };
   }
   @Put(':id')
   @ApiBearerAuth()
@@ -75,9 +80,9 @@ export class MaterialController {
     @Param('id', ParseIntPipe) param: materialIdDto,
     @Body()
     materialDto: MaterialUpdateDto,
-  ): Promise<{ material: MaterialEntity }> {
+  ): Promise<{ message: string; material: MaterialEntity }> {
     const up = await this.materialServ.update(param, materialDto);
-    return { material: up };
+    return { message: 'your material has changed', material: up };
   }
   @Post('/')
   @ApiBearerAuth()
@@ -86,8 +91,8 @@ export class MaterialController {
   async store(
     @GetUser() user: UserEntity,
     @Body() body: MaterialDto,
-  ): Promise<{ material: MaterialEntity }> {
+  ): Promise<{ message: string; material: MaterialEntity }> {
     const material = await this.materialServ.store(body);
-    return { material: material };
+    return { message: 'new material has created', material: material };
   }
 }

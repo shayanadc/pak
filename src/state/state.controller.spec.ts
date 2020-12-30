@@ -100,6 +100,7 @@ describe('StateController', () => {
       .send({ cityId: city.id, title: 'GORGANPARS' })
       .expect(201);
     expect(body).toEqual({
+      message: 'new state created',
       state: {
         id: 1,
         title: 'GORGANPARS',
@@ -123,6 +124,7 @@ describe('StateController', () => {
       .get('/state')
       .expect(200);
     expect(body).toEqual({
+      message: 'get all states',
       states: [
         {
           id: 1,

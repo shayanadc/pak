@@ -23,6 +23,8 @@ import { StateDto } from './state.dto';
 import { AllExceptionsFilter } from '../http-exception.filter';
 class StateResponse {
   @ApiProperty()
+  message: string;
+  @ApiProperty()
   state: StateEntity;
 }
 
@@ -42,6 +44,9 @@ export class StateController {
       allOf: [
         {
           properties: {
+            message: {
+              type: 'string',
+            },
             states: {
               type: 'array',
               items: { $ref: getSchemaPath(StateEntity) },
@@ -52,9 +57,9 @@ export class StateController {
     },
   })
   @UseGuards(AuthGuard())
-  async index(): Promise<{ states: StateEntity[] }> {
+  async index(): Promise<{ message: string; states: StateEntity[] }> {
     const states = await this.stateService.index();
-    return { states: states };
+    return { message: 'get all states', states: states };
   }
   @Post('/')
   @ApiBearerAuth()
@@ -63,8 +68,8 @@ export class StateController {
   async store(
     @GetUser() user: UserEntity,
     @Body() body: StateDto,
-  ): Promise<{ state: StateEntity }> {
+  ): Promise<{ message: string; state: StateEntity }> {
     const state = await this.stateService.store(body);
-    return { state: state };
+    return { message: 'new state created', state: state };
   }
 }

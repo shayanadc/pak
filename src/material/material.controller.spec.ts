@@ -99,6 +99,7 @@ describe('MaterialController', () => {
       .send({ cost: 21015, title: 'PAPER' })
       .expect(201);
     expect(body).toEqual({
+      message: 'new material has created',
       material: {
         id: 1,
         title: 'PAPER',
@@ -118,6 +119,7 @@ describe('MaterialController', () => {
       .get('/material')
       .expect(200);
     expect(body).toEqual({
+      message: 'All materials',
       materials: [
         {
           id: 1,
@@ -140,6 +142,7 @@ describe('MaterialController', () => {
       .send({ cost: 1000 })
       .expect(200);
     expect(body).toStrictEqual({
+      message: 'your material has changed',
       material: {
         id: mat.id,
         title: 'IRON',

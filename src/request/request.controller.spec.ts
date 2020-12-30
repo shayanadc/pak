@@ -134,6 +134,7 @@ describe('Request Controller', () => {
       })
       .expect(201);
     expect(body).toEqual({
+      message: 'new request created',
       request: {
         id: 2,
         user: {
@@ -189,6 +190,7 @@ describe('Request Controller', () => {
       .get('/request')
       .expect(200);
     expect(body).toEqual({
+      message: 'all request',
       requests: [
         {
           id: 1,
@@ -222,6 +224,7 @@ describe('Request Controller', () => {
       .get('/request/all')
       .expect(200);
     expect(body).toEqual({
+      message: 'return all index',
       requests: [
         {
           id: 1,
