@@ -125,6 +125,7 @@ describe('AddressController', () => {
       message: 'All Addresses',
       addresses: [
         {
+          zipCode: null,
           id: 2,
           description: 'BLAH BLAH',
           user: {
@@ -140,6 +141,7 @@ describe('AddressController', () => {
         },
         {
           id: 3,
+          zipCode: null,
           description: 'HALAN HALAM',
           user: {
             id: 2,
@@ -166,6 +168,7 @@ describe('AddressController', () => {
       message: 'New Address Has Created',
       address: {
         id: 3,
+        zipCode: null,
         description: 'Address ....',
         user: {
           id: 1,

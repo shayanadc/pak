@@ -147,6 +147,7 @@ describe('Request Controller', () => {
         },
         address: {
           id: 1,
+          zipCode: null,
           description: 'Addresss.....',
           type: 1,
           state: { id: 1, title: 'BLOCK', city: { id: 1, name: 'GORG' } },
@@ -205,6 +206,7 @@ describe('Request Controller', () => {
           },
           address: {
             id: 1,
+            zipCode: null,
             type: 1,
             description: 'Addresss.....',
             state: { id: 1, title: 'BLOCK', city: { id: 1, name: 'GORG' } },
@@ -240,6 +242,7 @@ describe('Request Controller', () => {
           date: '1999-12-31T20:30:00.000Z',
           address: {
             type: 1,
+            zipCode: null,
             description: 'Addresss.....',
             id: 1,
             state: {
