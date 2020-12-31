@@ -260,7 +260,7 @@ describe('Create And Toke User API', () => {
         disable: false,
         roles: ['user'],
       },
-      credit: { total: { amount: 13000 } },
+      credit: { total: { amount: 13000, quantity: 2 } },
     });
   });
 });

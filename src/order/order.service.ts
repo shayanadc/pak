@@ -7,6 +7,7 @@ import { MaterialRepository } from '../material/material.repository';
 import { OrderDetailsRepository } from './order.details.repository';
 import { UserRepository } from '../auth/user.repository';
 import { RequestType } from '../request/request.entity';
+import { log } from 'util';
 
 @Injectable()
 export class OrderService {
@@ -52,12 +53,13 @@ export class OrderService {
     return await this.orderRepo.index(condition);
   }
   async getCredit(user): Promise<any> {
-    const { sum } = await this.orderRepo
+    const res = await this.orderRepo
       .createQueryBuilder('orders')
       .where('orders.userId = :id', { id: user.id })
       .select('SUM(orders.price)', 'sum')
+      .addSelect('COUNT(orders.id)', 'count')
       .getRawOne();
-    return { total: { amount: sum } };
+    return { total: { amount: res.sum, quantity: res.count } };
   }
   async store(issuer, orderDto: OrderDto): Promise<OrderEntity> {
     const request = await this.requestRepo.findOneOrFail({
