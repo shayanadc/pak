@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  stage-pak-api:
+    container_name: stage_pak-api
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3000
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    container_name: postgres_stage
+    restart: always
+    ports:
+      - 15432:5432
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres:
+    name: stage-db
