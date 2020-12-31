@@ -25,7 +25,7 @@ import { UserModule } from './user/user.module';
       // port: 25432,
       database: 'pak',
       entities: [__dirname + '/**/*.entity.{js,ts}'],
-      synchronize: false,
+      synchronize: true,
       migrationsRun: true,
       migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
       cli: {
