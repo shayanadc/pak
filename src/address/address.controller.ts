@@ -82,6 +82,7 @@ export class AddressController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   @ApiOkResponse({ type: DeletedAddressResponse })
   @UseGuards(AuthGuard())
   async delete(
