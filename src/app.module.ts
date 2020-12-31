@@ -10,6 +10,9 @@ import { AppController } from './app.controller';
 import { OrderModule } from './order/order.module';
 import { UserModule } from './user/user.module';
 
+import * as env from 'dotenv';
+env.config();
+
 @Module({
   imports: [
     AuthModule,
@@ -18,7 +21,7 @@ import { UserModule } from './user/user.module';
     MaterialModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'postgres',
+      host: process.env.DB_SERVER || 'postgres',
       // host: 'localhost',
       username: 'postgres',
       password: 'password',
