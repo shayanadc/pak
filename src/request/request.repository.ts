@@ -23,7 +23,7 @@ export class RequestRepository extends Repository<RequestEntity> {
     request.date = body.date;
     return await request.save();
   }
-  async deleteItem(user, param): Promise<void> {
-    await this.delete({ id: param, done: false });
+  async deleteItem(user, id): Promise<void> {
+    await this.delete({ id: id, done: false });
   }
 }

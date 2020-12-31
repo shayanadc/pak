@@ -33,7 +33,7 @@ export class RequestService {
     const res = await this.requestRepo.store(user, address, body);
     return res;
   }
-  async delete(user, body): Promise<void> {
-    return await this.requestRepo.deleteItem(user, body);
+  async delete(user, id): Promise<void> {
+    return await this.requestRepo.deleteItem(user, id);
   }
 }

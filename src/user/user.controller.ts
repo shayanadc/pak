@@ -38,10 +38,10 @@ class userIdDto {
   id: number;
 }
 class UserFilterDTo {
-  @ApiProperty({ example: [1, 0] })
+  @ApiProperty({ example: [1, 0], required: false })
   @Type(() => Boolean)
   disable: boolean;
-  @ApiProperty()
+  @ApiProperty({ required: false })
   phone: string;
 }
 
@@ -64,6 +64,7 @@ export class UserController {
   @ApiBearerAuth()
   @ApiQuery({
     name: 'filters',
+    required: false,
     schema: {
       items: {
         $ref: getSchemaPath(UserFilterDTo),

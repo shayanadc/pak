@@ -111,9 +111,9 @@ export class RequestController {
   @ApiBearerAuth()
   async delete(
     @GetUser() user: UserEntity,
-    @Param('id', ParseIntPipe) param: RequestIdDTO,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<{ message: string; result: string }> {
-    await this.RequestService.delete(user, param);
+    await this.RequestService.delete(user, id);
     return { message: 'deleted', result: 'successful' };
   }
 }
