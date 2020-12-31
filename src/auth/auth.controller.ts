@@ -31,6 +31,8 @@ import { RolesGuard } from '../role/roles.guard';
 class AmountType {
   @ApiProperty({ example: 2000 })
   amount: number;
+  @ApiProperty()
+  quantity: number;
 }
 class CreditType {
   @ApiProperty()
