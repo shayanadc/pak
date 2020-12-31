@@ -36,7 +36,7 @@ class addressResponse {
 }
 class AddressIdDTO {
   @ApiProperty()
-  id: number;
+  id: string;
 }
 @UseFilters(AllExceptionsFilter)
 @Controller('address')
@@ -87,9 +87,10 @@ export class AddressController {
   @UseGuards(AuthGuard())
   async delete(
     @GetUser() user: UserEntity,
-    @Param('id', ParseIntPipe) param: AddressIdDTO,
+    @Param('id', ParseIntPipe)
+    id: number,
   ): Promise<{ message: string; result: any }> {
-    await this.addressServ.delete(user, param);
+    await this.addressServ.delete(user, id);
     return { message: 'Your Address Has Deleted', result: 'successful' };
   }
 }
