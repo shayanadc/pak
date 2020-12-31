@@ -27,6 +27,8 @@ import { OrderDetailsRepository } from '../order/order.details.repository';
 import { MaterialRepository } from '../material/material.repository';
 import { MaterialEntity } from '../material/material.entity';
 import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError';
+import { getConnection } from 'typeorm';
+import { ProvinceEntity } from '../city/province.entity';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -48,7 +50,7 @@ describe('User Service', () => {
       get: jest.fn().mockReturnValue('12345'),
     }),
   };
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -70,6 +72,7 @@ describe('User Service', () => {
             MaterialEntity,
             OrderEntity,
             OrderDetailEntity,
+            ProvinceEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -105,7 +108,8 @@ describe('User Service', () => {
     await app.init();
   });
   afterEach(async () => {
-    await userRepo.query(`DELETE FROM users;`);
+    const defaultConnection = getConnection('default');
+    await defaultConnection.close();
   });
   it('return existed user', async () => {
     await userRepo.save([

@@ -52,4 +52,7 @@ export class AddressEntity extends BaseEntity {
   @ApiProperty({ enum: ['HOME', 'APARTMENT', 'OFFICE'] })
   @IsEnum(BuildingType)
   type: BuildingType;
+  @ApiProperty()
+  @Column({ nullable: true })
+  zipCode: string;
 }

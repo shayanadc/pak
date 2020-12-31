@@ -24,6 +24,7 @@ import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { MaterialEntity } from '../material/material.entity';
 import { getConnection } from 'typeorm';
+import { ProvinceEntity } from '../city/province.entity';
 
 describe('StateController', () => {
   let userRepo: UserRepository;
@@ -52,6 +53,7 @@ describe('StateController', () => {
             OrderEntity,
             OrderDetailEntity,
             MaterialEntity,
+            ProvinceEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -107,6 +109,7 @@ describe('StateController', () => {
         city: {
           id: city.id,
           name: 'GORGAN',
+          province: null,
         },
       },
     });
@@ -129,7 +132,7 @@ describe('StateController', () => {
         {
           id: 1,
           title: 'GRSD',
-          city: { id: 1, name: 'GORGAN' },
+          city: { id: 1, name: 'GORGAN', province: null },
         },
       ],
     });

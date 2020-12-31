@@ -32,6 +32,7 @@ import { OrderDetailsRepository } from '../order/order.details.repository';
 import { OrderRepository } from '../order/order.repository';
 import { MaterialEntity } from '../material/material.entity';
 import { OrderService } from '../order/order.service';
+import { ProvinceEntity } from '../city/province.entity';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
@@ -80,6 +81,7 @@ describe('Create And Toke User API', () => {
             MaterialEntity,
             OrderEntity,
             OrderDetailEntity,
+            ProvinceEntity,
           ],
           synchronize: true,
           dropSchema: true,

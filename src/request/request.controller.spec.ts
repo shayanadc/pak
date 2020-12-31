@@ -26,6 +26,7 @@ import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { MaterialEntity } from '../material/material.entity';
 import { MaterialRepository } from '../material/material.repository';
 import { getConnection } from 'typeorm';
+import { ProvinceEntity } from '../city/province.entity';
 
 describe('Request Controller', () => {
   let app: INestApplication;
@@ -58,6 +59,7 @@ describe('Request Controller', () => {
             MaterialEntity,
             OrderEntity,
             OrderDetailEntity,
+            ProvinceEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -147,9 +149,14 @@ describe('Request Controller', () => {
         },
         address: {
           id: 1,
+          zipCode: null,
           description: 'Addresss.....',
           type: 1,
-          state: { id: 1, title: 'BLOCK', city: { id: 1, name: 'GORG' } },
+          state: {
+            id: 1,
+            title: 'BLOCK',
+            city: { id: 1, name: 'GORG', province: null },
+          },
         },
         type: 2,
         work_shift: 2,
@@ -205,9 +212,14 @@ describe('Request Controller', () => {
           },
           address: {
             id: 1,
+            zipCode: null,
             type: 1,
             description: 'Addresss.....',
-            state: { id: 1, title: 'BLOCK', city: { id: 1, name: 'GORG' } },
+            state: {
+              id: 1,
+              title: 'BLOCK',
+              city: { id: 1, name: 'GORG', province: null },
+            },
           },
           date: '1999-12-31T20:30:00.000Z',
           period: null,
@@ -240,10 +252,11 @@ describe('Request Controller', () => {
           date: '1999-12-31T20:30:00.000Z',
           address: {
             type: 1,
+            zipCode: null,
             description: 'Addresss.....',
             id: 1,
             state: {
-              city: { id: 1, name: 'GORG' },
+              city: { id: 1, name: 'GORG', province: null },
               id: 1,
               title: 'BLOCK',
             },

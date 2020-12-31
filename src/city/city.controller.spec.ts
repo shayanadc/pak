@@ -18,20 +18,21 @@ import { RequestEntity } from '../request/request.entity';
 import { AddressRepository } from '../address/address.repository';
 import { CityRepository } from '../address/city.repository';
 import { RequestRepository } from '../request/request.repository';
-import { StateController } from '../state/state.controller';
-import { StateService } from '../state/state.service';
 import supertest = require('supertest');
 import { CityService } from './city.service';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { OrderEntity } from '../order/order.entity';
 import { MaterialEntity } from '../material/material.entity';
 import { getConnection } from 'typeorm';
+import { ProvinceEntity } from './province.entity';
+import { ProvinceRepository } from './province.repository';
 
 describe('CityController', () => {
   let userRepo: UserRepository;
   let app: INestApplication;
   let stateRepo: StateRepository;
   let cityRepo: CityRepository;
+  let provinceRepo: ProvinceRepository;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -54,6 +55,7 @@ describe('CityController', () => {
             OrderDetailEntity,
             OrderEntity,
             MaterialEntity,
+            ProvinceEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -64,6 +66,7 @@ describe('CityController', () => {
           CityRepository,
           StateRepository,
           RequestRepository,
+          ProvinceRepository,
         ]),
       ],
       controllers: [CityController],
@@ -84,6 +87,7 @@ describe('CityController', () => {
     userRepo = await module.get<UserRepository>(UserRepository);
     stateRepo = await module.get<StateRepository>(StateRepository);
     cityRepo = await module.get<CityRepository>(CityRepository);
+    provinceRepo = await module.get<ProvinceRepository>(ProvinceRepository);
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
@@ -93,8 +97,12 @@ describe('CityController', () => {
     await defaultConnection.close();
   });
   it('/city GET return all citiess', async () => {
-    cityRepo.save({
+    await provinceRepo.save({
+      name: 'GOLESTAN',
+    });
+    await cityRepo.save({
       name: 'GORGAN',
+      province: await provinceRepo.findOne({ id: 1 }),
     });
     const { body } = await supertest
       .agent(app.getHttpServer())
@@ -106,6 +114,10 @@ describe('CityController', () => {
         {
           id: 1,
           name: 'GORGAN',
+          province: {
+            id: 1,
+            name: 'GOLESTAN',
+          },
         },
       ],
     });

@@ -24,6 +24,7 @@ import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { MaterialEntity } from '../material/material.entity';
 import { getConnection } from 'typeorm';
+import { ProvinceEntity } from '../city/province.entity';
 
 describe('AddressController', () => {
   let userRepo: UserRepository;
@@ -55,6 +56,7 @@ describe('AddressController', () => {
             MaterialEntity,
             OrderEntity,
             OrderDetailEntity,
+            ProvinceEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -125,6 +127,7 @@ describe('AddressController', () => {
       message: 'All Addresses',
       addresses: [
         {
+          zipCode: null,
           id: 2,
           description: 'BLAH BLAH',
           user: {
@@ -135,11 +138,16 @@ describe('AddressController', () => {
             disable: false,
             roles: ['user'],
           },
-          state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
+          state: {
+            id: 1,
+            title: 'BLOCK 24',
+            city: { id: 1, name: 'GORGAN', province: null },
+          },
           type: 1,
         },
         {
           id: 3,
+          zipCode: null,
           description: 'HALAN HALAM',
           user: {
             id: 2,
@@ -149,7 +157,11 @@ describe('AddressController', () => {
             disable: false,
             roles: ['user'],
           },
-          state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
+          state: {
+            id: 1,
+            title: 'BLOCK 24',
+            city: { id: 1, name: 'GORGAN', province: null },
+          },
           type: 2,
         },
       ],
@@ -166,6 +178,7 @@ describe('AddressController', () => {
       message: 'New Address Has Created',
       address: {
         id: 3,
+        zipCode: null,
         description: 'Address ....',
         user: {
           id: 1,
@@ -175,7 +188,11 @@ describe('AddressController', () => {
           disable: false,
           roles: ['user'],
         },
-        state: { id: 1, title: 'BLOCK 24', city: { id: 1, name: 'GORGAN' } },
+        state: {
+          id: 1,
+          title: 'BLOCK 24',
+          city: { id: 1, name: 'GORGAN', province: null },
+        },
         type: 2,
       },
     });

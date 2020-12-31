@@ -91,7 +91,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: userResponse })
   @UseGuards(AuthGuard(), RolesGuard)
-  @Roles(Role.User)
+  @Roles(Role.User, Role.Admin, Role.Driver, Role.Keeper)
   async getAuthUser(@GetUser() user: UserEntity): Promise<userResponse> {
     return {
       message: 'current user',
