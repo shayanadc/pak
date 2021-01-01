@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -24,6 +25,7 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
+import { UpdateuserDto } from '../user/updateuser.dto';
 class requestResponse {
   @ApiProperty()
   message: string;
@@ -115,5 +117,17 @@ export class RequestController {
   ): Promise<{ message: string; result: string }> {
     await this.RequestService.delete(user, id);
     return { message: 'deleted', result: 'successful' };
+  }
+
+  @Put(':id/process')
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: requestResponse })
+  @UseGuards(AuthGuard())
+  // @UsePipes(new ValidationPipe({ skipMissingProperties: true }))
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ message: string; request: RequestEntity }> {
+    const processedRequest = await this.RequestService.update(id);
+    return { message: 'request processed', request: processedRequest };
   }
 }

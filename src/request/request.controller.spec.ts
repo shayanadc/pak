@@ -269,6 +269,43 @@ describe('Request Controller', () => {
     });
   });
 
+  it('/request PUT change state of box request', async () => {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .put('/request/1/process')
+      .expect(200);
+    expect(body).toEqual({
+      message: 'request processed',
+      request: {
+        id: 1,
+        user: {
+          id: 1,
+          phone: '09129120912',
+          name: null,
+          lname: null,
+          disable: false,
+          roles: ['user'],
+        },
+        address: {
+          id: 1,
+          zipCode: null,
+          description: 'Addresss.....',
+          type: 1,
+          state: {
+            id: 1,
+            title: 'BLOCK',
+            city: { id: 1, name: 'GORG', province: null },
+          },
+        },
+        type: 1,
+        work_shift: 1,
+        date: '1999-12-31T20:30:00.000Z',
+        period: null,
+        done: true,
+      },
+    });
+  });
+
   it('/request/:id DELETE delete specific request of user', async () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
