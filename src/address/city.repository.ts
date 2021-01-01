@@ -3,7 +3,7 @@ import { CityEntity } from './city.entity';
 
 @EntityRepository(CityEntity)
 export class CityRepository extends Repository<CityEntity> {
-  async index(): Promise<CityEntity[]> {
-    return await this.find();
+  async index(query): Promise<CityEntity[]> {
+    return await this.find(query);
   }
 }

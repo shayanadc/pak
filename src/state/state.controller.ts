@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -13,6 +14,7 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiProperty,
+  ApiQuery,
   ApiResponse,
   getSchemaPath,
 } from '@nestjs/swagger';
@@ -27,6 +29,10 @@ class StateResponse {
   @ApiProperty()
   state: StateEntity;
 }
+class StateFilterDTo {
+  @ApiProperty({ example: 1, required: false })
+  city: number;
+}
 
 @ApiResponse({
   status: 400,
@@ -39,6 +45,15 @@ export class StateController {
   constructor(private stateService: StateService) {}
   @Get('/')
   @ApiBearerAuth()
+  @ApiQuery({
+    name: 'filters',
+    required: false,
+    schema: {
+      items: {
+        $ref: getSchemaPath(StateFilterDTo),
+      },
+    },
+  })
   @ApiOkResponse({
     schema: {
       allOf: [
@@ -57,8 +72,10 @@ export class StateController {
     },
   })
   @UseGuards(AuthGuard())
-  async index(): Promise<{ message: string; states: StateEntity[] }> {
-    const states = await this.stateService.index();
+  async index(
+    @Query() query: StateFilterDTo,
+  ): Promise<{ message: string; states: StateEntity[] }> {
+    const states = await this.stateService.index(query);
     return { message: 'get all states', states: states };
   }
   @Post('/')
