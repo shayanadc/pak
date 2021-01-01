@@ -1,16 +1,20 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
+  UpdateDateColumn,
 } from 'typeorm';
 import { AddressEntity } from '../address/address.entity';
 import { RequestEntity } from '../request/request.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { OrderEntity } from '../order/order.entity';
 import { Role } from '../role/role.enum';
+import { Exclude } from 'class-transformer';
+
 @Entity('users')
 @Unique(['phone'])
 export class UserEntity extends BaseEntity {
@@ -51,4 +55,8 @@ export class UserEntity extends BaseEntity {
   @Column('simple-array', { default: Role.User })
   @ApiProperty()
   roles: string[];
+  @CreateDateColumn({ select: false })
+  createdAt: Date;
+  @UpdateDateColumn({ select: false })
+  updatedAt: Date;
 }

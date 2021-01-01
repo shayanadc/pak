@@ -1,11 +1,13 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { AddressEntity } from '../address/address.entity';
 import { UserEntity } from '../auth/user.entity';
@@ -67,4 +69,9 @@ export class RequestEntity extends BaseEntity {
   @Column({ default: false })
   @ApiProperty()
   done: boolean;
+
+  @CreateDateColumn({ select: false })
+  createdAt: Date;
+  @UpdateDateColumn({ select: false })
+  updatedAt: Date;
 }

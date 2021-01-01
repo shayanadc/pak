@@ -134,6 +134,8 @@ describe('UserController', () => {
     expect(body).toEqual({
       user: {
         id: 2,
+        phone: '09129120912',
+        disable: false,
         name: 'summerset',
         lname: 'muam',
         roles: ['user', 'admin'],
