@@ -5,7 +5,7 @@ import { CityRepository } from '../address/city.repository';
 @Injectable()
 export class CityService {
   constructor(private cityRepo: CityRepository) {}
-  async index(): Promise<CityEntity[]> {
-    return await this.cityRepo.index();
+  async index(query): Promise<CityEntity[]> {
+    return await this.cityRepo.index(query);
   }
 }

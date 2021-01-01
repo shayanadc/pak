@@ -12,6 +12,7 @@ import { UserModule } from './user/user.module';
 
 import * as env from 'dotenv';
 import { NotifyModule } from './notify/notify.module';
+import { BannerModule } from './banner/banner.module';
 env.config();
 
 @Module({
@@ -41,6 +42,7 @@ env.config();
     OrderModule,
     UserModule,
     NotifyModule,
+    BannerModule,
   ],
   controllers: [AppController],
   providers: [],

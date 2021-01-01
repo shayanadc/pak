@@ -100,13 +100,20 @@ describe('CityController', () => {
     await provinceRepo.save({
       name: 'GOLESTAN',
     });
+    await provinceRepo.save({
+      name: 'MAZANDARAN',
+    });
     await cityRepo.save({
       name: 'GORGAN',
       province: await provinceRepo.findOne({ id: 1 }),
     });
+    await cityRepo.save({
+      name: 'SARI',
+      province: await provinceRepo.findOne({ id: 2 }),
+    });
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/city')
+      .get('/city?province=1')
       .expect(200);
     expect(body).toEqual({
       message: 'All Cities',

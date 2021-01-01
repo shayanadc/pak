@@ -14,7 +14,7 @@ export class StateService {
     const city = await this.cityRepo.findOneOrFail({ id: request.cityId });
     return await this.stateRepo.store(request, city);
   }
-  async index(): Promise<StateEntity[]> {
-    return await this.stateRepo.index();
+  async index(query): Promise<StateEntity[]> {
+    return await this.stateRepo.index(query);
   }
 }

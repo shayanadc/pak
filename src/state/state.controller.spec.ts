@@ -118,13 +118,16 @@ describe('StateController', () => {
     await cityRepo.save({
       name: 'GORGAN',
     });
+    await cityRepo.save({
+      name: 'GONBAD',
+    });
     await stateRepo.save({
       title: 'GRSD',
       city: await cityRepo.findOne({ id: 1 }),
     });
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/state')
+      .get('/state?city=1')
       .expect(200);
     expect(body).toEqual({
       message: 'get all states',
