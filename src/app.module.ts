@@ -9,9 +9,9 @@ import { CityModule } from './city/city.module';
 import { AppController } from './app.controller';
 import { OrderModule } from './order/order.module';
 import { UserModule } from './user/user.module';
-import { NotifyModule } from './notify/notify.module';
 
 import * as env from 'dotenv';
+import { NotifyModule } from './notify/notify.module';
 env.config();
 
 @Module({

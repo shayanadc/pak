@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
@@ -10,6 +11,7 @@ import {
   Query,
   UseFilters,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { StateService } from '../state/state.service';
 import { UserService } from './user.service';
@@ -61,6 +63,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('/')
+  @UseInterceptors(ClassSerializerInterceptor)
   @ApiBearerAuth()
   @ApiQuery({
     name: 'filters',

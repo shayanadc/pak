@@ -7,6 +7,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { RequestEntity } from '../request/request.entity';
 import { UserEntity } from '../auth/user.entity';
@@ -47,4 +49,9 @@ export class OrderEntity extends BaseEntity {
   )
   @ApiProperty()
   details: OrderDetailEntity[];
+
+  @CreateDateColumn({ select: false })
+  createdAt: Date;
+  @UpdateDateColumn({ select: false })
+  updatedAt: Date;
 }

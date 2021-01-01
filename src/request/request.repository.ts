@@ -21,7 +21,11 @@ export class RequestRepository extends Repository<RequestEntity> {
     request.type = body.type;
     request.work_shift = body.work_shift;
     request.date = body.date;
-    return await request.save();
+    await request.save();
+    return this.findOne({
+      where: { id: request.id },
+      relations: ['address'],
+    });
   }
   async deleteItem(user, id): Promise<void> {
     await this.delete({ id: id, done: false });

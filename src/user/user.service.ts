@@ -17,6 +17,7 @@ export class UserService {
   }
 
   async update(param, body: UpdateuserDto): Promise<UserEntity> {
-    return await this.userRepo.save({ ...body, id: param });
+    await this.userRepo.save({ ...body, id: param });
+    return await this.userRepo.findOne({ id: param });
   }
 }

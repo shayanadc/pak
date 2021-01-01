@@ -7,6 +7,8 @@ import {
 import { RequestRepository } from './request.repository';
 import { AddressRepository } from '../address/address.repository';
 import { RequestEntity } from './request.entity';
+import { UpdateuserDto } from '../user/updateuser.dto';
+import { UserEntity } from '../auth/user.entity';
 
 @Injectable()
 export class RequestService {
@@ -35,5 +37,19 @@ export class RequestService {
   }
   async delete(user, id): Promise<void> {
     return await this.requestRepo.deleteItem(user, id);
+  }
+
+  async update(param): Promise<RequestEntity> {
+    const req = await this.requestRepo.findOneOrFail({
+      where: { id: param, type: 1 },
+      relations: ['address'],
+    });
+    req.done = true;
+    await req.save();
+
+    return await this.requestRepo.findOne({
+      where: { id: param },
+      relations: ['address'],
+    });
   }
 }

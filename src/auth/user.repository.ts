@@ -14,7 +14,7 @@ export class UserRepository extends Repository<UserEntity> {
     user.phone = loginDto.phone;
     await user.save();
 
-    return user;
+    return this.findOne({ id: user.id });
   }
 
   async store(body: UserDto): Promise<UserEntity> {
@@ -25,6 +25,6 @@ export class UserRepository extends Repository<UserEntity> {
     user.disable = body.disable;
     user.roles = body.roles;
     await user.save();
-    return user;
+    return await this.findOne(user.id);
   }
 }
