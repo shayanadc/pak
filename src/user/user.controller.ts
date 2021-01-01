@@ -35,6 +35,7 @@ import { UpdateuserDto } from './updateuser.dto';
 import { Type } from 'class-transformer';
 import { BadRequestResponse } from '../api.response.swagger';
 import { AllExceptionsFilter } from '../http-exception.filter';
+import { skip, take } from 'rxjs/operators';
 class userIdDto {
   @ApiProperty()
   id: number;
@@ -45,6 +46,10 @@ class UserFilterDTo {
   disable: boolean;
   @ApiProperty({ required: false })
   phone: string;
+  @ApiProperty()
+  take: number;
+  @ApiProperty()
+  skip: number;
 }
 
 class UserResponse {
@@ -79,6 +84,9 @@ export class UserController {
       allOf: [
         {
           properties: {
+            count: {
+              type: 'string',
+            },
             users: {
               type: 'array',
               items: { $ref: getSchemaPath(UserEntity) },
@@ -89,9 +97,19 @@ export class UserController {
     },
   })
   @UseGuards(AuthGuard())
-  async index(@Query() query: UserFilterDTo): Promise<{ users: UserEntity[] }> {
-    const users = await this.userService.index(query);
-    return { users: users };
+  async index(
+    @Query() query: UserFilterDTo,
+  ): Promise<{ count: number; users: UserEntity[] }> {
+    let take = 10;
+    let skip = 0;
+    if (query.hasOwnProperty('take')) {
+      take = query.take;
+      skip = query.skip;
+      delete query.skip;
+      delete query.take;
+    }
+    const result = await this.userService.index(query, take, skip);
+    return { count: result.count, users: result.users };
   }
   @Post('/')
   @ApiBearerAuth()
