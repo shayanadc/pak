@@ -160,10 +160,11 @@ describe('UserController', () => {
     ]);
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/user?phone=09109100910&disable=1')
+      .get('/user?phone=09109100910&disable=1&take=1&skip=0')
       .expect(200);
 
     expect(body).toEqual({
+      count: 1,
       users: [
         {
           id: 1,
