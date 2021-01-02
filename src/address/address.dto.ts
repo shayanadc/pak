@@ -1,6 +1,6 @@
 import { BuildingType } from './address.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class AddressDto {
   @ApiProperty()
@@ -13,4 +13,7 @@ export class AddressDto {
   @ApiProperty()
   @IsEnum(BuildingType)
   type: BuildingType;
+  @ApiProperty()
+  @IsOptional()
+  zipCode: string;
 }

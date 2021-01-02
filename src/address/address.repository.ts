@@ -10,6 +10,7 @@ export class AddressRepository extends Repository<AddressEntity> {
     return await this.find({
       relations: ['user'],
       where: { user: user },
+      order: { id: 'DESC' },
     });
   }
   async store(
@@ -22,6 +23,7 @@ export class AddressRepository extends Repository<AddressEntity> {
     address.user = user;
     address.state = state;
     address.type = addressDto.type;
+    address.zipCode = addressDto.zipCode;
     await address.save();
     return address;
   }
