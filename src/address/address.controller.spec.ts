@@ -127,25 +127,6 @@ describe('AddressController', () => {
       message: 'All Addresses',
       addresses: [
         {
-          zipCode: null,
-          id: 2,
-          description: 'BLAH BLAH',
-          user: {
-            id: 2,
-            phone: '09129120912',
-            name: null,
-            lname: null,
-            disable: false,
-            roles: ['user'],
-          },
-          state: {
-            id: 1,
-            title: 'BLOCK 24',
-            city: { id: 1, name: 'GORGAN', province: null },
-          },
-          type: 1,
-        },
-        {
           id: 3,
           zipCode: null,
           description: 'HALAN HALAM',
@@ -163,6 +144,25 @@ describe('AddressController', () => {
             city: { id: 1, name: 'GORGAN', province: null },
           },
           type: 2,
+        },
+        {
+          zipCode: null,
+          id: 2,
+          description: 'BLAH BLAH',
+          user: {
+            id: 2,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+          },
+          state: {
+            id: 1,
+            title: 'BLOCK 24',
+            city: { id: 1, name: 'GORGAN', province: null },
+          },
+          type: 1,
         },
       ],
     });

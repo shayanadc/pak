@@ -9,12 +9,10 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { RequestType } from '../request/request.entity';
 
 export class OrderDto {
   @ApiProperty()
-  @IsEnum(RequestType)
-  requestId: RequestType;
+  requestId: number;
   @ApiProperty({ type: () => [OrderDetailsType] })
   @ValidateNested({ each: true })
   @Type(() => OrderDetailsType)
