@@ -285,6 +285,19 @@ describe('OrderController', () => {
     expect((await orderDetailRepo.find()).length).toEqual(6);
     expect((await requestRepository.findOne({ id: 1 })).done).toBeTruthy();
   });
+  it('/order Post prevent save new order for non existing orders', async function() {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .post('/order')
+      .send({
+        requestId: 10,
+        rows: [
+          { materialId: 1, weight: 2 },
+          { materialId: 2, weight: 3 },
+        ],
+      })
+      .expect(400);
+  });
 
   it('/order Post prevent save new order for done orders', async function() {
     const { body } = await supertest
