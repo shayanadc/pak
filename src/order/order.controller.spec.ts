@@ -203,7 +203,7 @@ describe('OrderController', () => {
     const defaultConnection = getConnection('default');
     await defaultConnection.close();
   });
-
+  it('/order/all return aggregate order', async function() {});
   it('/order/aggregate return aggregate order', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
@@ -234,6 +234,9 @@ describe('OrderController', () => {
       order: {
         id: 3,
         price: 70000,
+        delivered: false,
+        settleFlag: false,
+        settled: false,
         request: {
           id: 1,
           type: 3,

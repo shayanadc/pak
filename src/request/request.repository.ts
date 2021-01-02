@@ -6,11 +6,12 @@ export class RequestRepository extends Repository<RequestEntity> {
   async getAllFor(user): Promise<RequestEntity[]> {
     return await this.find({
       relations: ['user', 'address'],
-      where: { user: user },
+      where: { user: user, done: false },
     });
   }
   async getAll(): Promise<RequestEntity[]> {
     return await this.find({
+      where: { done: false },
       relations: ['user'],
     });
   }
