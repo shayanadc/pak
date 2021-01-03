@@ -111,6 +111,8 @@ describe('UserController', () => {
         lname: 'tribiani',
         disable: false,
         roles: ['user', 'admin'],
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
       },
     });
   });
@@ -141,6 +143,8 @@ describe('UserController', () => {
         name: 'summerset',
         lname: 'muam',
         roles: ['user', 'admin'],
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
       },
     });
   });
@@ -176,6 +180,8 @@ describe('UserController', () => {
           lname: 'sparraw',
           disable: true,
           roles: ['user'],
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
       ],
     });

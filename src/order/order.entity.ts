@@ -50,8 +50,10 @@ export class OrderEntity extends BaseEntity {
   @ApiProperty()
   details: OrderDetailEntity[];
 
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn()
+  @ApiProperty()
   createdAt: Date;
-  @UpdateDateColumn({ select: false })
+  @UpdateDateColumn()
+  @ApiProperty()
   updatedAt: Date;
 }

@@ -107,6 +107,8 @@ describe('MaterialController', () => {
         title: 'PAPER',
         cost: 21015,
         weight: 1,
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
       },
     });
   });
@@ -128,6 +130,8 @@ describe('MaterialController', () => {
           title: 'IRON',
           cost: 20000,
           weight: 1,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
       ],
     });
@@ -150,6 +154,8 @@ describe('MaterialController', () => {
         title: 'IRON',
         cost: 1000,
         weight: 1,
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
       },
     });
   });

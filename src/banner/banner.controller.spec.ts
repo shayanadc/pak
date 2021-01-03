@@ -63,6 +63,8 @@ describe('BannerController', () => {
           title: 'Coming...',
           url: 'THE...',
           link: 'Link',
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
       ],
     });
