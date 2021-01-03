@@ -6,10 +6,10 @@ export class NotifyEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   @ApiProperty()
   id: number;
-  @ApiProperty()
   @Column()
+  @ApiProperty()
   title: string;
-  @ApiProperty()
   @Column()
+  @ApiProperty()
   description: string;
 }
