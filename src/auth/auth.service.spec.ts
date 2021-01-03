@@ -120,7 +120,7 @@ describe('User Service', () => {
     const generateSpy = jest.spyOn(codeGenServ, 'generate');
     generateSpy.mockReturnValue('12345');
 
-    expect(
+    await expect(
       await authServ.findOrCreateUserWithPhone({ phone: '09129120912' }),
     ).toEqual({
       id: 1,
@@ -129,6 +129,8 @@ describe('User Service', () => {
       lname: null,
       disable: false,
       roles: ['user'],
+      createdAt: expect.any(Date),
+      updatedAt: expect.any(Date),
     });
 
     expect(smsService.sendMessage).toBeCalledTimes(1);

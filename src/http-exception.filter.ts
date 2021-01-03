@@ -49,7 +49,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
     if (exception.hasOwnProperty('response')) {
       if (exception instanceof BadRequestException) {
-        console.log(2);
         response.status(400).json({
           statusCode: 400,
           message: exception['response'].message,
@@ -57,7 +56,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         });
       }
       if (exception['response'].statusCode == 401) {
-        console.log(3);
         response.status(401).json({
           statusCode: 401,
           message: exception['response'].message,

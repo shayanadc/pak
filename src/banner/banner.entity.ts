@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('banners')
@@ -6,13 +13,20 @@ export class BannerEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   @ApiProperty()
   id: number;
-  @ApiProperty()
   @Column()
-  title: string;
   @ApiProperty()
+  title: string;
   @Column()
   image: string;
   @ApiProperty()
+  url: string;
   @Column()
+  @ApiProperty()
   link: string;
+  @CreateDateColumn()
+  @ApiProperty()
+  createdAt: Date;
+  @UpdateDateColumn()
+  @ApiProperty()
+  updatedAt: Date;
 }

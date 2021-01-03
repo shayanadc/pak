@@ -50,13 +50,18 @@ export class OrderEntity extends BaseEntity {
   @ApiProperty()
   details: OrderDetailEntity[];
   @Column({ default: false })
+  @ApiProperty()
   settleFlag: boolean;
   @Column({ default: false })
+  @ApiProperty()
   settled: boolean;
   @Column({ default: false })
+  @ApiProperty()
   delivered: boolean;
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn()
+  @ApiProperty()
   createdAt: Date;
-  @UpdateDateColumn({ select: false })
+  @UpdateDateColumn()
+  @ApiProperty()
   updatedAt: Date;
 }

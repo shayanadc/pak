@@ -4,10 +4,13 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { OrderEntity } from './order.entity';
 import { MaterialEntity } from '../material/material.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('order_details')
 export class OrderDetailEntity extends BaseEntity {
@@ -28,4 +31,10 @@ export class OrderDetailEntity extends BaseEntity {
     material => material.details,
   )
   material: MaterialEntity;
+  @CreateDateColumn()
+  @ApiProperty()
+  createdAt: Date;
+  @UpdateDateColumn()
+  @ApiProperty()
+  updatedAt: Date;
 }

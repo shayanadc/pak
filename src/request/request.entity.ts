@@ -70,8 +70,10 @@ export class RequestEntity extends BaseEntity {
   @ApiProperty()
   done: boolean;
 
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn()
+  @ApiProperty()
   createdAt: Date;
-  @UpdateDateColumn({ select: false })
+  @UpdateDateColumn()
+  @ApiProperty()
   updatedAt: Date;
 }

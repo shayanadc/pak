@@ -103,6 +103,7 @@ describe('UserController', () => {
       })
       .expect(201);
     expect(body).toEqual({
+      message: 'create new user',
       user: {
         id: 2,
         phone: '09109100910',
@@ -110,6 +111,8 @@ describe('UserController', () => {
         lname: 'tribiani',
         disable: false,
         roles: ['user', 'admin'],
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
       },
     });
   });
@@ -132,6 +135,7 @@ describe('UserController', () => {
       })
       .expect(200);
     expect(body).toEqual({
+      message: 'user updated',
       user: {
         id: 2,
         phone: '09129120912',
@@ -139,6 +143,8 @@ describe('UserController', () => {
         name: 'summerset',
         lname: 'muam',
         roles: ['user', 'admin'],
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
       },
     });
   });
@@ -164,6 +170,7 @@ describe('UserController', () => {
       .expect(200);
 
     expect(body).toEqual({
+      message: 'return all users',
       count: 1,
       users: [
         {
@@ -173,6 +180,8 @@ describe('UserController', () => {
           lname: 'sparraw',
           disable: true,
           roles: ['user'],
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
       ],
     });

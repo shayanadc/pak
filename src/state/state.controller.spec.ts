@@ -106,10 +106,14 @@ describe('StateController', () => {
       state: {
         id: 1,
         title: 'GORGANPARS',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
         city: {
           id: city.id,
           name: 'GORGAN',
           province: null,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
       },
     });
@@ -135,7 +139,15 @@ describe('StateController', () => {
         {
           id: 1,
           title: 'GRSD',
-          city: { id: 1, name: 'GORGAN', province: null },
+          city: {
+            id: 1,
+            name: 'GORGAN',
+            province: null,
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
       ],
     });

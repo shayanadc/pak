@@ -1,10 +1,12 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { StateEntity } from './state.entity';
 import { ApiProperty } from '@nestjs/swagger';
@@ -30,4 +32,10 @@ export class CityEntity extends BaseEntity {
     { eager: true },
   )
   province: ProvinceEntity;
+  @CreateDateColumn()
+  @ApiProperty()
+  createdAt: Date;
+  @UpdateDateColumn()
+  @ApiProperty()
+  updatedAt: Date;
 }

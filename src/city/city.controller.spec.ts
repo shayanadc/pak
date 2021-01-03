@@ -124,7 +124,11 @@ describe('CityController', () => {
           province: {
             id: 1,
             name: 'GOLESTAN',
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
           },
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
       ],
     });

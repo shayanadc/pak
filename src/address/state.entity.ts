@@ -1,10 +1,12 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '../auth/user.entity';
 import { AddressEntity } from './address.entity';
@@ -31,4 +33,11 @@ export class StateEntity extends BaseEntity {
   )
   @ApiProperty()
   city: CityEntity;
+
+  @CreateDateColumn()
+  @ApiProperty()
+  createdAt: Date;
+  @UpdateDateColumn()
+  @ApiProperty()
+  updatedAt: Date;
 }

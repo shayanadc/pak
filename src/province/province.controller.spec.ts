@@ -100,10 +100,14 @@ describe('ProvinceController', () => {
         {
           id: 1,
           name: 'MAZANDARAN',
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
         {
           id: 2,
           name: 'GOLESTAN',
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
       ],
     });

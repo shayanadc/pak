@@ -55,8 +55,8 @@ export class UserEntity extends BaseEntity {
   @Column('simple-array', { default: Role.User })
   @ApiProperty()
   roles: string[];
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn()
   createdAt: Date;
-  @UpdateDateColumn({ select: false })
+  @UpdateDateColumn()
   updatedAt: Date;
 }

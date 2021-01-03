@@ -1,10 +1,12 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
@@ -30,4 +32,10 @@ export class MaterialEntity extends BaseEntity {
   )
   @ApiProperty()
   details: OrderDetailEntity[];
+  @CreateDateColumn()
+  @ApiProperty()
+  createdAt: Date;
+  @UpdateDateColumn()
+  @ApiProperty()
+  updatedAt: Date;
 }
