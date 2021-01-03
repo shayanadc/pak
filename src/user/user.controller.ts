@@ -50,6 +50,8 @@ class UserFilterDTo {
   take: number;
   @ApiProperty()
   skip: number;
+  @ApiProperty({ example: ['user', 'admin'] })
+  roles: string;
 }
 
 class UserResponse {
