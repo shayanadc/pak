@@ -18,6 +18,7 @@ export class UserService {
       where: query,
       take: take,
       skip: skip,
+      order: { id: 'ASC' },
     });
 
     return { count: count, users: result };
