@@ -103,6 +103,7 @@ describe('UserController', () => {
       })
       .expect(201);
     expect(body).toEqual({
+      message: 'create new user',
       user: {
         id: 2,
         phone: '09109100910',
@@ -132,6 +133,7 @@ describe('UserController', () => {
       })
       .expect(200);
     expect(body).toEqual({
+      message: 'user updated',
       user: {
         id: 2,
         phone: '09129120912',
@@ -164,6 +166,7 @@ describe('UserController', () => {
       .expect(200);
 
     expect(body).toEqual({
+      message: 'return all users',
       count: 1,
       users: [
         {

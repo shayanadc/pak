@@ -99,7 +99,7 @@ export class UserController {
   @UseGuards(AuthGuard())
   async index(
     @Query() query: UserFilterDTo,
-  ): Promise<{ count: number; users: UserEntity[] }> {
+  ): Promise<{ message: string; count: number; users: UserEntity[] }> {
     let take = 10;
     let skip = 0;
     if (query.hasOwnProperty('take')) {
@@ -109,7 +109,11 @@ export class UserController {
       delete query.take;
     }
     const result = await this.userService.index(query, take, skip);
-    return { count: result.count, users: result.users };
+    return {
+      message: 'return all users',
+      count: result.count,
+      users: result.users,
+    };
   }
   @Post('/')
   @ApiBearerAuth()
@@ -118,9 +122,9 @@ export class UserController {
   async store(
     @GetUser() user: UserEntity,
     @Body() body: UserDto,
-  ): Promise<{ user: UserEntity }> {
+  ): Promise<{ message: string; user: UserEntity }> {
     const cUser = await this.userService.store(body);
-    return { user: cUser };
+    return { message: 'create new user', user: cUser };
   }
 
   @Put(':id')
@@ -131,8 +135,8 @@ export class UserController {
   async update(
     @Param('id', ParseIntPipe) param: userIdDto,
     @Body() updateuserDto: UpdateuserDto,
-  ): Promise<{ user: UserEntity }> {
+  ): Promise<{ message: string; user: UserEntity }> {
     const updateUser = await this.userService.update(param, updateuserDto);
-    return { user: updateUser };
+    return { message: 'user updated', user: updateUser };
   }
 }

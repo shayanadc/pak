@@ -6,13 +6,13 @@ export class BannerEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   @ApiProperty()
   id: number;
-  @ApiProperty()
   @Column()
+  @ApiProperty()
   title: string;
-  @ApiProperty()
   @Column()
+  @ApiProperty()
   url: string;
-  @ApiProperty()
   @Column()
+  @ApiProperty()
   link: string;
 }
