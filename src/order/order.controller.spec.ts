@@ -241,6 +241,8 @@ describe('OrderController', () => {
           date: '1999-12-31T20:30:00.000Z',
           period: null,
           done: true,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
           user: {
             id: 2,
             phone: '09109120912',
@@ -248,6 +250,8 @@ describe('OrderController', () => {
             lname: null,
             disable: false,
             roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
           },
         },
         user: {
@@ -257,6 +261,8 @@ describe('OrderController', () => {
           lname: null,
           disable: false,
           roles: ['user'],
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
         issuer: {
           id: 1,
@@ -265,21 +271,43 @@ describe('OrderController', () => {
           lname: null,
           disable: false,
           roles: ['user'],
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
         details: [
           {
             id: 5,
             price: 2 * 20000,
             weight: 2,
-            material: { cost: 20000, id: 1, title: 'Paper', weight: 1 },
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+            material: {
+              cost: 20000,
+              id: 1,
+              title: 'Paper',
+              weight: 1,
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
           },
           {
             id: 6,
             price: 3 * 10000,
             weight: 3,
-            material: { cost: 10000, id: 2, title: 'Iron', weight: 1 },
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+            material: {
+              cost: 10000,
+              id: 2,
+              title: 'Iron',
+              weight: 1,
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
           },
         ],
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
       },
     });
     expect((await orderDetailRepo.find()).length).toEqual(6);

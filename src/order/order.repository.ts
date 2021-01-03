@@ -22,10 +22,6 @@ export class OrderRepository extends Repository<OrderEntity> {
     order.price = price;
     order.details = orderDetail;
     await order.save();
-    await delete order.createdAt;
-    await delete order.updatedAt;
-    await delete order.request.createdAt;
-    await delete order.request.updatedAt;
     return order;
   }
   async index(condition?): Promise<OrderEntity[]> {

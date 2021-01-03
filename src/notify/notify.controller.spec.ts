@@ -61,6 +61,8 @@ describe('NotifyController', () => {
           id: 1,
           title: 'Coming...',
           description: 'THE...',
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
         },
       ],
     });
