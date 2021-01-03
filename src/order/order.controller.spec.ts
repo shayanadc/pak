@@ -203,7 +203,23 @@ describe('OrderController', () => {
     const defaultConnection = getConnection('default');
     await defaultConnection.close();
   });
-  it('/order/all return aggregate order', async function() {});
+  // it('/order/all return aggregate order', async function() {});
+  it('/order/aggregate/process return aggregate order', async function() {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .put('/order/09129120912/collect/process')
+      .expect(200);
+    expect(
+      (await orderRepository.find({ where: { delivered: true } })).length,
+    ).toEqual(2);
+    // expect(body).toEqual({
+    //   message: 'all of order report for this user ',
+    //   orders: [
+    //     { materialId: 1, title: 'Paper', weight: 6 },
+    //     { materialId: 2, title: 'Iron', weight: 4 },
+    //   ],
+    // });
+  });
   it('/order/aggregate return aggregate order', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())

@@ -59,6 +59,10 @@ export class OrderService {
   async settleFor(user): Promise<any> {
     return await this.orderRepo.settleFor(user);
   }
+  async deliveredForWith(phone): Promise<any> {
+    const driver = await this.userRepo.findOneOrFail({ phone: phone });
+    return await this.orderRepo.deliveredFor(driver);
+  }
   async deliveredFor(driver): Promise<any> {
     return await this.orderRepo.deliveredFor(driver);
   }

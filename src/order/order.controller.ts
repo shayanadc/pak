@@ -5,6 +5,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -152,5 +153,19 @@ export class OrderController {
   ): Promise<{ message: string; orders: AggType }> {
     const orders = await this.orderService.aggregate(phone);
     return { message: 'all of order report for this user ', orders: orders };
+  }
+  @Put(':phone/collect/process')
+  @ApiBearerAuth()
+  // @ApiOkResponse({ type: AggType })
+  @UseGuards(AuthGuard())
+  async processedCollectedOrders(
+    @GetUser() user: UserEntity,
+    @Param('phone') phone: string,
+  ): Promise<{ message: string; result: string }> {
+    const orders = await this.orderService.deliveredForWith(phone);
+    return {
+      message: 'all of order report for this user ',
+      result: 'successful',
+    };
   }
 }
