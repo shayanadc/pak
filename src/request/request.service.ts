@@ -16,7 +16,7 @@ export class RequestService {
     private requestRepo: RequestRepository,
     private addressRepo: AddressRepository,
   ) {}
-  async getAll(user) {
+  async getAll(user?) {
     if (user) {
       return await this.requestRepo.getAllFor(user);
     }
