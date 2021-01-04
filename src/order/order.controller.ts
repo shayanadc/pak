@@ -176,11 +176,23 @@ export class OrderController {
   async readyForSettlement(
     @GetUser() user: UserEntity,
   ): Promise<{ message: string; result: string }> {
-    console.log(user);
     const orders = await this.orderService.requestForSettle(user);
     return {
       message: 'all of order report for this user ',
       result: 'successful',
+    };
+  }
+  @Get('settle/users')
+  @ApiBearerAuth()
+  // @ApiOkResponse({ type: AggType })
+  @UseGuards(AuthGuard())
+  async getUserListForSettle(
+    @GetUser() user: UserEntity,
+  ): Promise<{ message: string; users: UserEntity[] }> {
+    const users = await this.orderService.waitingUserForSettlemnt();
+    return {
+      message: 'all of order report for this user ',
+      users: users,
     };
   }
 }

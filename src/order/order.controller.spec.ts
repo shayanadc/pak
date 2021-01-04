@@ -247,6 +247,13 @@ describe('OrderController', () => {
       ).length,
     ).toEqual(1);
   });
+
+  it('/order/request ready orders for this user to settle', async function() {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .get('/order/settle/users')
+      .expect(200);
+  });
   it('/order/aggregate return aggregate order', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())

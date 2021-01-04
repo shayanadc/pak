@@ -54,7 +54,6 @@ export class OrderService {
     return await this.orderRepo.index(condition);
   }
   async requestForSettle(user): Promise<any> {
-    console.log(await this.orderRepo.find());
     return await this.orderRepo.requestForSettle(user);
   }
   async settleFor(user): Promise<any> {
