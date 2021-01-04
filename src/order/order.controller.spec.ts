@@ -255,7 +255,7 @@ describe('OrderController', () => {
       .expect(200);
   });
 
-  it('/order/all ready orders for this user to settle', async function() {
+  it('/order/issued ready orders for this user to settle', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
       .get('/order/all')

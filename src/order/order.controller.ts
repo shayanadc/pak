@@ -25,6 +25,7 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
+import { Column } from 'typeorm';
 class SumType {
   @ApiProperty()
   title: string;
@@ -47,6 +48,23 @@ class orderResponse {
 class PhoneParamDto {
   @ApiProperty()
   phone: any;
+}
+
+class OrderFilterDTo {
+  @ApiProperty()
+  id: number;
+  @ApiProperty()
+  request: number;
+  @ApiProperty()
+  user: number;
+  @ApiProperty()
+  issuer: number;
+  @ApiProperty()
+  settleFlag: boolean;
+  @ApiProperty()
+  settled: boolean;
+  @ApiProperty()
+  delivered: boolean;
 }
 @UseFilters(AllExceptionsFilter)
 @Controller('order')
@@ -88,8 +106,10 @@ export class OrderController {
   @UseGuards(AuthGuard())
   async index(
     @GetUser() user: UserEntity,
+    @Query() query: OrderFilterDTo,
   ): Promise<{ message: string; orders: OrderEntity[] }> {
-    const orders = await this.orderService.index({ user: user.id });
+    query.user = user.id;
+    const orders = await this.orderService.index(query);
     return { message: 'return all index', orders: orders };
   }
   @Get('/issued')
@@ -114,8 +134,10 @@ export class OrderController {
   @UseGuards(AuthGuard())
   async indexIssued(
     @GetUser() user: UserEntity,
+    @Query() query: OrderFilterDTo,
   ): Promise<{ message: string; orders: OrderEntity[] }> {
-    const orders = await this.orderService.index({ issuer: user.id });
+    query.issuer = user.id;
+    const orders = await this.orderService.index(query);
     return { message: 'all order that is issued by this user', orders: orders };
   }
   @Get('/all')
@@ -140,7 +162,7 @@ export class OrderController {
   @UseGuards(AuthGuard())
   async indexAll(
     @GetUser() user: UserEntity,
-    @Query() query,
+    @Query() query: OrderFilterDTo,
   ): Promise<{ message: string; orders: OrderEntity[] }> {
     const orders = await this.orderService.index(query);
     return { message: 'return all orders', orders: orders };
