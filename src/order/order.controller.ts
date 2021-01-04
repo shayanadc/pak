@@ -168,4 +168,19 @@ export class OrderController {
       result: 'successful',
     };
   }
+
+  @Put('settle/request')
+  @ApiBearerAuth()
+  // @ApiOkResponse({ type: AggType })
+  @UseGuards(AuthGuard())
+  async readyForSettlement(
+    @GetUser() user: UserEntity,
+  ): Promise<{ message: string; result: string }> {
+    console.log(user);
+    const orders = await this.orderService.requestForSettle(user);
+    return {
+      message: 'all of order report for this user ',
+      result: 'successful',
+    };
+  }
 }
