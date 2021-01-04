@@ -93,7 +93,7 @@ export class RequestController {
   async indexAll(
     @GetUser() user: UserEntity,
   ): Promise<{ message: string; requests: RequestEntity[] }> {
-    const req = await this.RequestService.getAll(user);
+    const req = await this.RequestService.getAll();
     return { message: 'return all index', requests: req };
   }
 
