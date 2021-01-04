@@ -254,6 +254,105 @@ describe('OrderController', () => {
       .get('/order/settle/users')
       .expect(200);
   });
+
+  it('/order/all ready orders for this user to settle', async function() {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .get('/order/all')
+      .expect(200);
+    expect(body).toEqual({
+      message: 'return all orders',
+      orders: [
+        {
+          id: 1,
+          price: 4000,
+          settleFlag: false,
+          settled: false,
+          delivered: false,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          user: {
+            id: 2,
+            phone: '09109120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+          issuer: {
+            id: 1,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+        },
+        {
+          id: 2,
+          price: 9000,
+          settleFlag: false,
+          settled: false,
+          delivered: false,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          user: {
+            id: 2,
+            phone: '09109120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+          issuer: {
+            id: 1,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+        },
+        {
+          id: 3,
+          price: 9000,
+          settleFlag: false,
+          settled: false,
+          delivered: false,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          user: {
+            id: 1,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+          issuer: {
+            id: 2,
+            phone: '09109120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+        },
+      ],
+    });
+  });
   it('/order/aggregate return aggregate order', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())

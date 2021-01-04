@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -117,7 +118,7 @@ export class OrderController {
     const orders = await this.orderService.index({ issuer: user.id });
     return { message: 'all order that is issued by this user', orders: orders };
   }
-  @Get('/index')
+  @Get('/all')
   @ApiBearerAuth()
   @ApiOkResponse({
     schema: {
@@ -139,9 +140,10 @@ export class OrderController {
   @UseGuards(AuthGuard())
   async indexAll(
     @GetUser() user: UserEntity,
+    @Query() query,
   ): Promise<{ message: string; orders: OrderEntity[] }> {
-    const orders = await this.orderService.index();
-    return { message: 'return all orders for this user', orders: orders };
+    const orders = await this.orderService.index(query);
+    return { message: 'return all orders', orders: orders };
   }
   @Get(':phone/aggregate')
   @ApiBearerAuth()
