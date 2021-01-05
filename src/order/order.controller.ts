@@ -60,9 +60,9 @@ class OrderFilterDTo {
   @ApiProperty()
   issuer: number;
   @ApiProperty()
-  settleFlag: boolean;
+  invoice: boolean;
   @ApiProperty()
-  settled: boolean;
+  payback: boolean;
   @ApiProperty()
   delivered: boolean;
 }

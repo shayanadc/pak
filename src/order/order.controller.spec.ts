@@ -242,7 +242,7 @@ describe('OrderController', () => {
     expect(
       (
         await orderRepository.find({
-          where: { settleFlag: true },
+          where: { invoice: true },
         })
       ).length,
     ).toEqual(1);
@@ -266,8 +266,8 @@ describe('OrderController', () => {
         {
           id: 1,
           price: 4000,
-          settleFlag: false,
-          settled: false,
+          invoice: false,
+          payback: false,
           delivered: false,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
@@ -295,8 +295,8 @@ describe('OrderController', () => {
         {
           id: 2,
           price: 9000,
-          settleFlag: false,
-          settled: false,
+          invoice: false,
+          payback: false,
           delivered: false,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
@@ -324,8 +324,8 @@ describe('OrderController', () => {
         {
           id: 3,
           price: 9000,
-          settleFlag: false,
-          settled: false,
+          invoice: false,
+          payback: false,
           delivered: false,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
@@ -384,8 +384,8 @@ describe('OrderController', () => {
         id: 4,
         price: 70000,
         delivered: false,
-        settleFlag: false,
-        settled: false,
+        invoice: false,
+        payback: false,
         request: {
           id: 1,
           type: 3,

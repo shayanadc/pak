@@ -32,7 +32,7 @@ export class OrderRepository extends Repository<OrderEntity> {
     await getConnection()
       .createQueryBuilder()
       .update(OrderEntity)
-      .set({ settleFlag: true })
+      .set({ invoice: true })
       .where('userId = :id', { id: user.id })
       .execute();
   }
@@ -40,7 +40,7 @@ export class OrderRepository extends Repository<OrderEntity> {
     await getConnection()
       .createQueryBuilder()
       .update(OrderEntity)
-      .set({ settled: true })
+      .set({ payback: true })
       .where('userId = :id', { id: user.id })
       .execute();
   }
@@ -54,7 +54,7 @@ export class OrderRepository extends Repository<OrderEntity> {
   }
   async findReadyForSettle(user): Promise<OrderEntity[]> {
     return await this.find({
-      where: { user: user, settleFlag: true, settled: false },
+      where: { user: user, invoice: true, payback: false },
     });
   }
 }

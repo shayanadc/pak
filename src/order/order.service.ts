@@ -71,7 +71,7 @@ export class OrderService {
   }
   async waitingUserForSettlemnt(): Promise<UserEntity[]> {
     const waitOrders = await this.orderRepo.find({
-      where: { settleFlag: true, settled: false },
+      where: { invoice: true, payback: false },
     });
     const ids = waitOrders.map(value => value.user.id);
     const waitingUsers = await this.userRepo
@@ -84,7 +84,7 @@ export class OrderService {
     const res = await this.orderRepo
       .createQueryBuilder('orders')
       .where('orders.userId = :id', { id: user.id })
-      .andWhere('orders.settled = :state', { state: false })
+      .andWhere('orders.payback = :state', { state: false })
       .select('SUM(orders.price)', 'sum')
       .addSelect('COUNT(orders.id)', 'count')
       .getRawOne();

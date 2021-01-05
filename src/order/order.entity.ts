@@ -51,10 +51,10 @@ export class OrderEntity extends BaseEntity {
   details: OrderDetailEntity[];
   @Column({ default: false })
   @ApiProperty()
-  settleFlag: boolean;
+  invoice: boolean;
   @Column({ default: false })
   @ApiProperty()
-  settled: boolean;
+  payback: boolean;
   @Column({ default: false })
   @ApiProperty()
   delivered: boolean;
