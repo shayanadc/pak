@@ -1,5 +1,8 @@
 export default class CodeGenerator {
   generate(): string {
-    return '12345';
+    return this.getRandomArbitrary(10000, 99999).toString;
+  }
+  getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
   }
 }
