@@ -225,19 +225,19 @@ describe('OrderController', () => {
     await defaultConnection.close();
   });
   // it('/order/all return aggregate order', async function() {});
-  it('/order/aggregate/process return aggregate order', async function() {
+  it('/order/delivered return aggregate order', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .put('/order/09129120912/collect/process')
+      .put('/order/09129120912/delivered')
       .expect(200);
     expect(
       (await orderRepository.find({ where: { delivered: true } })).length,
     ).toEqual(2);
   });
-  it('/order/settle/request ready orders for this user to settle', async function() {
+  it('/order/invoice ready orders for this user to settle', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .put('/order/settle/request')
+      .put('/order/invoice')
       .expect(200);
     expect(
       (
@@ -248,10 +248,10 @@ describe('OrderController', () => {
     ).toEqual(1);
   });
 
-  it('/order/request ready orders for this user to settle', async function() {
+  it('/order/invoice/user ready orders for this user to settle', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/order/settle/users')
+      .get('/order/invoice/users')
       .expect(200);
   });
 
@@ -353,10 +353,10 @@ describe('OrderController', () => {
       ],
     });
   });
-  it('/order/aggregate return aggregate order', async function() {
+  it('/order/collected return aggregate order', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/order/09129120912/aggregate')
+      .get('/order/09129120912/collected')
       .expect(200);
     expect(body).toEqual({
       message: 'all of order report for this user ',

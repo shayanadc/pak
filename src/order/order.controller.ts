@@ -167,7 +167,7 @@ export class OrderController {
     const orders = await this.orderService.index(query);
     return { message: 'return all orders', orders: orders };
   }
-  @Get(':phone/aggregate')
+  @Get(':phone/collected')
   @ApiBearerAuth()
   @ApiOkResponse({ type: AggType })
   @UseGuards(AuthGuard())
@@ -178,7 +178,7 @@ export class OrderController {
     const orders = await this.orderService.aggregate(phone);
     return { message: 'all of order report for this user ', orders: orders };
   }
-  @Put(':phone/collect/process')
+  @Put(':phone/delivered')
   @ApiBearerAuth()
   // @ApiOkResponse({ type: AggType })
   @UseGuards(AuthGuard())
@@ -193,7 +193,7 @@ export class OrderController {
     };
   }
 
-  @Put('settle/request')
+  @Put('invoice')
   @ApiBearerAuth()
   // @ApiOkResponse({ type: AggType })
   @UseGuards(AuthGuard())
@@ -206,7 +206,7 @@ export class OrderController {
       result: 'successful',
     };
   }
-  @Get('settle/users')
+  @Get('invoice/users')
   @ApiBearerAuth()
   // @ApiOkResponse({ type: AggType })
   @UseGuards(AuthGuard())
