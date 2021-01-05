@@ -8,6 +8,7 @@ import { OrderDetailsRepository } from './order.details.repository';
 import { UserRepository } from '../auth/user.repository';
 import { RequestType } from '../request/request.entity';
 import { log } from 'util';
+import { UserEntity } from '../auth/user.entity';
 
 @Injectable()
 export class OrderService {
@@ -22,7 +23,7 @@ export class OrderService {
     const user = await this.userRepo.findOneOrFail({ phone: phone });
     const orders = await this.orderRepo.find({
       relations: ['issuer'],
-      where: { issuer: user },
+      where: { issuer: user, delivered: false },
     });
     if (orders.length == 0) {
       throw new NotFoundException(['You don have any order']);
@@ -52,10 +53,38 @@ export class OrderService {
   async index(condition?): Promise<OrderEntity[]> {
     return await this.orderRepo.index(condition);
   }
+  async requestForSettle(user): Promise<any> {
+    return await this.orderRepo.requestForSettle(user);
+  }
+  async settleFor(user): Promise<any> {
+    return await this.orderRepo.settleFor(user);
+  }
+  async deliveredForWith(phone): Promise<any> {
+    const driver = await this.userRepo.findOneOrFail({ phone: phone });
+    return await this.orderRepo.deliveredFor(driver);
+  }
+  async deliveredFor(driver): Promise<any> {
+    return await this.orderRepo.deliveredFor(driver);
+  }
+  async readyForSettle(user): Promise<OrderEntity[]> {
+    return await this.orderRepo.findReadyForSettle(user);
+  }
+  async waitingUserForSettlemnt(): Promise<UserEntity[]> {
+    const waitOrders = await this.orderRepo.find({
+      where: { invoice: true, payback: false },
+    });
+    const ids = waitOrders.map(value => value.user.id);
+    const waitingUsers = await this.userRepo
+      .createQueryBuilder('users')
+      .where('users.id IN (:...ids)', { ids: ids })
+      .getMany();
+    return waitingUsers;
+  }
   async getCredit(user): Promise<any> {
     const res = await this.orderRepo
       .createQueryBuilder('orders')
       .where('orders.userId = :id', { id: user.id })
+      .andWhere('orders.payback = :state', { state: false })
       .select('SUM(orders.price)', 'sum')
       .addSelect('COUNT(orders.id)', 'count')
       .getRawOne();

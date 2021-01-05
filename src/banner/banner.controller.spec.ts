@@ -47,7 +47,7 @@ describe('BannerController', () => {
     const banner = await bannerRepo.save([
       {
         title: 'Coming...',
-        url: 'THE...',
+        image: 'THE...',
         link: 'Link',
       },
     ]);
@@ -61,7 +61,7 @@ describe('BannerController', () => {
         {
           id: 1,
           title: 'Coming...',
-          url: 'THE...',
+          image: 'THE...',
           link: 'Link',
           createdAt: expect.any(String),
           updatedAt: expect.any(String),

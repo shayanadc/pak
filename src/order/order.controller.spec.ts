@@ -127,6 +127,12 @@ describe('OrderController', () => {
             type: 2,
             date: '2000-01-01 00:00:00',
           });
+          const request3 = await requestRepository.save({
+            user: adminUser,
+            address: address,
+            type: 2,
+            date: '2000-01-01 00:00:00',
+          });
           const mat1 = await materialRepository.save({
             title: 'Paper',
             cost: 20000,
@@ -159,6 +165,14 @@ describe('OrderController', () => {
               price: 1000,
             },
           ]);
+
+          const detail3 = await orderDetailRepo.save([
+            {
+              material: mat1,
+              weight: 4,
+              price: 1000,
+            },
+          ]);
           await orderRepository.save([
             {
               user: endUser,
@@ -173,6 +187,13 @@ describe('OrderController', () => {
               request: request2,
               price: 9000,
               details: detail2,
+            },
+            {
+              user: adminUser,
+              issuer: endUser,
+              request: request3,
+              price: 9000,
+              details: detail3,
             },
           ]);
           const req = context.switchToHttp().getRequest();
@@ -203,11 +224,139 @@ describe('OrderController', () => {
     const defaultConnection = getConnection('default');
     await defaultConnection.close();
   });
-
-  it('/order/aggregate return aggregate order', async function() {
+  // it('/order/all return aggregate order', async function() {});
+  it('/order/delivered return aggregate order', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/order/09129120912/aggregate')
+      .put('/order/09129120912/delivered')
+      .expect(200);
+    expect(
+      (await orderRepository.find({ where: { delivered: true } })).length,
+    ).toEqual(2);
+  });
+  it('/order/invoice ready orders for this user to settle', async function() {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .put('/order/invoice')
+      .expect(200);
+    expect(
+      (
+        await orderRepository.find({
+          where: { invoice: true },
+        })
+      ).length,
+    ).toEqual(1);
+  });
+
+  it('/order/invoice/user ready orders for this user to settle', async function() {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .get('/order/invoice/users')
+      .expect(200);
+  });
+
+  it('/order/issued ready orders for this user to settle', async function() {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .get('/order/all')
+      .expect(200);
+    expect(body).toEqual({
+      message: 'return all orders',
+      orders: [
+        {
+          id: 1,
+          price: 4000,
+          invoice: false,
+          payback: false,
+          delivered: false,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          user: {
+            id: 2,
+            phone: '09109120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+          issuer: {
+            id: 1,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+        },
+        {
+          id: 2,
+          price: 9000,
+          invoice: false,
+          payback: false,
+          delivered: false,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          user: {
+            id: 2,
+            phone: '09109120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+          issuer: {
+            id: 1,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+        },
+        {
+          id: 3,
+          price: 9000,
+          invoice: false,
+          payback: false,
+          delivered: false,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          user: {
+            id: 1,
+            phone: '09129120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+          issuer: {
+            id: 2,
+            phone: '09109120912',
+            name: null,
+            lname: null,
+            disable: false,
+            roles: ['user'],
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+        },
+      ],
+    });
+  });
+  it('/order/collected return aggregate order', async function() {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .get('/order/09129120912/collected')
       .expect(200);
     expect(body).toEqual({
       message: 'all of order report for this user ',
@@ -232,8 +381,11 @@ describe('OrderController', () => {
     expect(body).toEqual({
       message: 'create new order',
       order: {
-        id: 3,
+        id: 4,
         price: 70000,
+        delivered: false,
+        invoice: false,
+        payback: false,
         request: {
           id: 1,
           type: 3,
@@ -276,8 +428,8 @@ describe('OrderController', () => {
         },
         details: [
           {
-            id: 5,
-            price: 2 * 20000,
+            id: 6,
+            price: 4 * 10000,
             weight: 2,
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
@@ -291,8 +443,8 @@ describe('OrderController', () => {
             },
           },
           {
-            id: 6,
-            price: 3 * 10000,
+            id: 7,
+            price: 30000,
             weight: 3,
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
@@ -310,7 +462,7 @@ describe('OrderController', () => {
         updatedAt: expect.any(String),
       },
     });
-    expect((await orderDetailRepo.find()).length).toEqual(6);
+    expect((await orderDetailRepo.find()).length).toEqual(7);
     expect((await requestRepository.findOne({ id: 1 })).done).toBeTruthy();
   });
   it('/order Post prevent save new order for non existing orders', async function() {

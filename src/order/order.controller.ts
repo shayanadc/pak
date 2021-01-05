@@ -5,6 +5,8 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
+  Query,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -23,6 +25,7 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
+import { Column } from 'typeorm';
 class SumType {
   @ApiProperty()
   title: string;
@@ -45,6 +48,23 @@ class orderResponse {
 class PhoneParamDto {
   @ApiProperty()
   phone: any;
+}
+
+class OrderFilterDTo {
+  @ApiProperty()
+  id: number;
+  @ApiProperty()
+  request: number;
+  @ApiProperty()
+  user: number;
+  @ApiProperty()
+  issuer: number;
+  @ApiProperty()
+  invoice: boolean;
+  @ApiProperty()
+  payback: boolean;
+  @ApiProperty()
+  delivered: boolean;
 }
 @UseFilters(AllExceptionsFilter)
 @Controller('order')
@@ -86,8 +106,10 @@ export class OrderController {
   @UseGuards(AuthGuard())
   async index(
     @GetUser() user: UserEntity,
+    @Query() query: OrderFilterDTo,
   ): Promise<{ message: string; orders: OrderEntity[] }> {
-    const orders = await this.orderService.index({ user: user.id });
+    query.user = user.id;
+    const orders = await this.orderService.index(query);
     return { message: 'return all index', orders: orders };
   }
   @Get('/issued')
@@ -112,11 +134,13 @@ export class OrderController {
   @UseGuards(AuthGuard())
   async indexIssued(
     @GetUser() user: UserEntity,
+    @Query() query: OrderFilterDTo,
   ): Promise<{ message: string; orders: OrderEntity[] }> {
-    const orders = await this.orderService.index({ issuer: user.id });
+    query.issuer = user.id;
+    const orders = await this.orderService.index(query);
     return { message: 'all order that is issued by this user', orders: orders };
   }
-  @Get('/index')
+  @Get('/all')
   @ApiBearerAuth()
   @ApiOkResponse({
     schema: {
@@ -138,11 +162,12 @@ export class OrderController {
   @UseGuards(AuthGuard())
   async indexAll(
     @GetUser() user: UserEntity,
+    @Query() query: OrderFilterDTo,
   ): Promise<{ message: string; orders: OrderEntity[] }> {
-    const orders = await this.orderService.index();
-    return { message: 'return all orders for this user', orders: orders };
+    const orders = await this.orderService.index(query);
+    return { message: 'return all orders', orders: orders };
   }
-  @Get(':phone/aggregate')
+  @Get(':phone/collected')
   @ApiBearerAuth()
   @ApiOkResponse({ type: AggType })
   @UseGuards(AuthGuard())
@@ -152,5 +177,46 @@ export class OrderController {
   ): Promise<{ message: string; orders: AggType }> {
     const orders = await this.orderService.aggregate(phone);
     return { message: 'all of order report for this user ', orders: orders };
+  }
+  @Put(':phone/delivered')
+  @ApiBearerAuth()
+  // @ApiOkResponse({ type: AggType })
+  @UseGuards(AuthGuard())
+  async processedCollectedOrders(
+    @GetUser() user: UserEntity,
+    @Param('phone') phone: string,
+  ): Promise<{ message: string; result: string }> {
+    const orders = await this.orderService.deliveredForWith(phone);
+    return {
+      message: 'all of order report for this user ',
+      result: 'successful',
+    };
+  }
+
+  @Put('invoice')
+  @ApiBearerAuth()
+  // @ApiOkResponse({ type: AggType })
+  @UseGuards(AuthGuard())
+  async readyForSettlement(
+    @GetUser() user: UserEntity,
+  ): Promise<{ message: string; result: string }> {
+    const orders = await this.orderService.requestForSettle(user);
+    return {
+      message: 'all of order report for this user ',
+      result: 'successful',
+    };
+  }
+  @Get('invoice/users')
+  @ApiBearerAuth()
+  // @ApiOkResponse({ type: AggType })
+  @UseGuards(AuthGuard())
+  async getUserListForSettle(
+    @GetUser() user: UserEntity,
+  ): Promise<{ message: string; users: UserEntity[] }> {
+    const users = await this.orderService.waitingUserForSettlemnt();
+    return {
+      message: 'all of order report for this user ',
+      users: users,
+    };
   }
 }
