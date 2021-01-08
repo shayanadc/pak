@@ -1,8 +1,11 @@
 export default class CodeGenerator {
   generate(): string {
-    return this.getRandomArbitrary(10000, 99999).toString;
+    const code = this.getRandomArbitrary(10001, 99998).toString();
+    return code;
   }
   getRandomArbitrary(min, max) {
-    return Math.random() * (max - min) + min;
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
   }
 }
