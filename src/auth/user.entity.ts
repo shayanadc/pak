@@ -14,6 +14,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { OrderEntity } from '../order/order.entity';
 import { Role } from '../role/role.enum';
 import { Exclude } from 'class-transformer';
+import { InvoiceEntity } from '../invoice/invoice.entity';
 
 @Entity('users')
 @Unique(['phone'])
@@ -43,6 +44,14 @@ export class UserEntity extends BaseEntity {
   )
   @ApiProperty()
   orders: OrderEntity[];
+
+  @OneToMany(
+    () => InvoiceEntity,
+    invoice => invoice.user,
+  )
+  @ApiProperty()
+  invoices: InvoiceEntity[];
+
   @Column({ nullable: true })
   @ApiProperty()
   name: string;

@@ -28,6 +28,7 @@ import { OrderDetailEntity } from './orderDetail.entity';
 import { OrderDetailsRepository } from './order.details.repository';
 import { getConnection } from 'typeorm';
 import { ProvinceEntity } from '../city/province.entity';
+import { InvoiceEntity } from '../invoice/invoice.entity';
 
 describe('OrderController', () => {
   let app: INestApplication;
@@ -63,6 +64,7 @@ describe('OrderController', () => {
             MaterialEntity,
             OrderDetailEntity,
             ProvinceEntity,
+            InvoiceEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -224,7 +226,6 @@ describe('OrderController', () => {
     const defaultConnection = getConnection('default');
     await defaultConnection.close();
   });
-  // it('/order/all return aggregate order', async function() {});
   it('/order/delivered return aggregate order', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
@@ -234,28 +235,28 @@ describe('OrderController', () => {
       (await orderRepository.find({ where: { delivered: true } })).length,
     ).toEqual(2);
   });
-  it('/order/invoice ready orders for this user to settle', async function() {
-    const { body } = await supertest
-      .agent(app.getHttpServer())
-      .put('/order/invoice')
-      .expect(200);
-    expect(
-      (
-        await orderRepository.find({
-          where: { invoice: true },
-        })
-      ).length,
-    ).toEqual(1);
-  });
+  // it('/order/invoice ready orders for this user to settle', async function() {
+  //   const { body } = await supertest
+  //     .agent(app.getHttpServer())
+  //     .put('/order/invoice')
+  //     .expect(200);
+  //   expect(
+  //     (
+  //       await orderRepository.find({
+  //         where: { invoice: true },
+  //       })
+  //     ).length,
+  //   ).toEqual(1);
+  // });
 
-  it('/order/invoice/user ready orders for this user to settle', async function() {
-    const { body } = await supertest
-      .agent(app.getHttpServer())
-      .get('/order/invoice/users')
-      .expect(200);
-  });
+  // it('/order/invoice/user ready orders for this user to settle', async function() {
+  //   const { body } = await supertest
+  //     .agent(app.getHttpServer())
+  //     .get('/order/invoice/users')
+  //     .expect(200);
+  // });
 
-  it('/order/issued ready orders for this user to settle', async function() {
+  it('/order/all ready orders for this user to settle', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
       .get('/order/all')
@@ -266,8 +267,6 @@ describe('OrderController', () => {
         {
           id: 1,
           price: 4000,
-          invoice: false,
-          payback: false,
           delivered: false,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
@@ -295,8 +294,6 @@ describe('OrderController', () => {
         {
           id: 2,
           price: 9000,
-          invoice: false,
-          payback: false,
           delivered: false,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
@@ -324,8 +321,6 @@ describe('OrderController', () => {
         {
           id: 3,
           price: 9000,
-          invoice: false,
-          payback: false,
           delivered: false,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
@@ -384,8 +379,6 @@ describe('OrderController', () => {
         id: 4,
         price: 70000,
         delivered: false,
-        invoice: false,
-        payback: false,
         request: {
           id: 1,
           type: 3,

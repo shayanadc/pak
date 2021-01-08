@@ -14,6 +14,8 @@ import { RequestEntity } from '../request/request.entity';
 import { UserEntity } from '../auth/user.entity';
 import { OrderDetailEntity } from './orderDetail.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { ProvinceEntity } from '../city/province.entity';
+import { InvoiceEntity } from '../invoice/invoice.entity';
 
 @Entity('orders')
 export class OrderEntity extends BaseEntity {
@@ -49,12 +51,11 @@ export class OrderEntity extends BaseEntity {
   )
   @ApiProperty()
   details: OrderDetailEntity[];
-  @Column({ default: false })
-  @ApiProperty()
-  invoice: boolean;
-  @Column({ default: false })
-  @ApiProperty()
-  payback: boolean;
+  @ManyToOne(
+    type => InvoiceEntity,
+    invoice => invoice.orders,
+  )
+  invoice: InvoiceEntity;
   @Column({ default: false })
   @ApiProperty()
   delivered: boolean;
