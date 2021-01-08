@@ -51,7 +51,6 @@ export class InvoiceController {
   @UseGuards(AuthGuard())
   async store(
     @GetUser() user: UserEntity,
-    @Body() body: OrderDto,
   ): Promise<{ message: string; invoice: InvoiceEntity }> {
     const invoice = await this.invoiceService.submitInvoice(user);
     return { message: 'create new invoice', invoice: invoice };
