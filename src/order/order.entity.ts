@@ -49,7 +49,15 @@ export class OrderEntity extends BaseEntity {
   )
   @ApiProperty()
   details: OrderDetailEntity[];
-
+  @Column({ default: false })
+  @ApiProperty()
+  invoice: boolean;
+  @Column({ default: false })
+  @ApiProperty()
+  payback: boolean;
+  @Column({ default: false })
+  @ApiProperty()
+  delivered: boolean;
   @CreateDateColumn()
   @ApiProperty()
   createdAt: Date;
