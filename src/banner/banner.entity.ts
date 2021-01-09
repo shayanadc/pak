@@ -17,9 +17,8 @@ export class BannerEntity extends BaseEntity {
   @ApiProperty()
   title: string;
   @Column()
-  image: string;
   @ApiProperty()
-  url: string;
+  image: string;
   @Column()
   @ApiProperty()
   link: string;

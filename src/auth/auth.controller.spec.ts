@@ -56,7 +56,7 @@ describe('Create And Toke User API', () => {
     provide: 'CacheInterface',
     useFactory: () => ({
       set: jest.fn(),
-      get: jest.fn(),
+      get: jest.fn().mockReturnValue('12345'),
     }),
   };
   // let connection : Connection
