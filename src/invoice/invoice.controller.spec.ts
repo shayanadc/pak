@@ -44,6 +44,7 @@ describe('InvoiceController', () => {
   let materialRepository: MaterialRepository;
   let orderDetailRepo: OrderDetailsRepository;
   let cityRepo: CityRepository;
+  let invoiceRepo: InvoiceRepository;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -220,6 +221,7 @@ describe('InvoiceController', () => {
     orderDetailRepo = await module.get<OrderDetailsRepository>(
       OrderDetailsRepository,
     );
+    invoiceRepo = await module.get<InvoiceRepository>(InvoiceRepository);
 
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
@@ -255,5 +257,10 @@ describe('InvoiceController', () => {
         },
       },
     });
+    await supertest
+      .agent(app.getHttpServer())
+      .post('/invoice')
+      .expect(400);
+    expect((await invoiceRepo.find()).length).toEqual(1);
   });
 });
