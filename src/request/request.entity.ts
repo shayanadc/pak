@@ -44,7 +44,7 @@ export class RequestEntity extends BaseEntity {
   work_shift: WorkShiftType;
 
   //todo : does not work in test
-  @Column('datetime')
+  @Column()
   @ApiProperty()
   date: Date;
 

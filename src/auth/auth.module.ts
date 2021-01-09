@@ -17,6 +17,7 @@ import { OrderRepository } from '../order/order.repository';
 import { OrderDetailsRepository } from '../order/order.details.repository';
 import { OrderService } from '../order/order.service';
 import { MaterialRepository } from '../material/material.repository';
+import { RequestService } from '../request/request.service';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { MaterialRepository } from '../material/material.repository';
   controllers: [AuthController],
   providers: [
     AuthService,
+    RequestService,
     CodeGenerator,
     OrderService,
     JwtStrategy,

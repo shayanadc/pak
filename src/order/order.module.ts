@@ -39,6 +39,6 @@ import { CacheProvider } from '../auth/cache.provider';
     ]),
   ],
   controllers: [OrderController],
-  providers: [OrderService],
+  providers: [OrderService, RequestService],
 })
 export class OrderModule {}
