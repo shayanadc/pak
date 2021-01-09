@@ -29,6 +29,7 @@ import { MaterialEntity } from '../material/material.entity';
 import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError';
 import { getConnection } from 'typeorm';
 import { ProvinceEntity } from '../city/province.entity';
+import { InvoiceEntity } from '../invoice/invoice.entity';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -73,6 +74,7 @@ describe('User Service', () => {
             OrderEntity,
             OrderDetailEntity,
             ProvinceEntity,
+            InvoiceEntity,
           ],
           synchronize: true,
           dropSchema: true,

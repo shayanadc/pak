@@ -28,22 +28,22 @@ export class OrderRepository extends Repository<OrderEntity> {
   async index(condition?): Promise<OrderEntity[]> {
     return await this.find(condition);
   }
-  async requestForSettle(user): Promise<any> {
-    await getConnection()
-      .createQueryBuilder()
-      .update(OrderEntity)
-      .set({ invoice: true })
-      .where('userId = :id', { id: user.id })
-      .execute();
-  }
-  async settleFor(user): Promise<any> {
-    await getConnection()
-      .createQueryBuilder()
-      .update(OrderEntity)
-      .set({ payback: true })
-      .where('userId = :id', { id: user.id })
-      .execute();
-  }
+  // async requestForSettle(user): Promise<any> {
+  //   await getConnection()
+  //     .createQueryBuilder()
+  //     .update(OrderEntity)
+  //     // .set({ invoice: true })
+  //     .where('userId = :id', { id: user.id })
+  //     .execute();
+  // }
+  // async settleFor(user): Promise<any> {
+  //   await getConnection()
+  //     .createQueryBuilder()
+  //     .update(OrderEntity)
+  //     .set({ payback: true })
+  //     .where('userId = :id', { id: user.id })
+  //     .execute();
+  // }
   async deliveredFor(driver): Promise<any> {
     await getConnection()
       .createQueryBuilder()
@@ -52,9 +52,9 @@ export class OrderRepository extends Repository<OrderEntity> {
       .where('issuerId = :id', { id: driver.id })
       .execute();
   }
-  async findReadyForSettle(user): Promise<OrderEntity[]> {
-    return await this.find({
-      where: { user: user, invoice: true, payback: false },
-    });
-  }
+  // async findReadyForSettle(user): Promise<OrderEntity[]> {
+  //   return await this.find({
+  //     where: { user: user, payback: false },
+  //   });
+  // }
 }

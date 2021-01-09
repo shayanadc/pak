@@ -60,9 +60,7 @@ class OrderFilterDTo {
   @ApiProperty()
   issuer: number;
   @ApiProperty()
-  invoice: boolean;
-  @ApiProperty()
-  payback: boolean;
+  invoice: number;
   @ApiProperty()
   delivered: boolean;
 }
@@ -193,30 +191,30 @@ export class OrderController {
     };
   }
 
-  @Put('invoice')
-  @ApiBearerAuth()
-  // @ApiOkResponse({ type: AggType })
-  @UseGuards(AuthGuard())
-  async readyForSettlement(
-    @GetUser() user: UserEntity,
-  ): Promise<{ message: string; result: string }> {
-    const orders = await this.orderService.requestForSettle(user);
-    return {
-      message: 'all of order report for this user ',
-      result: 'successful',
-    };
-  }
-  @Get('invoice/users')
-  @ApiBearerAuth()
-  // @ApiOkResponse({ type: AggType })
-  @UseGuards(AuthGuard())
-  async getUserListForSettle(
-    @GetUser() user: UserEntity,
-  ): Promise<{ message: string; users: UserEntity[] }> {
-    const users = await this.orderService.waitingUserForSettlemnt();
-    return {
-      message: 'all of order report for this user ',
-      users: users,
-    };
-  }
+  // @Put('invoice')
+  // @ApiBearerAuth()
+  // // @ApiOkResponse({ type: AggType })
+  // @UseGuards(AuthGuard())
+  // async readyForSettlement(
+  //   @GetUser() user: UserEntity,
+  // ): Promise<{ message: string; result: string }> {
+  //   const orders = await this.orderService.requestForSettle(user);
+  //   return {
+  //     message: 'all of order report for this user ',
+  //     result: 'successful',
+  //   };
+  // }
+  // @Get('invoice/users')
+  // @ApiBearerAuth()
+  // // @ApiOkResponse({ type: AggType })
+  // @UseGuards(AuthGuard())
+  // async getUserListForSettle(
+  //   @GetUser() user: UserEntity,
+  // ): Promise<{ message: string; users: UserEntity[] }> {
+  //   const users = await this.orderService.waitingUserForSettlemnt();
+  //   return {
+  //     message: 'all of order report for this user ',
+  //     users: users,
+  //   };
+  // }
 }

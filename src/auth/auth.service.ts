@@ -28,13 +28,12 @@ export class AuthService {
     return await this.userRepo.findOrCreate(loginDTO);
   }
   async isCodeMatch(authCredential: AuthCredentialDTO) {
-    const savedCode = await this.cacheProvider.get(
-      authCredential.activation_code,
-    );
+    const savedCode = await this.cacheProvider.get(authCredential.phone);
     if (savedCode === authCredential.activation_code) {
       //Todo : find any activation code for this phone number
       return true;
     }
+    return false;
   }
   async retrieveToken(
     authCredential: AuthCredentialDTO,
@@ -42,7 +41,8 @@ export class AuthService {
     const user = await this.userRepo.findOneOrFail({
       phone: authCredential.phone,
     });
-    if (!this.isCodeMatch(authCredential)) {
+    const isMatch = await this.isCodeMatch(authCredential);
+    if (!isMatch) {
       throw new NotFoundException('Code is not Valid');
     }
     const payload: JwtPayload = authCredential;

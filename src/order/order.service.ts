@@ -53,12 +53,12 @@ export class OrderService {
   async index(condition?): Promise<OrderEntity[]> {
     return await this.orderRepo.index(condition);
   }
-  async requestForSettle(user): Promise<any> {
-    return await this.orderRepo.requestForSettle(user);
-  }
-  async settleFor(user): Promise<any> {
-    return await this.orderRepo.settleFor(user);
-  }
+  // async requestForSettle(user): Promise<any> {
+  //   return await this.orderRepo.requestForSettle(user);
+  // }
+  // async settleFor(user): Promise<any> {
+  //   return await this.orderRepo.settleFor(user);
+  // }
   async deliveredForWith(phone): Promise<any> {
     const driver = await this.userRepo.findOneOrFail({ phone: phone });
     return await this.orderRepo.deliveredFor(driver);
@@ -66,25 +66,26 @@ export class OrderService {
   async deliveredFor(driver): Promise<any> {
     return await this.orderRepo.deliveredFor(driver);
   }
-  async readyForSettle(user): Promise<OrderEntity[]> {
-    return await this.orderRepo.findReadyForSettle(user);
-  }
-  async waitingUserForSettlemnt(): Promise<UserEntity[]> {
-    const waitOrders = await this.orderRepo.find({
-      where: { invoice: true, payback: false },
-    });
-    const ids = waitOrders.map(value => value.user.id);
-    const waitingUsers = await this.userRepo
-      .createQueryBuilder('users')
-      .where('users.id IN (:...ids)', { ids: ids })
-      .getMany();
-    return waitingUsers;
-  }
+  // async readyForSettle(user): Promise<OrderEntity[]> {
+  //   return await this.orderRepo.findReadyForSettle(user);
+  // }
+  // async waitingUserForSettlemnt(): Promise<UserEntity[]> {
+  //   const waitOrders = await this.orderRepo.find({
+  //     where: { invoice: true, payback: false },
+  //   });
+  //   const ids = waitOrders.map(value => value.user.id);
+  //   const waitingUsers = await this.userRepo
+  //     .createQueryBuilder('users')
+  //     .where('users.id IN (:...ids)', { ids: ids })
+  //     .getMany();
+  //   return waitingUsers;
+  // }
   async getCredit(user): Promise<any> {
     const res = await this.orderRepo
       .createQueryBuilder('orders')
       .where('orders.userId = :id', { id: user.id })
-      .andWhere('orders.payback = :state', { state: false })
+      // .andWhere('orders.invoiceId = :invoiceId', { invoiceId: null })
+      .andWhere('orders.invoiceId IS NULL')
       .select('SUM(orders.price)', 'sum')
       .addSelect('COUNT(orders.id)', 'count')
       .getRawOne();
