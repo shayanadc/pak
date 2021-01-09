@@ -22,7 +22,7 @@ import { getConnection } from 'typeorm';
 import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 
-describe('User Service', () => {
+describe('Request Service', () => {
   let app: INestApplication;
   let userRepo: UserRepository;
   let addressRepo: AddressRepository;
@@ -149,13 +149,13 @@ describe('User Service', () => {
       userId: 2,
       address: address,
       type: 1,
-      date: '2000-01-01 00:00:00',
+      date: '2000-02-02T20:30:00.000Z',
     });
     const req = await requestRepository.save({
       user: user,
       address: address,
       type: 1,
-      date: '2000-01-01 00:00:00',
+      date: '2000-02-02T20:30:00.000Z',
     });
     const id = 1;
     await reqServ.delete(user, id);

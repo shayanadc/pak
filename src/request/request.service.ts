@@ -19,7 +19,8 @@ export class RequestService {
   async createNext(req: RequestEntity) {
     let newReq = Object.assign({}, req);
     delete newReq.id;
-    newReq.date = this.calcNextTime(req.date, req.period);
+    const nextDate = this.calcNextTime(req.date, req.period);
+    newReq.date = nextDate;
     return await this.requestRepo.save(newReq);
   }
   calcNextTime(date, period) {
