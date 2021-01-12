@@ -13,7 +13,7 @@ export class InvoiceService {
   ) {}
   async submitInvoice(user): Promise<InvoiceEntity> {
     const [UnPaidOrders, orderCount] = await this.orderRepo.findAndCount({
-      where: { invoice: null, user: user },
+      where: { invoice: null, user: user, donate: false },
     });
     if (orderCount === 0) {
       throw new NotFoundException('there is not any waiting orders');

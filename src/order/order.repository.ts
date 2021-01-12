@@ -22,6 +22,7 @@ export class OrderRepository extends Repository<OrderEntity> {
     order.issuer = issuer;
     order.price = price;
     order.details = orderDetail;
+    order.donate = orderDto.donate;
     await order.save();
     return order;
   }

@@ -4,19 +4,25 @@ import {
   IsArray,
   IsEnum,
   IsIn,
+  IsNotEmpty,
   IsNumber,
   IsObject,
+  IsOptional,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class OrderDto {
   @ApiProperty()
+  @IsNotEmpty()
   requestId: number;
   @ApiProperty({ type: () => [OrderDetailsType] })
+  @IsNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => OrderDetailsType)
   rows: OrderDetailsType[];
+  @IsOptional()
+  donate: boolean;
 }
 class OrderDetailsType {
   @ApiProperty()
