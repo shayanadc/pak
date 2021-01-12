@@ -10,10 +10,10 @@ import { AppController } from './app.controller';
 import { OrderModule } from './order/order.module';
 import { UserModule } from './user/user.module';
 
-import * as env from 'dotenv';
 import { NotifyModule } from './notify/notify.module';
 import { BannerModule } from './banner/banner.module';
 import { InvoiceModule } from './invoice/invoice.module';
+import * as env from 'dotenv';
 env.config();
 
 @Module({

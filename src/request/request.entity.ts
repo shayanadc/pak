@@ -12,6 +12,9 @@ import {
 import { AddressEntity } from '../address/address.entity';
 import { UserEntity } from '../auth/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import * as env from 'dotenv';
+env.config();
+
 export enum RequestType {
   BOX = 1,
   DISCHARGE = 2,
@@ -44,7 +47,7 @@ export class RequestEntity extends BaseEntity {
   work_shift: WorkShiftType;
 
   //todo : does not work in test
-  @Column()
+  @Column(process.env.date || { nullable: false })
   @ApiProperty()
   date: Date;
 
