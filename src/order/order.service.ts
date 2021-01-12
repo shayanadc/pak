@@ -7,8 +7,7 @@ import { MaterialRepository } from '../material/material.repository';
 import { OrderDetailsRepository } from './order.details.repository';
 import { UserRepository } from '../auth/user.repository';
 import { RequestType } from '../request/request.entity';
-import { log } from 'util';
-import { UserEntity } from '../auth/user.entity';
+import { RequestService } from '../request/request.service';
 
 @Injectable()
 export class OrderService {
@@ -18,6 +17,7 @@ export class OrderService {
     private materialRepo: MaterialRepository,
     private orderDetailRepo: OrderDetailsRepository,
     private userRepo: UserRepository,
+    private reqService: RequestService,
   ) {}
   async aggregate(phone): Promise<any> {
     const user = await this.userRepo.findOneOrFail({ phone: phone });
@@ -102,6 +102,9 @@ export class OrderService {
     }
     request.done = true;
     request.save();
+    if (request.type == RequestType.PERIODIC) {
+      this.reqService.createNext(request);
+    }
     let price = 0;
     const orderDetails = [];
     for (let i = 0, l = orderDto.rows.length; i < l; i++) {

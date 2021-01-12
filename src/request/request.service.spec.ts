@@ -22,7 +22,7 @@ import { getConnection } from 'typeorm';
 import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 
-describe('User Service', () => {
+describe('Request Service', () => {
   let app: INestApplication;
   let userRepo: UserRepository;
   let addressRepo: AddressRepository;
@@ -69,35 +69,7 @@ describe('User Service', () => {
       ],
       controllers: [RequestController],
       providers: [RequestService],
-    })
-      .overrideGuard(AuthGuard())
-      .useValue({
-        canActivate: async (context: ExecutionContext) => {
-          const user = await userRepo.save({
-            phone: '09129120912',
-          });
-          const state = await stateRepository.save({
-            title: 'BLOCK',
-          });
-
-          const address = await addressRepo.save({
-            description: 'Addresss.....',
-            state: state,
-            user: user,
-          });
-
-          await requestRepository.save({
-            user: user,
-            address: address,
-            type: 1,
-            date: '2000-01-01 00:00:00',
-          });
-          const req = context.switchToHttp().getRequest();
-          req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
-          return true;
-        },
-      })
-      .compile();
+    }).compile();
     reqServ = await module.get(RequestService);
 
     userRepo = await module.get<UserRepository>(UserRepository);
@@ -112,6 +84,53 @@ describe('User Service', () => {
   afterEach(async () => {
     const defaultConnection = getConnection('default');
     await defaultConnection.close();
+  });
+  it('calculate next time after period', async () => {
+    jest
+      .useFakeTimers('modern')
+      .setSystemTime(new Date('2000-03-05T20:30:00.000Z').getTime());
+    const date = new Date('2000-02-02T20:30:00.000Z');
+    const period = 30;
+    expect(reqServ.calcNextTime(date, period)).toEqual(
+      new Date('2000-04-01T19:30:00.000Z'),
+    );
+  });
+  it('calculate next time before period', async () => {
+    jest
+      .useFakeTimers('modern')
+      .setSystemTime(new Date('2000-02-22T20:30:00.000Z').getTime());
+    const date = new Date('2000-02-02T20:30:00.000Z');
+    const period = 30;
+    expect(reqServ.calcNextTime(date, period)).toEqual(
+      new Date('2000-03-03T20:30:00.000Z'),
+    );
+  });
+  it('clone new periodic request', async () => {
+    const user = await userRepo.save({
+      phone: '09129120912',
+    });
+    const state = await stateRepository.save({
+      title: 'BLOCK',
+    });
+
+    const address = await addressRepo.save({
+      description: 'Addresss.....',
+      state: state,
+      user: user,
+    });
+    const req = await requestRepository.save({
+      userId: 2,
+      address: address,
+      type: 3,
+      period: 30,
+      date: '2000-02-02T20:30:00.000Z',
+    });
+    jest
+      .useFakeTimers('modern')
+      .setSystemTime(new Date('2000-02-22T20:30:00.000Z').getTime());
+    const newReq = await reqServ.createNext(req);
+    expect(newReq.date).toEqual(new Date('2000-03-03T20:30:00.000Z'));
+    expect((await requestRepository.find()).length).toEqual(2);
   });
   it('delete user request item', async () => {
     const user = await userRepo.save({
@@ -130,13 +149,13 @@ describe('User Service', () => {
       userId: 2,
       address: address,
       type: 1,
-      date: '2000-01-01 00:00:00',
+      date: '2000-02-02T20:30:00.000Z',
     });
     const req = await requestRepository.save({
       user: user,
       address: address,
       type: 1,
-      date: '2000-01-01 00:00:00',
+      date: '2000-02-02T20:30:00.000Z',
     });
     const id = 1;
     await reqServ.delete(user, id);

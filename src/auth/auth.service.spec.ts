@@ -30,6 +30,7 @@ import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError';
 import { getConnection } from 'typeorm';
 import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
+import { RequestService } from '../request/request.service';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -97,6 +98,7 @@ describe('User Service', () => {
         cacheProvider,
         CodeGenerator,
         OrderService,
+        RequestService,
       ],
     }).compile();
     userRepo = await module.get<UserRepository>(UserRepository);

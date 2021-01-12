@@ -22,6 +22,7 @@ import { OrderRepository } from './order.repository';
 import { OrderDetailsRepository } from './order.details.repository';
 import { getConnection } from 'typeorm';
 import { InvoiceEntity } from '../invoice/invoice.entity';
+import { RequestService } from '../request/request.service';
 
 describe('OrderService', () => {
   let service: OrderService;
@@ -63,7 +64,7 @@ describe('OrderService', () => {
           OrderDetailsRepository,
         ]),
       ],
-      providers: [OrderService],
+      providers: [OrderService, RequestService],
     }).compile();
     service = module.get<OrderService>(OrderService);
     orderRepo = module.get<OrderRepository>(OrderRepository);

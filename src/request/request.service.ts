@@ -16,6 +16,21 @@ export class RequestService {
     private requestRepo: RequestRepository,
     private addressRepo: AddressRepository,
   ) {}
+  async createNext(req: RequestEntity) {
+    let newReq = Object.assign({}, req);
+    delete newReq.id;
+    const nextDate = this.calcNextTime(req.date, req.period);
+    newReq.date = nextDate;
+    return await this.requestRepo.save(newReq);
+  }
+  calcNextTime(date, period) {
+    let dateTime = new Date(date);
+    const now = new Date();
+    const diff = now.getDate() - dateTime.getDate();
+    let days = period - diff;
+    now.setDate(now.getDate() + days);
+    return now;
+  }
   async getAll(user?) {
     if (user) {
       return await this.requestRepo.getAllFor(user);

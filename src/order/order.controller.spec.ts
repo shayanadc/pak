@@ -29,6 +29,7 @@ import { OrderDetailsRepository } from './order.details.repository';
 import { getConnection } from 'typeorm';
 import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
+import { RequestService } from '../request/request.service';
 
 describe('OrderController', () => {
   let app: INestApplication;
@@ -81,7 +82,7 @@ describe('OrderController', () => {
         ]),
       ],
       controllers: [OrderController],
-      providers: [OrderService],
+      providers: [OrderService, RequestService],
     })
       .overrideGuard(AuthGuard())
       .useValue({
