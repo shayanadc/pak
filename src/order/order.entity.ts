@@ -59,6 +59,9 @@ export class OrderEntity extends BaseEntity {
   @Column({ default: false })
   @ApiProperty()
   delivered: boolean;
+  @Column({ default: false })
+  @ApiProperty()
+  donate: boolean;
   @CreateDateColumn()
   @ApiProperty()
   createdAt: Date;

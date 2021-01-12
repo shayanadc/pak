@@ -269,6 +269,7 @@ describe('OrderController', () => {
           id: 1,
           price: 4000,
           delivered: false,
+          donate: false,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
           user: {
@@ -296,6 +297,7 @@ describe('OrderController', () => {
           id: 2,
           price: 9000,
           delivered: false,
+          donate: false,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
           user: {
@@ -323,6 +325,7 @@ describe('OrderController', () => {
           id: 3,
           price: 9000,
           delivered: false,
+          donate: false,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
           user: {
@@ -368,6 +371,7 @@ describe('OrderController', () => {
       .post('/order')
       .send({
         requestId: 1,
+        // donate: true,
         rows: [
           { materialId: 1, weight: 2 },
           { materialId: 2, weight: 3 },
@@ -380,6 +384,7 @@ describe('OrderController', () => {
         id: 4,
         price: 70000,
         delivered: false,
+        donate: false,
         request: {
           id: 1,
           type: 3,
