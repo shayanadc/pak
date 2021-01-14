@@ -1,0 +1,84 @@
+{
+  "auth": {
+    "exception": {
+      "code": {
+        "isNotMatch":"code is not match"
+      }
+    },
+    "validation": {
+      "phone": {
+        "isNotEmpty": "phone is not empty",
+        "isString": "phone must be a string"
+      },
+      "activationCode": {
+        "isNotEmpty": "activation_code is required",
+        "isString": "activation_code must be a string"
+      }
+    }
+  },
+  "login": {
+    "validation": {
+      "phone": {
+        "isNotEmpty": "phone is not empty",
+        "isString": "phone must be a string"
+      }
+    }
+  },
+  "invoice": {
+    "submitInvoice": {
+      "notAnyWaitingOrder": "there is not any waiting order"
+    }
+  },
+  "address": {
+    "validation": {
+      "description": {
+        "isNotEmpty": "is not empty",
+        "isString": "is string"
+      },
+      "stateId": {
+        "isNotEmpty": "is not empty"
+      }
+    }
+  },
+  "material": {
+    "validation": {
+      "title": {
+        "isString": "title should be string"
+      }
+    }
+  },
+  "order": {
+    "exception": {
+      "aggregate": {
+        "notAnyOrder": "not any order"
+      },
+      "doneRequest": {
+        "isNotValidToOrder": "Could not create order for done or box request"
+      }
+    }
+  },
+  "request": {
+    "exception": {
+      "saving": {
+        "duplicate": "duplicate request with same type"
+      }
+    },
+    "validation": {
+      "period": {
+        "isNotEmpty": "days could not be empty"
+      },
+      "date": {
+        "isNotEmpty": "date could not be empty",
+        "isDateString": "date format failed"
+      }
+    }
+  },
+  "exception": {
+    "entity": {
+      "notFound": "Entity Not Found"
+    },
+    "db": {
+      "failed": "Database Error"
+    }
+  }
+}

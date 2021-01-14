@@ -7,9 +7,11 @@ import {
 import { RequestRepository } from './request.repository';
 import { AddressRepository } from '../address/address.repository';
 import { RequestEntity } from './request.entity';
-import { UpdateuserDto } from '../user/updateuser.dto';
-import { UserEntity } from '../auth/user.entity';
 
+import * as env from 'dotenv';
+env.config();
+const lang = process.env.lang || 'en';
+const trs = require(`../${lang}.message.json`);
 @Injectable()
 export class RequestService {
   constructor(
@@ -45,7 +47,7 @@ export class RequestService {
       where: { address: address, type: body.type, done: false },
     });
     if (r) {
-      throw new NotFoundException(['Duplicated Request is not acceptable']);
+      throw new NotFoundException([trs.request.exception.saving.duplicate]);
     }
     const res = await this.requestRepo.store(user, address, body);
     return res;
