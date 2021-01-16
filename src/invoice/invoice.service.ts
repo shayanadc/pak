@@ -19,9 +19,9 @@ export class InvoiceService {
       where: { invoice: null, user: user, donate: false },
     });
     if (orderCount === 0) {
-      throw new NotFoundException(
+      throw new NotFoundException([
         trs.invoice.exception.submitInvoice.notAnyWaitingOrder,
-      );
+      ]);
     }
     let orderIds = [];
     let ordersTotalAmount = 0;

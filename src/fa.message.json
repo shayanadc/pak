@@ -25,8 +25,10 @@
     }
   },
   "invoice": {
-    "submitInvoice": {
-      "notAnyWaitingOrder": "اعتبار شما جهت تسویه حساب کافی نمی باشد"
+    "exception": {
+      "submitInvoice": {
+        "notAnyWaitingOrder": "اعتبار شما جهت تسویه حساب کافی نمی باشد"
+      }
     }
   },
   "address": {
