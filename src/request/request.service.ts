@@ -26,7 +26,6 @@ export class RequestService {
     newReq.date = nextDate;
     newReq.done = false;
     newReq = await this.requestRepo.save(newReq);
-    console.log(newReq.address);
     return newReq;
   }
   calcNextTime(date, period) {
