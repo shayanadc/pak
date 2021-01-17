@@ -1,5 +1,6 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, getConnection, LessThan, Repository } from 'typeorm';
 import { RequestEntity } from './request.entity';
+import { Req } from '@nestjs/common';
 
 @EntityRepository(RequestEntity)
 export class RequestRepository extends Repository<RequestEntity> {
@@ -11,11 +12,20 @@ export class RequestRepository extends Repository<RequestEntity> {
     });
   }
   async getAll(): Promise<RequestEntity[]> {
-    return await this.find({
-      where: { done: false },
-      relations: ['user', 'address'],
-      order: { id: 'DESC' },
-    });
+    const now = new Date();
+    return await this.createQueryBuilder('request')
+      .where('request.done = :done', { done: false })
+      .andWhere('request.date <= :now', { now: now.toISOString() })
+      .leftJoinAndSelect('request.user', 'user')
+      .leftJoinAndSelect('request.address', 'address')
+      .where('address.stateId = :stateId', { stateId: 1 })
+      // .addSelect('COUNT(orders.id)', 'count')
+      .getRawMany();
+    // return await this.find({
+    //   where: { done: false, date: LessThan(now.toISOString()) },
+    //   relations: ['user', 'address'],
+    //   order: { id: 'DESC' },
+    // });
   }
   async store(user, address, body): Promise<RequestEntity> {
     const request = new RequestEntity();

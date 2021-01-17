@@ -84,6 +84,9 @@ describe('Request Controller', () => {
           const user = await userRepo.save({
             phone: '09129120912',
           });
+          const user2 = await userRepo.save({
+            phone: '09199120912',
+          });
           await cityRepo.save({
             name: 'GORG',
           });
@@ -99,12 +102,20 @@ describe('Request Controller', () => {
             user: user,
           });
 
-          await requestRepository.save({
-            user: user,
-            address: address,
-            type: 1,
-            date: '1999-12-31T20:30:00.000Z',
-          });
+          await requestRepository.save([
+            {
+              user: user,
+              address: address,
+              type: 1,
+              date: '1999-12-31T20:30:00.000Z',
+            },
+            {
+              user: user2,
+              address: address,
+              type: 2,
+              date: '2020-12-31T20:30:00.000Z',
+            },
+          ]);
           const req = context.switchToHttp().getRequest();
           req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
           return true;
@@ -261,6 +272,9 @@ describe('Request Controller', () => {
   });
 
   it('/request GET return all requests for driver', async () => {
+    jest
+      .useFakeTimers('modern')
+      .setSystemTime(new Date('2002-02-22T20:30:00.000Z').getTime());
     const { body } = await supertest
       .agent(app.getHttpServer())
       .get('/request/all')
