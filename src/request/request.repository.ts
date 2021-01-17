@@ -24,6 +24,7 @@ export class RequestRepository extends Repository<RequestEntity> {
     request.type = body.type;
     request.work_shift = body.work_shift;
     request.date = body.date;
+    request.period = body.period;
     await request.save();
     return this.findOne({
       where: { id: request.id },
