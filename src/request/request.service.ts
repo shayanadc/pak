@@ -22,8 +22,12 @@ export class RequestService {
     let newReq = Object.assign({}, req);
     delete newReq.id;
     const nextDate = this.calcNextTime(req.date, req.period);
+    // newReq.address = req.address;
     newReq.date = nextDate;
-    return await this.requestRepo.save(newReq);
+    newReq.done = false;
+    newReq = await this.requestRepo.save(newReq);
+    console.log(newReq.address);
+    return newReq;
   }
   calcNextTime(date, period) {
     let dateTime = new Date(date);
