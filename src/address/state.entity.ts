@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -33,7 +34,11 @@ export class StateEntity extends BaseEntity {
   )
   @ApiProperty()
   city: CityEntity;
-
+  @ManyToMany(
+    type => UserEntity,
+    user => user.states,
+  )
+  users: UserEntity[];
   @CreateDateColumn()
   @ApiProperty()
   createdAt: Date;

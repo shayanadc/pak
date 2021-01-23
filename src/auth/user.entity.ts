@@ -3,6 +3,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
@@ -15,6 +17,7 @@ import { OrderEntity } from '../order/order.entity';
 import { Role } from '../role/role.enum';
 import { Exclude } from 'class-transformer';
 import { InvoiceEntity } from '../invoice/invoice.entity';
+import { StateEntity } from '../address/state.entity';
 
 @Entity('users')
 @Unique(['phone'])
@@ -64,6 +67,15 @@ export class UserEntity extends BaseEntity {
   @Column('simple-array', { default: Role.User })
   @ApiProperty()
   roles: string[];
+
+  @ManyToMany(
+    type => StateEntity,
+    state => state.users,
+    { eager: true },
+  )
+  @JoinTable()
+  states: StateEntity[];
+
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()
