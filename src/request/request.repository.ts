@@ -13,14 +13,18 @@ export class RequestRepository extends Repository<RequestEntity> {
   }
   async getAll(): Promise<RequestEntity[]> {
     const now = new Date();
-    return await this.createQueryBuilder('request')
+    var result1 = this.createQueryBuilder('request')
+      .leftJoinAndSelect('request.address', 'address')
+      .leftJoinAndSelect('request.user', 'user')
+      .leftJoinAndSelect('address.state', 'state');
+    var result2 = result1
       .where('request.done = :done', { done: false })
       .andWhere('request.date <= :now', { now: now.toISOString() })
-      .leftJoinAndSelect('request.user', 'user')
-      .leftJoinAndSelect('request.address', 'address')
-      .where('address.stateId = :stateId', { stateId: 1 })
-      // .addSelect('COUNT(orders.id)', 'count')
-      .getRawMany();
+      .orderBy('state.id', 'DESC')
+      .andWhere('address.stateId IN (:...stateId)', { stateId: [1] })
+      .getMany();
+    console.log(await result2);
+    return await result2;
     // return await this.find({
     //   where: { done: false, date: LessThan(now.toISOString()) },
     //   relations: ['user', 'address'],

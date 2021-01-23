@@ -304,13 +304,13 @@ describe('Request Controller', () => {
             updatedAt: expect.any(String),
             id: 1,
             state: {
-              city: {
-                id: 1,
-                name: 'GORG',
-                province: null,
-                createdAt: expect.any(String),
-                updatedAt: expect.any(String),
-              },
+              // city: {
+              //   id: 1,
+              //   name: 'GORG',
+              //   province: null,
+              //   createdAt: expect.any(String),
+              //   updatedAt: expect.any(String),
+              // },
               id: 1,
               title: 'BLOCK',
               createdAt: expect.any(String),
