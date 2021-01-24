@@ -7,7 +7,10 @@ import {
 } from '@nestjs/common';
 import { QueryFailedError } from 'typeorm';
 import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError';
-import { exit } from '@nestjs/cli/actions';
+import * as env from 'dotenv';
+env.config();
+const lang = process.env.lang || 'en';
+const trs = require(`./${lang}.message.json`);
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -36,14 +39,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exception instanceof QueryFailedError) {
       response.status(400).json({
         statusCode: 400,
-        message: ['Database Error'],
+        message: [trs.exception.db.failed],
         trace: exception,
       });
     }
     if (exception instanceof EntityNotFoundError) {
       response.status(400).json({
         statusCode: 400,
-        message: ['Entity Not Found'],
+        message: [trs.exception.entity.notFound],
         trace: exception,
       });
     }

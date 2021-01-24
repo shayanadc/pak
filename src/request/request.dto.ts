@@ -8,7 +8,10 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-
+import * as env from 'dotenv';
+env.config();
+const lang = process.env.lang || 'en';
+const trs = require(`../${lang}.message.json`);
 export class RequestDto {
   @ApiProperty()
   @IsNotEmpty()
@@ -16,8 +19,8 @@ export class RequestDto {
   addressId: number;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsDateString()
+  @IsNotEmpty({ message: trs.request.validation.date.isNotEmpty })
+  @IsDateString({ message: trs.request.validation.date.isDateString })
   date: Date;
 
   @ApiProperty({ enum: [1, 2, 3] })
@@ -28,6 +31,6 @@ export class RequestDto {
   @IsEnum(WorkShiftType)
   work_shift: WorkShiftType;
   @ValidateIf(o => RequestType[o.type] === 'PERIODIC')
-  @IsNotEmpty()
+  @IsNotEmpty({ message: trs.request.validation.period.isNotEmpty })
   period: number;
 }

@@ -119,7 +119,7 @@ describe('Request Service', () => {
       user: user,
     });
     const req = await requestRepository.save({
-      userId: 2,
+      user: user,
       address: address,
       type: 3,
       period: 30,
@@ -130,6 +130,7 @@ describe('Request Service', () => {
       .setSystemTime(new Date('2000-02-22T20:30:00.000Z').getTime());
     const newReq = await reqServ.createNext(req);
     expect(newReq.date).toEqual(new Date('2000-03-03T20:30:00.000Z'));
+    // console.log(await requestRepository.find());
     expect((await requestRepository.find()).length).toEqual(2);
   });
   it('delete user request item', async () => {

@@ -4,7 +4,10 @@ import { InvoiceRepository } from './invoice.repository';
 import { InvoiceEntity } from './invoice.entity';
 import { getConnection } from 'typeorm';
 import { OrderEntity } from '../order/order.entity';
-
+import * as env from 'dotenv';
+env.config();
+const lang = process.env.lang || 'en';
+const trs = require(`../${lang}.message.json`);
 @Injectable()
 export class InvoiceService {
   constructor(
@@ -16,7 +19,9 @@ export class InvoiceService {
       where: { invoice: null, user: user, donate: false },
     });
     if (orderCount === 0) {
-      throw new NotFoundException('there is not any waiting orders');
+      throw new NotFoundException([
+        trs.invoice.exception.submitInvoice.notAnyWaitingOrder,
+      ]);
     }
     let orderIds = [];
     let ordersTotalAmount = 0;
