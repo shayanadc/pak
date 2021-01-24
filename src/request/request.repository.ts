@@ -11,7 +11,7 @@ export class RequestRepository extends Repository<RequestEntity> {
       order: { id: 'DESC' },
     });
   }
-  async getAll(): Promise<RequestEntity[]> {
+  async getAllWaiting(states): Promise<RequestEntity[]> {
     const now = new Date();
     var result1 = this.createQueryBuilder('request')
       .leftJoinAndSelect('request.address', 'address')
@@ -21,9 +21,8 @@ export class RequestRepository extends Repository<RequestEntity> {
       .where('request.done = :done', { done: false })
       .andWhere('request.date <= :now', { now: now.toISOString() })
       .orderBy('state.id', 'DESC')
-      .andWhere('address.stateId IN (:...stateId)', { stateId: [1] })
+      .andWhere('address.stateId IN (:...stateId)', { stateId: states })
       .getMany();
-    console.log(await result2);
     return await result2;
     // return await this.find({
     //   where: { done: false, date: LessThan(now.toISOString()) },

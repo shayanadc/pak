@@ -252,6 +252,7 @@ describe('InvoiceController', () => {
           lname: null,
           disable: false,
           roles: ['user'],
+          states: [],
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },

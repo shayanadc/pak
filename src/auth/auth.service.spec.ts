@@ -133,6 +133,7 @@ describe('User Service', () => {
       lname: null,
       disable: false,
       roles: ['user'],
+      states: [],
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
     });

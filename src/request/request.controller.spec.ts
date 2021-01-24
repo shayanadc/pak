@@ -112,7 +112,7 @@ describe('Request Controller', () => {
             {
               user: user2,
               address: address,
-              type: 2,
+              type: 3,
               date: '2020-12-31T20:30:00.000Z',
             },
           ]);
@@ -151,7 +151,7 @@ describe('Request Controller', () => {
     expect(body).toEqual({
       message: 'new request created',
       request: {
-        id: 2,
+        id: 3,
         user: {
           id: 1,
           phone: '09129120912',
@@ -159,6 +159,7 @@ describe('Request Controller', () => {
           lname: null,
           disable: false,
           roles: ['user'],
+          states: [],
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },
@@ -236,6 +237,7 @@ describe('Request Controller', () => {
             lname: null,
             disable: false,
             roles: ['user'],
+            states: [],
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -277,7 +279,7 @@ describe('Request Controller', () => {
       .setSystemTime(new Date('2002-02-22T20:30:00.000Z').getTime());
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/request/all')
+      .get('/request/waiting?states=1,2')
       .expect(200);
     expect(body).toEqual({
       message: 'return all index',
