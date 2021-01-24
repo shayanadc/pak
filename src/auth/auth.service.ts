@@ -9,6 +9,10 @@ import { JwtPayload } from './jwt-payload.interface';
 import SmsInterface from './sms.interface';
 import CodeGenerator from './code-generator';
 import CacheInterface from './cache.interface';
+import * as env from 'dotenv';
+env.config();
+const lang = process.env.lang || 'en';
+const trs = require(`../${lang}.message.json`);
 @Injectable()
 export class AuthService {
   constructor(
@@ -43,7 +47,7 @@ export class AuthService {
     });
     const isMatch = await this.isCodeMatch(authCredential);
     if (!isMatch) {
-      throw new NotFoundException('Code is not Valid');
+      throw new NotFoundException(trs.auth.exception.code.isNotMatch);
     }
     const payload: JwtPayload = authCredential;
     const accessToken = await this.jwtService.sign(payload);

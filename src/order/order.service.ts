@@ -8,7 +8,10 @@ import { OrderDetailsRepository } from './order.details.repository';
 import { UserRepository } from '../auth/user.repository';
 import { RequestType } from '../request/request.entity';
 import { RequestService } from '../request/request.service';
-
+import * as env from 'dotenv';
+env.config();
+const lang = process.env.lang || 'en';
+const trs = require(`../${lang}.message.json`);
 @Injectable()
 export class OrderService {
   constructor(
@@ -26,7 +29,7 @@ export class OrderService {
       where: { issuer: user, delivered: false },
     });
     if (orders.length == 0) {
-      throw new NotFoundException(['You don have any order']);
+      throw new NotFoundException([trs.order.aggregate.exception.notAnyOrder]);
     }
     const ids = orders.map(value => value.id);
     const agg = await this.orderDetailRepo
@@ -97,7 +100,7 @@ export class OrderService {
     });
     if (request.type == RequestType.BOX || request.done) {
       throw new NotFoundException([
-        'Could not create order for done or box request',
+        trs.order.exception.doneRequest.isNotValidToOrder,
       ]);
     }
     request.done = true;

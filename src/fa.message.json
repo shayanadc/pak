@@ -1,0 +1,86 @@
+{
+  "auth": {
+    "exception": {
+      "code": {
+        "isNotMatch":"code is not match"
+      }
+    },
+    "validation": {
+      "phone": {
+        "isNotEmpty": "phone is not empty",
+        "isString": " شماره تلفن باید از نوع متنی باشد"
+      },
+      "activationCode": {
+        "isNotEmpty": "کد فعالسازی مورد نیاز است.",
+        "isString": "کد فعالسازی باید از نوع متنی باشد."
+      }
+    }
+  },
+  "login": {
+    "validation": {
+      "phone": {
+        "isNotEmpty": "phone is not empty",
+        "isString": "شماره تلفن باید از نوع متنی باشد"
+      }
+    }
+  },
+  "invoice": {
+    "exception": {
+      "submitInvoice": {
+        "notAnyWaitingOrder": "اعتبار شما جهت تسویه حساب کافی نمی باشد"
+      }
+    }
+  },
+  "address": {
+    "validation": {
+      "description": {
+        "isNotEmpty": "is not empty",
+        "isString": "is string"
+      },
+      "stateId": {
+        "isNotEmpty": "is not empty"
+      }
+    }
+  },
+  "material": {
+    "validation": {
+      "title": {
+        "isString": "title should be string"
+      }
+    }
+  },
+  "order": {
+    "exception": {
+      "aggregate": {
+        "notAnyOrder": "not any order"
+      },
+      "doneRequest": {
+        "isNotValidToOrder": "Could not create order for done or box request"
+      }
+    }
+  },
+  "request": {
+    "exception": {
+      "saving": {
+        "duplicate": "درخواست تکراری است"
+      }
+    },
+    "validation": {
+      "period": {
+        "isNotEmpty": "وارد کردن روزها الزامی است"
+      },
+      "date": {
+        "isNotEmpty": "date could not be empty",
+        "isDateString": "فرمت تاریخی به فارسی نباید باشد"
+      }
+    }
+  },
+  "exception": {
+    "entity": {
+      "notFound": "درخواست نا معتبر"
+    },
+    "db": {
+      "failed": "مشکلی در برقراری ارتباط بوجود امده است"
+    }
+  }
+}
