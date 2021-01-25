@@ -65,9 +65,7 @@ export class RequestController {
       allOf: [
         {
           properties: {
-            message: {
-              type: 'string',
-            },
+            message: {},
             requests: {
               type: 'array',
               items: { $ref: getSchemaPath(RequestEntity) },
