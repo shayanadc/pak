@@ -37,7 +37,7 @@ export class RequestService {
   }
   async getAllWaiting(body) {
     var states = body.states.split(',');
-    return await this.requestRepo.getAllWaiting(states);
+    return await this.requestRepo.getAllWaiting(states, body);
   }
   async getAll(user?) {
     if (user) {

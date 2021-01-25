@@ -11,7 +11,13 @@ export class RequestRepository extends Repository<RequestEntity> {
       order: { id: 'DESC' },
     });
   }
-  async getAllWaiting(states): Promise<RequestEntity[]> {
+  async getAllWaiting(states, body): Promise<RequestEntity[]> {
+    let take = 10;
+    let skip = 0;
+    if (body.hasOwnProperty('take')) {
+      take = body.take;
+      skip = body.skip;
+    }
     const now = new Date();
     var result1 = this.createQueryBuilder('request')
       .leftJoinAndSelect('request.address', 'address')
@@ -22,6 +28,8 @@ export class RequestRepository extends Repository<RequestEntity> {
       .andWhere('request.date <= :now', { now: now.toISOString() })
       .orderBy('state.id', 'DESC')
       .andWhere('address.stateId IN (:...stateId)', { stateId: states })
+      .take(take)
+      .skip(skip)
       .getMany();
     return await result2;
     // return await this.find({

@@ -26,8 +26,6 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
-import { UpdateuserDto } from '../user/updateuser.dto';
-import { OrderDto } from '../order/order.dto';
 import { Type } from 'class-transformer';
 class requestResponse {
   @ApiProperty()
