@@ -276,7 +276,7 @@ describe('Request Controller', () => {
   it('/request GET return all requests for driver', async () => {
     jest
       .useFakeTimers('modern')
-      .setSystemTime(new Date('2002-02-22T20:30:00.000Z').getTime());
+      .setSystemTime(new Date('2002-02-22T10:30:00.000Z').getTime());
     const { body } = await supertest
       .agent(app.getHttpServer())
       .get('/request/waiting?states=1,2')

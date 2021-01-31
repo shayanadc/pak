@@ -11,7 +11,7 @@ export class RequestRepository extends Repository<RequestEntity> {
       order: { id: 'DESC' },
     });
   }
-  async getAllWaiting(states, body): Promise<RequestEntity[]> {
+  async getAllWaiting(states, body, workshift): Promise<RequestEntity[]> {
     let take = 10;
     let skip = 0;
     if (body.hasOwnProperty('take')) {
@@ -26,6 +26,9 @@ export class RequestRepository extends Repository<RequestEntity> {
     var result2 = result1
       .where('request.done = :done', { done: false })
       .andWhere('request.date <= :now', { now: now.toISOString() })
+      .andWhere('request.work_shift = :workshift', {
+        workshift: workshift,
+      })
       .orderBy('state.id', 'DESC')
       .andWhere('address.stateId IN (:...stateId)', { stateId: states })
       .take(take)

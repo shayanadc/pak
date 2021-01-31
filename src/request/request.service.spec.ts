@@ -85,6 +85,12 @@ describe('Request Service', () => {
     const defaultConnection = getConnection('default');
     await defaultConnection.close();
   });
+  it('return work shift 1', async () => {
+    jest
+      .useFakeTimers('modern')
+      .setSystemTime(new Date('2000-03-05T20:30:00.000Z').getTime());
+    expect(reqServ.getWorkShift()).toEqual(3);
+  });
   it('calculate next time after period', async () => {
     jest
       .useFakeTimers('modern')
@@ -130,7 +136,6 @@ describe('Request Service', () => {
       .setSystemTime(new Date('2000-02-22T20:30:00.000Z').getTime());
     const newReq = await reqServ.createNext(req);
     expect(newReq.date).toEqual(new Date('2000-03-03T20:30:00.000Z'));
-    // console.log(await requestRepository.find());
     expect((await requestRepository.find()).length).toEqual(2);
   });
   it('delete user request item', async () => {
