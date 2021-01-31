@@ -49,11 +49,14 @@ export class RequestService {
   }
   async getAllWaiting(body) {
     var states = body.states.split(',');
-    return await this.requestRepo.getAllWaiting(
-      states,
-      body,
-      this.getWorkShift(),
-    );
+    let workShift = 1;
+    if (body.hasOwnProperty('work_shift')) {
+      workShift = body.work_shift;
+    } else {
+      workShift = this.getWorkShift();
+    }
+    console.log(workShift);
+    return await this.requestRepo.getAllWaiting(states, body, workShift);
   }
   async getAll(user?) {
     if (user) {

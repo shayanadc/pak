@@ -34,9 +34,11 @@ class requestResponse {
   request: RequestEntity;
 }
 class RequestFilterDto {
-  @ApiProperty({ example: ['1,2'], required: false })
+  @ApiProperty({ example: '1,2', required: false })
   @Type(() => String)
-  states: boolean;
+  states: string;
+  @ApiProperty()
+  work_shift: number;
   @ApiProperty()
   take: number;
   @ApiProperty()
