@@ -52,7 +52,7 @@
   "order": {
     "exception": {
       "aggregate": {
-        "notAnyOrder": "not any order"
+        "notAnyOrder": "سفارشی وجود ندارد."
       },
       "doneRequest": {
         "isNotValidToOrder": "Could not create order for done or box request"

@@ -28,7 +28,7 @@ export class OrderService {
       where: { issuer: user, delivered: query.delivered },
     });
     if (orders.length == 0) {
-      throw new NotFoundException([trs.order.aggregate.exception.notAnyOrder]);
+      throw new NotFoundException([trs.order.exception.aggregate.notAnyOrder]);
     }
     const ids = orders.map(value => value.id);
     const agg = await this.orderDetailRepo
