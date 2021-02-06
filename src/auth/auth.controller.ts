@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   UseFilters,
   UseGuards,
   UsePipes,
@@ -27,6 +28,7 @@ import { OrderService } from '../order/order.service';
 import { Roles } from '../role/role.decorator';
 import { Role } from '../role/role.enum';
 import { RolesGuard } from '../role/roles.guard';
+import { IsOptional } from 'class-validator';
 
 class AmountType {
   @ApiProperty({ example: 2000 })
@@ -45,6 +47,12 @@ class userResponse {
   user: UserEntity;
   @ApiProperty()
   credit: CreditType;
+}
+
+class creditFilterDto {
+  @ApiProperty()
+  @IsOptional()
+  free: boolean;
 }
 
 class apiToken {
@@ -94,11 +102,14 @@ export class AuthController {
   @ApiOkResponse({ type: userResponse })
   @UseGuards(AuthGuard(), RolesGuard)
   @Roles(Role.User, Role.Admin, Role.Driver, Role.Keeper)
-  async getAuthUser(@GetUser() user: UserEntity): Promise<userResponse> {
+  async getAuthUser(
+    @GetUser() user: UserEntity,
+    @Query() query: creditFilterDto,
+  ): Promise<userResponse> {
     return {
       message: 'current user',
       user: user,
-      credit: await this.orderServ.getCredit(user),
+      credit: await this.orderServ.getCredit(user, query),
     };
   }
 }

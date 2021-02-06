@@ -279,7 +279,9 @@ describe('Create And Toke User API', () => {
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
       },
-      credit: { total: { amount: 13000, quantity: 2 } },
+      credit: {
+        total: { amount: 13000, quantity: 2 },
+      },
     });
   });
 });
