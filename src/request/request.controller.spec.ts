@@ -107,7 +107,7 @@ describe('Request Controller', () => {
               user: user,
               address: address,
               type: 1,
-              date: '1999-12-31T20:30:00.000Z',
+              date: '2002-02-22T10:30:00.000Z',
             },
             {
               user: user2,
@@ -276,7 +276,7 @@ describe('Request Controller', () => {
   it('/request GET return all requests for driver', async () => {
     jest
       .useFakeTimers('modern')
-      .setSystemTime(new Date('2002-02-22T20:30:00.000Z').getTime());
+      .setSystemTime(new Date('2002-02-22T00:30:00.000Z').getTime());
     const { body } = await supertest
       .agent(app.getHttpServer())
       .get('/request/waiting?states=1,2')
@@ -297,7 +297,7 @@ describe('Request Controller', () => {
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
-          date: '1999-12-31T20:30:00.000Z',
+          date: '2002-02-22T10:30:00.000Z',
           address: {
             type: 1,
             zipCode: null,

@@ -19,6 +19,7 @@ export class RequestRepository extends Repository<RequestEntity> {
       skip = body.skip;
     }
     const now = new Date();
+    now.setHours(23, 59, 59, 0);
     var result1 = this.createQueryBuilder('request')
       .leftJoinAndSelect('request.address', 'address')
       .leftJoinAndSelect('request.user', 'user')
