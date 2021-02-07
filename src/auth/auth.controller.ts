@@ -52,7 +52,7 @@ class userResponse {
 class creditFilterDto {
   @ApiProperty()
   @IsOptional()
-  free: boolean;
+  donate: boolean;
 }
 
 class apiToken {

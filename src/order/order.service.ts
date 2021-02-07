@@ -83,11 +83,11 @@ export class OrderService {
   //   return waitingUsers;
   // }
   async getCredit(user, query): Promise<any> {
-    if (query.hasOwnProperty('free')) {
+    if (query.hasOwnProperty('donate')) {
       var res = await this.orderRepo
         .createQueryBuilder('orders')
         .where('orders.userId = :id', { id: user.id })
-        .andWhere('orders.donate = :free', { free: query.free })
+        .andWhere('orders.donate = :donate', { donate: query.donate })
         .andWhere('orders.invoiceId IS NULL')
         .select('SUM(orders.price)', 'sum')
         .addSelect('COUNT(orders.id)', 'count')
