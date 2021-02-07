@@ -82,15 +82,26 @@ export class OrderService {
   //     .getMany();
   //   return waitingUsers;
   // }
-  async getCredit(user): Promise<any> {
-    const res = await this.orderRepo
-      .createQueryBuilder('orders')
-      .where('orders.userId = :id', { id: user.id })
-      // .andWhere('orders.invoiceId = :invoiceId', { invoiceId: null })
-      .andWhere('orders.invoiceId IS NULL')
-      .select('SUM(orders.price)', 'sum')
-      .addSelect('COUNT(orders.id)', 'count')
-      .getRawOne();
+  async getCredit(user, query): Promise<any> {
+    if (query.hasOwnProperty('donate')) {
+      var res = await this.orderRepo
+        .createQueryBuilder('orders')
+        .where('orders.userId = :id', { id: user.id })
+        .andWhere('orders.donate = :donate', { donate: query.donate })
+        .andWhere('orders.invoiceId IS NULL')
+        .select('SUM(orders.price)', 'sum')
+        .addSelect('COUNT(orders.id)', 'count')
+        .getRawOne();
+    } else {
+      var res = await this.orderRepo
+        .createQueryBuilder('orders')
+        .where('orders.userId = :id', { id: user.id })
+        // .andWhere('orders.invoiceId = :invoiceId', { invoiceId: null })
+        .andWhere('orders.invoiceId IS NULL')
+        .select('SUM(orders.price)', 'sum')
+        .addSelect('COUNT(orders.id)', 'count')
+        .getRawOne();
+    }
     return { total: { amount: res.sum, quantity: res.count } };
   }
   async store(issuer, orderDto: OrderDto): Promise<OrderEntity> {
