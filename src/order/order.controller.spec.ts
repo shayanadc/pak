@@ -279,6 +279,7 @@ describe('OrderController', () => {
             lname: null,
             disable: false,
             roles: ['user'],
+            states: [],
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -289,6 +290,7 @@ describe('OrderController', () => {
             lname: null,
             disable: false,
             roles: ['user'],
+            states: [],
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -307,6 +309,7 @@ describe('OrderController', () => {
             lname: null,
             disable: false,
             roles: ['user'],
+            states: [],
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -317,6 +320,7 @@ describe('OrderController', () => {
             lname: null,
             disable: false,
             roles: ['user'],
+            states: [],
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -335,6 +339,7 @@ describe('OrderController', () => {
             lname: null,
             disable: false,
             roles: ['user'],
+            states: [],
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -345,6 +350,7 @@ describe('OrderController', () => {
             lname: null,
             disable: false,
             roles: ['user'],
+            states: [],
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -355,7 +361,7 @@ describe('OrderController', () => {
   it('/order/collected return aggregate order', async function() {
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/order/09129120912/collected')
+      .get('/order/aggregate?delivered=0')
       .expect(200);
     expect(body).toEqual({
       message: 'all of order report for this user ',
@@ -392,6 +398,27 @@ describe('OrderController', () => {
           date: '1999-12-31T20:30:00.000Z',
           period: null,
           done: true,
+          address: {
+            createdAt: expect.any(String),
+            description: 'Addresss.....',
+            id: 1,
+            state: {
+              city: {
+                createdAt: expect.any(String),
+                id: 1,
+                name: 'GORGAN',
+                province: null,
+                updatedAt: expect.any(String),
+              },
+              createdAt: expect.any(String),
+              id: 1,
+              title: 'BLOCK',
+              updatedAt: expect.any(String),
+            },
+            type: 1,
+            updatedAt: expect.any(String),
+            zipCode: null,
+          },
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
           user: {
@@ -401,6 +428,7 @@ describe('OrderController', () => {
             lname: null,
             disable: false,
             roles: ['user'],
+            states: [],
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -412,6 +440,7 @@ describe('OrderController', () => {
           lname: null,
           disable: false,
           roles: ['user'],
+          states: [],
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },
@@ -422,6 +451,7 @@ describe('OrderController', () => {
           lname: null,
           disable: false,
           roles: ['user'],
+          states: [],
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },

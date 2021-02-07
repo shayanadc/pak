@@ -22,14 +22,13 @@ export class OrderService {
     private userRepo: UserRepository,
     private reqService: RequestService,
   ) {}
-  async aggregate(phone): Promise<any> {
-    const user = await this.userRepo.findOneOrFail({ phone: phone });
+  async aggregate(user, query): Promise<any> {
     const orders = await this.orderRepo.find({
       relations: ['issuer'],
-      where: { issuer: user, delivered: false },
+      where: { issuer: user, delivered: query.delivered },
     });
     if (orders.length == 0) {
-      throw new NotFoundException([trs.order.aggregate.exception.notAnyOrder]);
+      throw new NotFoundException([trs.order.exception.aggregate.notAnyOrder]);
     }
     const ids = orders.map(value => value.id);
     const agg = await this.orderDetailRepo

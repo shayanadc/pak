@@ -84,6 +84,9 @@ describe('Request Controller', () => {
           const user = await userRepo.save({
             phone: '09129120912',
           });
+          const user2 = await userRepo.save({
+            phone: '09199120912',
+          });
           await cityRepo.save({
             name: 'GORG',
           });
@@ -99,12 +102,20 @@ describe('Request Controller', () => {
             user: user,
           });
 
-          await requestRepository.save({
-            user: user,
-            address: address,
-            type: 1,
-            date: '1999-12-31T20:30:00.000Z',
-          });
+          await requestRepository.save([
+            {
+              user: user,
+              address: address,
+              type: 1,
+              date: '2002-02-22T10:30:00.000Z',
+            },
+            {
+              user: user2,
+              address: address,
+              type: 3,
+              date: '2020-12-31T20:30:00.000Z',
+            },
+          ]);
           const req = context.switchToHttp().getRequest();
           req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
           return true;
@@ -140,7 +151,7 @@ describe('Request Controller', () => {
     expect(body).toEqual({
       message: 'new request created',
       request: {
-        id: 2,
+        id: 3,
         user: {
           id: 1,
           phone: '09129120912',
@@ -148,6 +159,7 @@ describe('Request Controller', () => {
           lname: null,
           disable: false,
           roles: ['user'],
+          states: [],
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },
@@ -225,6 +237,7 @@ describe('Request Controller', () => {
             lname: null,
             disable: false,
             roles: ['user'],
+            states: [],
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -261,9 +274,12 @@ describe('Request Controller', () => {
   });
 
   it('/request GET return all requests for driver', async () => {
+    jest
+      .useFakeTimers('modern')
+      .setSystemTime(new Date('2002-02-22T00:30:00.000Z').getTime());
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/request/all')
+      .get('/request/waiting?states=1,2')
       .expect(200);
     expect(body).toEqual({
       message: 'return all index',
@@ -281,7 +297,7 @@ describe('Request Controller', () => {
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
-          date: '1999-12-31T20:30:00.000Z',
+          date: '2002-02-22T10:30:00.000Z',
           address: {
             type: 1,
             zipCode: null,
@@ -290,13 +306,13 @@ describe('Request Controller', () => {
             updatedAt: expect.any(String),
             id: 1,
             state: {
-              city: {
-                id: 1,
-                name: 'GORG',
-                province: null,
-                createdAt: expect.any(String),
-                updatedAt: expect.any(String),
-              },
+              // city: {
+              //   id: 1,
+              //   name: 'GORG',
+              //   province: null,
+              //   createdAt: expect.any(String),
+              //   updatedAt: expect.any(String),
+              // },
               id: 1,
               title: 'BLOCK',
               createdAt: expect.any(String),

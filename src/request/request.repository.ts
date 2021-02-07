@@ -1,5 +1,6 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, getConnection, LessThan, Repository } from 'typeorm';
 import { RequestEntity } from './request.entity';
+import { Req } from '@nestjs/common';
 
 @EntityRepository(RequestEntity)
 export class RequestRepository extends Repository<RequestEntity> {
@@ -10,12 +11,33 @@ export class RequestRepository extends Repository<RequestEntity> {
       order: { id: 'DESC' },
     });
   }
-  async getAll(): Promise<RequestEntity[]> {
-    return await this.find({
-      where: { done: false },
-      relations: ['user', 'address'],
-      order: { id: 'DESC' },
-    });
+  async getAllWaiting(states, body): Promise<RequestEntity[]> {
+    let take = 10;
+    let skip = 0;
+    if (body.hasOwnProperty('take')) {
+      take = body.take;
+      skip = body.skip;
+    }
+    const now = new Date();
+    now.setHours(23, 59, 59, 0);
+    var result1 = this.createQueryBuilder('request')
+      .leftJoinAndSelect('request.address', 'address')
+      .leftJoinAndSelect('request.user', 'user')
+      .leftJoinAndSelect('address.state', 'state');
+    var result2 = result1
+      .where('request.done = :done', { done: false })
+      .andWhere('request.date <= :now', { now: now.toISOString() })
+      .orderBy('state.id', 'DESC')
+      .andWhere('address.stateId IN (:...stateId)', { stateId: states })
+      .take(take)
+      .skip(skip)
+      .getMany();
+    return await result2;
+    // return await this.find({
+    //   where: { done: false, date: LessThan(now.toISOString()) },
+    //   relations: ['user', 'address'],
+    //   order: { id: 'DESC' },
+    // });
   }
   async store(user, address, body): Promise<RequestEntity> {
     const request = new RequestEntity();

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IS_IN,
   IsArray,
@@ -21,6 +21,7 @@ export class OrderDto {
   @ValidateNested({ each: true })
   @Type(() => OrderDetailsType)
   rows: OrderDetailsType[];
+  @ApiPropertyOptional()
   @IsOptional()
   donate: boolean;
 }

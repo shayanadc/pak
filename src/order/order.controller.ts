@@ -49,6 +49,10 @@ class PhoneParamDto {
   @ApiProperty()
   phone: any;
 }
+class AggregateFilterDto {
+  @ApiProperty()
+  delivered: boolean;
+}
 
 class OrderFilterDTo {
   @ApiProperty()
@@ -165,15 +169,15 @@ export class OrderController {
     const orders = await this.orderService.index(query);
     return { message: 'return all orders', orders: orders };
   }
-  @Get(':phone/collected')
+  @Get('/aggregate')
   @ApiBearerAuth()
   @ApiOkResponse({ type: AggType })
   @UseGuards(AuthGuard())
   async aggregate(
     @GetUser() user: UserEntity,
-    @Param('phone') phone: string,
+    @Query() query: AggregateFilterDto,
   ): Promise<{ message: string; orders: AggType }> {
-    const orders = await this.orderService.aggregate(phone);
+    const orders = await this.orderService.aggregate(user, query);
     return { message: 'all of order report for this user ', orders: orders };
   }
   @Put(':phone/delivered')

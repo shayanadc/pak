@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -25,12 +26,21 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { BadRequestResponse } from '../api.response.swagger';
-import { UpdateuserDto } from '../user/updateuser.dto';
+import { Type } from 'class-transformer';
 class requestResponse {
   @ApiProperty()
   message: string;
   @ApiProperty()
   request: RequestEntity;
+}
+class RequestFilterDto {
+  @ApiProperty({ example: ['1,2'], required: false })
+  @Type(() => String)
+  states: string;
+  @ApiProperty()
+  take: number;
+  @ApiProperty()
+  skip: number;
 }
 class RequestIdDTO {
   @ApiProperty()
@@ -53,9 +63,7 @@ export class RequestController {
       allOf: [
         {
           properties: {
-            message: {
-              type: 'string',
-            },
+            message: {},
             requests: {
               type: 'array',
               items: { $ref: getSchemaPath(RequestEntity) },
@@ -73,7 +81,7 @@ export class RequestController {
     return { message: 'all request', requests: req };
   }
 
-  @Get('/all')
+  @Get('/waiting')
   @ApiBearerAuth()
   @ApiOkResponse({
     schema: {
@@ -90,10 +98,11 @@ export class RequestController {
     },
   })
   @UseGuards(AuthGuard())
-  async indexAll(
+  async waitingIndex(
     @GetUser() user: UserEntity,
+    @Query() body: RequestFilterDto,
   ): Promise<{ message: string; requests: RequestEntity[] }> {
-    const req = await this.RequestService.getAll();
+    const req = await this.RequestService.getAllWaiting(body);
     return { message: 'return all index', requests: req };
   }
 

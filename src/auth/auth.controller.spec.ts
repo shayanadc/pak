@@ -113,12 +113,13 @@ describe('Create And Toke User API', () => {
       .overrideGuard(AuthGuard())
       .useValue({
         canActivate: async (context: ExecutionContext) => {
-          const user = await userRepo.save({
-            phone: '09129120912',
-          });
-
           const state = await stateRepository.save({
             title: 'BLOCK',
+          });
+
+          const user = await userRepo.save({
+            phone: '09129120912',
+            states: [state],
           });
 
           const address = await addressRepo.save({
@@ -245,6 +246,7 @@ describe('Create And Toke User API', () => {
         lname: null,
         disable: false,
         roles: ['user'],
+        states: [],
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
       },
@@ -265,6 +267,15 @@ describe('Create And Toke User API', () => {
         lname: null,
         disable: false,
         roles: ['user'],
+        states: [
+          {
+            city: null,
+            createdAt: expect.any(String),
+            id: 1,
+            title: 'BLOCK',
+            updatedAt: expect.any(String),
+          },
+        ],
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
       },

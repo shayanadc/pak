@@ -35,11 +35,15 @@ export class RequestService {
     now.setDate(now.getDate() + days);
     return now;
   }
+  async getAllWaiting(body) {
+    var states = body.states.split(',');
+    return await this.requestRepo.getAllWaiting(states, body);
+  }
   async getAll(user?) {
     if (user) {
       return await this.requestRepo.getAllFor(user);
     }
-    return await this.requestRepo.getAll();
+    // return await this.requestRepo.getAll();
   }
   async store(user, body): Promise<RequestEntity> {
     const address = await this.addressRepo.findOneOrFail({

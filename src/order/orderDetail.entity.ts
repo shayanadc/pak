@@ -18,7 +18,7 @@ export class OrderDetailEntity extends BaseEntity {
   id: number;
   @Column()
   price: number;
-  @Column()
+  @Column('decimal', { precision: 8, scale: 2 })
   weight: number;
   @ManyToOne(
     () => OrderEntity,
