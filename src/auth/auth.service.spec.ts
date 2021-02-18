@@ -134,6 +134,12 @@ describe('User Service', () => {
       disable: false,
       roles: ['user'],
       states: [],
+      gender: null,
+      bankCardNo: null,
+      birthDate: null,
+      iban: null,
+      nationalIdNumber: null,
+      telphone: null,
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
     });

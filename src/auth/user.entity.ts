@@ -75,6 +75,21 @@ export class UserEntity extends BaseEntity {
   )
   @JoinTable()
   states: StateEntity[];
+  //bankcode,shebaCode
+
+  @Column({ nullable: true })
+  telphone: string;
+  @Column({ nullable: true })
+  nationalIdNumber: string;
+  @Column({ nullable: true })
+  gender: number;
+  @Column({ type: 'datetime', nullable: true })
+  @ApiProperty()
+  birthDate: Date;
+  @Column({ nullable: true })
+  bankCardNo: string;
+  @Column({ nullable: true })
+  iban: string;
 
   @CreateDateColumn()
   createdAt: Date;
