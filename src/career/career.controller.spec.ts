@@ -81,6 +81,7 @@ describe('JOB Controller', () => {
         canActivate: async (context: ExecutionContext) => {
           const user = await userRepo.save({
             phone: '09129120912',
+            code: '362gsa',
           });
           const req = context.switchToHttp().getRequest();
           req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object

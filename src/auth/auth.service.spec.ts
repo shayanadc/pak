@@ -32,6 +32,8 @@ import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 import { RequestService } from '../request/request.service';
 import { CareerEntity } from '../career/career.entity';
+import { UserDto } from '../user/user.dto';
+import IdentifyCodeInterface from './identifyCode.interface';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -39,6 +41,7 @@ describe('User Service', () => {
   let authServ: AuthService;
   let smsService: SmsInterface;
   let cacheService: CacheInterface;
+  let identifyCodeProvider: IdentifyCodeInterface;
   let codeGenServ: CodeGenerator;
   const smsProvider = {
     provide: 'SmsInterface',
@@ -51,6 +54,15 @@ describe('User Service', () => {
     useFactory: () => ({
       set: jest.fn(),
       get: jest.fn().mockReturnValue('12345'),
+    }),
+  };
+  const identifyCode = {
+    provide: 'IdentifyCodeInterface',
+    useFactory: () => ({
+      generate: jest
+        .fn()
+        .mockReturnValueOnce('xyz123')
+        .mockReturnValueOnce('123tqw'),
     }),
   };
   beforeEach(async () => {
@@ -98,6 +110,7 @@ describe('User Service', () => {
         AuthService,
         smsProvider,
         cacheProvider,
+        identifyCode,
         CodeGenerator,
         OrderService,
         RequestService,
@@ -108,6 +121,7 @@ describe('User Service', () => {
     codeGenServ = await module.get(CodeGenerator);
     smsService = await module.get('SmsInterface');
     cacheService = await module.get('CacheInterface');
+    identifyCodeProvider = await module.get('IdentifyCodeInterface');
 
     // connection = module.get(Connection);
     app = module.createNestApplication();
@@ -121,10 +135,13 @@ describe('User Service', () => {
     await userRepo.save([
       {
         phone: '09129120912',
+        code: 'asga12',
       },
     ]);
     const generateSpy = jest.spyOn(codeGenServ, 'generate');
     generateSpy.mockReturnValue('12345');
+    const identifySpy = jest.spyOn(identifyCodeProvider, 'generate');
+    identifySpy.mockReturnValue('a24af1');
 
     await expect(
       await authServ.findOrCreateUserWithPhone({ phone: '09129120912' }),
@@ -142,6 +159,7 @@ describe('User Service', () => {
       iban: null,
       nationalIdNumber: null,
       telphone: null,
+      code: expect.any(String),
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
     });
@@ -149,6 +167,22 @@ describe('User Service', () => {
     expect(smsService.sendMessage).toBeCalledTimes(1);
     expect(cacheService.set).toBeCalledTimes(1);
     expect(cacheService.set).toBeCalledWith('09129120912', '12345');
+  });
+  it('it should save user with mock code', async () => {
+    const user = await authServ.findOrCreateUserWithPhone({
+      phone: '09199120912',
+    } as UserDto);
+    expect(user.code).toEqual('xyz123');
+  });
+  it('it should save user with another mock code', async () => {
+    userRepo.save({
+      phone: '09120990990',
+      code: 'xyz123',
+    });
+    const user = await authServ.findOrCreateUserWithPhone({
+      phone: '09199120912',
+    } as UserDto);
+    expect(user.code).toEqual('123tqw');
   });
   it('should check matching act code', async () => {
     const authCredential: AuthCredentialDTO = {

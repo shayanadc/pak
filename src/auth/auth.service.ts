@@ -10,6 +10,7 @@ import SmsInterface from './sms.interface';
 import CodeGenerator from './code-generator';
 import CacheInterface from './cache.interface';
 import * as env from 'dotenv';
+import IdentifyCodeInterface from './identifyCode.interface';
 env.config();
 const lang = process.env.lang || 'en';
 const trs = require(`../${lang}.message.json`);
@@ -24,12 +25,20 @@ export class AuthService {
     @Inject('CacheInterface')
     private cacheProvider: CacheInterface,
     private codeGen: CodeGenerator,
+    @Inject('IdentifyCodeInterface')
+    private identifyCode: IdentifyCodeInterface,
   ) {}
   async findOrCreateUserWithPhone(loginDTO: LoginDto): Promise<UserEntity> {
     const code = this.codeGen.generate();
     this.smsProvider.sendMessage(loginDTO.phone, code);
     this.cacheProvider.set(loginDTO.phone, code);
-    return await this.userRepo.findOrCreate(loginDTO);
+    do {
+      var identifyCode = this.identifyCode.generate();
+    } while (
+      (await this.userRepo.findOne({ where: { code: identifyCode } })) !=
+      undefined
+    );
+    return await this.userRepo.findOrCreate(loginDTO, identifyCode);
   }
   async isCodeMatch(authCredential: AuthCredentialDTO) {
     const savedCode = await this.cacheProvider.get(authCredential.phone);

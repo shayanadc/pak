@@ -61,6 +61,15 @@ describe('Create And Toke User API', () => {
       get: jest.fn().mockReturnValue('12345'),
     }),
   };
+  const identifyCode = {
+    provide: 'IdentifyCodeInterface',
+    useFactory: () => ({
+      generate: jest
+        .fn()
+        .mockReturnValueOnce('xyz123')
+        .mockReturnValueOnce('123tqw'),
+    }),
+  };
   // let connection : Connection
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -107,6 +116,7 @@ describe('Create And Toke User API', () => {
         AuthService,
         smsProvider,
         cacheProvider,
+        identifyCode,
         CodeGenerator,
         OrderService,
         RequestService,
@@ -122,6 +132,7 @@ describe('Create And Toke User API', () => {
           const user = await userRepo.save({
             phone: '09129120912',
             states: [state],
+            code: '125gas',
           });
 
           const address = await addressRepo.save({
@@ -204,6 +215,7 @@ describe('Create And Toke User API', () => {
     await userRepo.save([
       {
         phone: '09129120912',
+        code: '125jfh',
       },
     ]);
     const { body } = await supertest
@@ -253,6 +265,7 @@ describe('Create And Toke User API', () => {
         bankCardNo: null,
         birthDate: null,
         iban: null,
+        code: 'xyz123',
         nationalIdNumber: null,
         telphone: null,
         createdAt: expect.any(String),
@@ -279,6 +292,7 @@ describe('Create And Toke User API', () => {
         bankCardNo: null,
         birthDate: null,
         iban: null,
+        code: '125gas',
         nationalIdNumber: null,
         telphone: null,
         states: [

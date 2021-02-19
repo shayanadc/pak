@@ -18,6 +18,7 @@ import { OrderDetailsRepository } from '../order/order.details.repository';
 import { OrderService } from '../order/order.service';
 import { MaterialRepository } from '../material/material.repository';
 import { RequestService } from '../request/request.service';
+import { IdentifyCodeProvider } from './identifycode.provider';
 
 @Module({
   imports: [
@@ -57,6 +58,11 @@ import { RequestService } from '../request/request.service';
       // You can switch useClass to different implementation
       useClass: CacheProvider,
       provide: 'CacheInterface',
+    },
+    {
+      // You can switch useClass to different implementation
+      useClass: IdentifyCodeProvider,
+      provide: 'IdentifyCodeInterface',
     },
   ],
 })

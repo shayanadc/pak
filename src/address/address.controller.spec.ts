@@ -84,6 +84,7 @@ describe('AddressController', () => {
         canActivate: async (context: ExecutionContext) => {
           authUser = await userRepo.save({
             phone: '09129120912',
+            code: 'xyz123',
           });
           const city = await cityRepo.save({ name: 'GORGAN' });
           const state = await stateRepo.save({ title: 'BLOCK 24', city: city });
@@ -127,7 +128,7 @@ describe('AddressController', () => {
   });
 
   it('/address GET return addresses of auth user', async function() {
-    const user = await userRepo.save({ phone: '09109120912' });
+    const user = await userRepo.save({ phone: '09109120912', code: '124tqw' });
 
     await addressRepo.save([{ description: 'Ave 245, Apt 215', user: user }]);
     const { body } = await supertest
@@ -155,6 +156,7 @@ describe('AddressController', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            code: 'xyz123',
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -188,6 +190,7 @@ describe('AddressController', () => {
             roles: ['user'],
             states: [],
             gender: null,
+            code: 'xyz123',
             bankCardNo: null,
             birthDate: null,
             iban: null,
@@ -246,6 +249,7 @@ describe('AddressController', () => {
           roles: ['user'],
           states: [],
           gender: null,
+          code: 'xyz123',
           bankCardNo: null,
           birthDate: null,
           iban: null,

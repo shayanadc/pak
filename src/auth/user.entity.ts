@@ -28,6 +28,9 @@ export class UserEntity extends BaseEntity {
   @Column()
   @ApiProperty()
   phone: string;
+  @Column({ unique: true })
+  @ApiProperty()
+  code: string;
   @OneToMany(
     type => AddressEntity,
     address => address.user,
@@ -83,6 +86,7 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   gender: number;
   @Column({ type: 'datetime', nullable: true })
+  // @Column({ nullable: true })
   @ApiProperty()
   birthDate: Date;
   @Column({ nullable: true })

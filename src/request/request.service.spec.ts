@@ -110,6 +110,7 @@ describe('Request Service', () => {
   it('clone new periodic request', async () => {
     const user = await userRepo.save({
       phone: '09129120912',
+      code: '124asg',
     });
     const state = await stateRepository.save({
       title: 'BLOCK',
@@ -138,6 +139,7 @@ describe('Request Service', () => {
   it('delete user request item', async () => {
     const user = await userRepo.save({
       phone: '09129120912',
+      code: '1sdg35',
     });
     const state = await stateRepository.save({
       title: 'BLOCK',

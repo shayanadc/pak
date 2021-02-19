@@ -80,6 +80,7 @@ describe('MaterialController', () => {
         canActivate: async (context: ExecutionContext) => {
           const user = await userRepo.save({
             phone: '09129120912',
+            code: '15zf12',
           });
           const req = context.switchToHttp().getRequest();
           req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object

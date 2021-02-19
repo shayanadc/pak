@@ -85,9 +85,11 @@ describe('Request Controller', () => {
         canActivate: async (context: ExecutionContext) => {
           const user = await userRepo.save({
             phone: '09129120912',
+            code: '123hdg',
           });
           const user2 = await userRepo.save({
             phone: '09199120912',
+            code: '124adg',
           });
           await cityRepo.save({
             name: 'GORG',
@@ -169,6 +171,7 @@ describe('Request Controller', () => {
           iban: null,
           nationalIdNumber: null,
           telphone: null,
+          code: expect.any(String),
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },
@@ -254,6 +257,7 @@ describe('Request Controller', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -317,6 +321,7 @@ describe('Request Controller', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -376,6 +381,7 @@ describe('Request Controller', () => {
           nationalIdNumber: null,
           telphone: null,
           states: [],
+          code: expect.any(String),
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },

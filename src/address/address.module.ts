@@ -11,6 +11,7 @@ import { CityRepository } from './city.repository';
 import { RequestRepository } from '../request/request.repository';
 import { OrderRepository } from '../order/order.repository';
 import { OrderDetailsRepository } from '../order/order.details.repository';
+import { CareerRepository } from '../career/career.repository';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { OrderDetailsRepository } from '../order/order.details.repository';
       RequestRepository,
       OrderRepository,
       OrderDetailsRepository,
+      CareerRepository,
     ]),
   ],
   controllers: [AddressController],

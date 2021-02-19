@@ -91,9 +91,11 @@ describe('OrderController', () => {
         canActivate: async (context: ExecutionContext) => {
           const adminUser = await userRepo.save({
             phone: '09129120912',
+            code: '215gss',
           });
           const endUser = await userRepo.save({
             phone: '09109120912',
+            code: '215gs1',
           });
           const city = await cityRepo.save({
             name: 'GORGAN',
@@ -288,6 +290,7 @@ describe('OrderController', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -305,6 +308,7 @@ describe('OrderController', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -330,6 +334,7 @@ describe('OrderController', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -347,6 +352,7 @@ describe('OrderController', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -372,6 +378,7 @@ describe('OrderController', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -389,6 +396,7 @@ describe('OrderController', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -474,6 +482,7 @@ describe('OrderController', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           },
@@ -492,6 +501,7 @@ describe('OrderController', () => {
           iban: null,
           nationalIdNumber: null,
           telphone: null,
+          code: expect.any(String),
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },
@@ -509,6 +519,7 @@ describe('OrderController', () => {
           iban: null,
           nationalIdNumber: null,
           telphone: null,
+          code: expect.any(String),
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },

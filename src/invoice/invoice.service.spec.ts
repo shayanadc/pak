@@ -88,18 +88,23 @@ describe('InvoiceService', () => {
   it('should follow invoice scenario', async () => {
     const driver1 = await userRepo.save({
       phone: '09990990990',
+      code: '215gss',
     });
     const driver2 = await userRepo.save({
       phone: '09120990990',
+      code: '215gs2',
     });
     const user1 = await userRepo.save({
       phone: '09129120912',
+      code: '211gss',
     });
     const user2 = await userRepo.save({
       phone: '09109120912',
+      code: '215gsf',
     });
     const user3 = await userRepo.save({
       phone: '09199999999',
+      code: '1dggss',
     });
     const city = await cityRepo.save({
       name: 'GORGAN',
