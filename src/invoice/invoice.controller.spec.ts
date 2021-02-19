@@ -262,6 +262,7 @@ describe('InvoiceController', () => {
           nationalIdNumber: null,
           telphone: null,
           code: expect.any(String),
+          agentId: null,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },

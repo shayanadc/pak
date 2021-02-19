@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { StateRepository } from '../address/state.repository';
 import { CityRepository } from '../address/city.repository';
 import { UserRepository } from '../auth/user.repository';
@@ -27,6 +27,17 @@ export class UserService {
     return await this.userRepo.store(body);
   }
 
+  async attachAgent(user, body): Promise<UserEntity> {
+    const userAgent = await this.userRepo.findOneOrFail({
+      code: body.agentCode,
+    });
+    if (user.agentId) {
+      throw new BadRequestException('this user has agent');
+    }
+    user.agentId = userAgent.id;
+    await user.save;
+    return user;
+  }
   async update(param, body: UpdateuserDto): Promise<UserEntity> {
     await this.userRepo.save({ ...body, id: param });
     return await this.userRepo.findOne({ id: param });

@@ -159,6 +159,7 @@ describe('User Service', () => {
       iban: null,
       nationalIdNumber: null,
       telphone: null,
+      agentId: null,
       code: expect.any(String),
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
@@ -207,6 +208,7 @@ describe('User Service', () => {
     await userRepo.save([
       {
         phone: '09129120912',
+        code: '1ec34w',
       },
     ]);
     const dto: AuthCredentialDTO = {

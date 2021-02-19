@@ -268,6 +268,7 @@ describe('Create And Toke User API', () => {
         code: 'xyz123',
         nationalIdNumber: null,
         telphone: null,
+        agentId: null,
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
       },
@@ -295,6 +296,7 @@ describe('Create And Toke User API', () => {
         code: '125gas',
         nationalIdNumber: null,
         telphone: null,
+        agentId: null,
         states: [
           {
             city: null,

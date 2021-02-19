@@ -171,6 +171,7 @@ describe('Request Controller', () => {
           iban: null,
           nationalIdNumber: null,
           telphone: null,
+          agentId: null,
           code: expect.any(String),
           createdAt: expect.any(String),
           updatedAt: expect.any(String),

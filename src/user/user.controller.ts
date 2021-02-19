@@ -31,7 +31,7 @@ import { StateEntity } from '../address/state.entity';
 import { UserDto } from './user.dto';
 import { MaterialUpdateDto } from '../material/material.update.dto';
 import { MaterialEntity } from '../material/material.entity';
-import { UpdateuserDto } from './updateuser.dto';
+import { UpdateUserAgentDto, UpdateuserDto } from './updateuser.dto';
 import { Type } from 'class-transformer';
 import { BadRequestResponse } from '../api.response.swagger';
 import { AllExceptionsFilter } from '../http-exception.filter';
@@ -127,14 +127,26 @@ export class UserController {
     return { message: 'create new user', user: cUser };
   }
 
+  @Put('/affiliate')
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: UserResponse })
+  @UseGuards(AuthGuard())
+  async attachAgent(
+    @Body() updateUserDto: UpdateUserAgentDto,
+    @GetUser() user: UserEntity,
+  ): Promise<{ message: string; user: UserEntity }> {
+    const updateUser = await this.userService.attachAgent(user, updateUserDto);
+    return { message: 'user updated', user: updateUser };
+  }
+
   @Put(':id')
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserResponse })
   @UseGuards(AuthGuard())
   // @UsePipes(new ValidationPipe({ skipMissingProperties: true }))
   async update(
-    @Param('id', ParseIntPipe) param: userIdDto,
     @Body() updateuserDto: UpdateuserDto,
+    @Param('id', ParseIntPipe) param: userIdDto,
   ): Promise<{ message: string; user: UserEntity }> {
     const updateUser = await this.userService.update(param, updateuserDto);
     return { message: 'user updated', user: updateUser };

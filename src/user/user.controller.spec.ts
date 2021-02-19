@@ -95,6 +95,42 @@ describe('UserController', () => {
     await defaultConnection.close();
   });
 
+  it('/user/affiliate PUT save new user', async () => {
+    const user = await userRepo.save({
+      phone: '09129120910',
+      code: '111faw',
+    });
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .put('/user/affiliate')
+      .send({
+        agentCode: '111faw',
+      })
+      .expect(200);
+    expect(body).toEqual({
+      message: 'user updated',
+      user: {
+        id: 2,
+        phone: '09129120912',
+        name: null,
+        lname: null,
+        disable: false,
+        roles: ['user'],
+        states: [],
+        gender: null,
+        bankCardNo: null,
+        birthDate: null,
+        iban: null,
+        nationalIdNumber: null,
+        telphone: null,
+        agentId: 1,
+        code: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      },
+    });
+  });
+
   // it('/user POST save new user', async () => {
   //   const { body } = await supertest
   //     .agent(app.getHttpServer())
@@ -165,6 +201,7 @@ describe('UserController', () => {
         iban: null,
         nationalIdNumber: null,
         telphone: null,
+        agentId: null,
         code: expect.any(String),
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
@@ -213,6 +250,7 @@ describe('UserController', () => {
           nationalIdNumber: null,
           telphone: null,
           code: 'gad261',
+          agentId: null,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },

@@ -25,6 +25,9 @@ export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   @ApiProperty()
   id: number;
+  @Column({ nullable: true })
+  @ApiProperty()
+  agentId: number;
   @Column()
   @ApiProperty()
   phone: string;

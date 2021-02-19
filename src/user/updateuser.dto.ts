@@ -2,6 +2,9 @@ import { Role } from '../role/role.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { Column } from 'typeorm';
 
+export class UpdateUserAgentDto {
+  agentId: number;
+}
 export class UpdateuserDto {
   @ApiProperty()
   name: string;
