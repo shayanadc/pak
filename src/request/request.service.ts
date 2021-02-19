@@ -75,4 +75,17 @@ export class RequestService {
       relations: ['address'],
     });
   }
+  async suspend(param): Promise<RequestEntity> {
+    const req = await this.requestRepo.findOneOrFail({
+      where: { id: param },
+      relations: ['address'],
+    });
+    req.suspended = req.suspended + 1;
+    await req.save();
+
+    return await this.requestRepo.findOne({
+      where: { id: param },
+      relations: ['address'],
+    });
+  }
 }

@@ -26,13 +26,23 @@ export class RequestRepository extends Repository<RequestEntity> {
       .leftJoinAndSelect('address.state', 'state');
     var result2 = result1
       .where('request.done = :done', { done: false })
-      .andWhere('request.date <= :now', { now: now.toISOString() })
+      .andWhere('request.date <= :now', { now: now.toISOString() });
+    if (body.hasOwnProperty('suspended') && body.suspended == '1') {
+      var result3 = result2.andWhere('request.suspended > :suspended', {
+        suspended: 0,
+      });
+    } else {
+      result3 = result2.andWhere('request.suspended = :suspended', {
+        suspended: 0,
+      });
+    }
+    var result4 = result3
       .orderBy('state.id', 'DESC')
       .andWhere('address.stateId IN (:...stateId)', { stateId: states })
       .take(take)
       .skip(skip)
       .getMany();
-    return await result2;
+    return await result4;
     // return await this.find({
     //   where: { done: false, date: LessThan(now.toISOString()) },
     //   relations: ['user', 'address'],

@@ -154,6 +154,7 @@ describe('Request Controller', () => {
       message: 'new request created',
       request: {
         id: 3,
+        suspended: 0,
         user: {
           id: 1,
           phone: '09129120912',
@@ -238,6 +239,7 @@ describe('Request Controller', () => {
         {
           id: 1,
           type: 1,
+          suspended: 0,
           user: {
             id: 1,
             phone: '09129120912',
@@ -293,7 +295,7 @@ describe('Request Controller', () => {
       .setSystemTime(new Date('2002-02-22T00:30:00.000Z').getTime());
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/request/waiting?states=1,2')
+      .get('/request/waiting?states=1,2&suspended=0')
       .expect(200);
     expect(body).toEqual({
       message: 'return all index',
@@ -301,6 +303,7 @@ describe('Request Controller', () => {
         {
           id: 1,
           type: 1,
+          suspended: 0,
           user: {
             id: 1,
             phone: '09129120912',
@@ -358,6 +361,7 @@ describe('Request Controller', () => {
       message: 'request processed',
       request: {
         id: 1,
+        suspended: 0,
         user: {
           id: 1,
           phone: '09129120912',

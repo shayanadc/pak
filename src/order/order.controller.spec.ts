@@ -435,6 +435,7 @@ describe('OrderController', () => {
           work_shift: 1,
           date: '1999-12-31T20:30:00.000Z',
           period: null,
+          suspended: 0,
           done: true,
           address: {
             createdAt: expect.any(String),

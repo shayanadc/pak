@@ -74,6 +74,10 @@ export class RequestEntity extends BaseEntity {
   @ApiProperty()
   done: boolean;
 
+  @Column({ default: 0 })
+  @ApiProperty()
+  suspended: number;
+
   @CreateDateColumn()
   @ApiProperty()
   createdAt: Date;

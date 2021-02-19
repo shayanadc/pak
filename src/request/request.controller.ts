@@ -38,6 +38,8 @@ class RequestFilterDto {
   @Type(() => String)
   states: string;
   @ApiProperty()
+  suspended: boolean;
+  @ApiProperty()
   take: number;
   @ApiProperty()
   skip: number;
@@ -138,5 +140,17 @@ export class RequestController {
   ): Promise<{ message: string; request: RequestEntity }> {
     const processedRequest = await this.RequestService.update(id);
     return { message: 'request processed', request: processedRequest };
+  }
+
+  @Put(':id/suspend')
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: requestResponse })
+  @UseGuards(AuthGuard())
+  // @UsePipes(new ValidationPipe({ skipMissingProperties: true }))
+  async suspend(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ message: string; request: RequestEntity }> {
+    const processedRequest = await this.RequestService.suspend(id);
+    return { message: 'request suspended', request: processedRequest };
   }
 }
