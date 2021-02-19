@@ -27,6 +27,7 @@ import { getConnection } from 'typeorm';
 import { ProvinceEntity } from './province.entity';
 import { ProvinceRepository } from './province.repository';
 import { InvoiceEntity } from '../invoice/invoice.entity';
+import { CareerEntity } from '../career/career.entity';
 
 describe('CityController', () => {
   let userRepo: UserRepository;
@@ -58,6 +59,7 @@ describe('CityController', () => {
             MaterialEntity,
             ProvinceEntity,
             InvoiceEntity,
+            CareerEntity,
           ],
           synchronize: true,
           dropSchema: true,

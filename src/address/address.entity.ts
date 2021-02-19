@@ -13,6 +13,7 @@ import { StateEntity } from './state.entity';
 import { RequestEntity } from '../request/request.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum } from 'class-validator';
+import { CareerEntity } from '../career/career.entity';
 export enum BuildingType {
   HOME = 1,
   APARTMENT = 2,
@@ -57,6 +58,11 @@ export class AddressEntity extends BaseEntity {
   @ApiProperty()
   @Column({ nullable: true })
   zipCode: string;
+  @ManyToOne(
+    type => CareerEntity,
+    career => career.addresses,
+  )
+  career: CareerEntity;
   @CreateDateColumn()
   @ApiProperty()
   createdAt: Date;

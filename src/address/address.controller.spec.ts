@@ -26,6 +26,8 @@ import { MaterialEntity } from '../material/material.entity';
 import { getConnection } from 'typeorm';
 import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
+import { CareerEntity } from '../career/career.entity';
+import { CareerRepository } from '../career/career.repository';
 
 describe('AddressController', () => {
   let userRepo: UserRepository;
@@ -34,6 +36,7 @@ describe('AddressController', () => {
   let cityRepo: CityRepository;
   let app: INestApplication;
   let authUser: UserEntity;
+  let careerRepo: CareerRepository;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -59,6 +62,7 @@ describe('AddressController', () => {
             OrderDetailEntity,
             ProvinceEntity,
             InvoiceEntity,
+            CareerEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -69,6 +73,7 @@ describe('AddressController', () => {
           StateRepository,
           CityRepository,
           RequestRepository,
+          CareerRepository,
         ]),
       ],
       controllers: [AddressController],
@@ -82,6 +87,9 @@ describe('AddressController', () => {
           });
           const city = await cityRepo.save({ name: 'GORGAN' });
           const state = await stateRepo.save({ title: 'BLOCK 24', city: city });
+          const career = await careerRepo.save({
+            title: 'OFFICE',
+          });
           await addressRepo.save([
             {
               description: 'BLAH BLAH',
@@ -106,6 +114,7 @@ describe('AddressController', () => {
     addressRepo = await module.get<AddressRepository>(AddressRepository);
     stateRepo = await module.get<StateRepository>(StateRepository);
     cityRepo = await module.get<CityRepository>(CityRepository);
+    careerRepo = await module.get<CareerRepository>(CareerRepository);
 
     // connection = module.get(Connection);
     app = module.createNestApplication();
@@ -211,7 +220,7 @@ describe('AddressController', () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
       .post('/address')
-      .send({ description: 'Address ....', stateId: 1, type: 2 })
+      .send({ description: 'Address ....', stateId: 1, type: 2, careerId: 1 })
       .expect(201);
 
     expect(body).toStrictEqual({
@@ -222,6 +231,12 @@ describe('AddressController', () => {
         id: 3,
         zipCode: null,
         description: 'Address ....',
+        career: {
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          id: 1,
+          title: 'OFFICE',
+        },
         user: {
           id: 1,
           phone: '09129120912',

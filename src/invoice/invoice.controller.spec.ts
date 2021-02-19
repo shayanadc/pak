@@ -26,13 +26,12 @@ import { MaterialEntity } from '../material/material.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from './invoice.entity';
-import { OrderController } from '../order/order.controller';
-import { OrderService } from '../order/order.service';
+
 import { getConnection } from 'typeorm';
 import supertest = require('supertest');
-import exp from 'constants';
 import { InvoiceService } from './invoice.service';
 import { InvoiceRepository } from './invoice.repository';
+import { CareerEntity } from '../career/career.entity';
 
 describe('InvoiceController', () => {
   let app: INestApplication;
@@ -69,6 +68,7 @@ describe('InvoiceController', () => {
             OrderDetailEntity,
             ProvinceEntity,
             InvoiceEntity,
+            CareerEntity,
           ],
           synchronize: true,
           dropSchema: true,

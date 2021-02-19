@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { AddressEntity } from '../address/address.entity';
 
 @Entity('jobs')
 export class CareerEntity extends BaseEntity {
@@ -18,6 +19,13 @@ export class CareerEntity extends BaseEntity {
   @ApiProperty()
   @Column()
   title: string;
+
+  @OneToMany(
+    type => AddressEntity,
+    address => address.career,
+  )
+  @ApiProperty()
+  addresses: AddressEntity[];
 
   @CreateDateColumn()
   @ApiProperty()

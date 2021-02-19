@@ -31,6 +31,7 @@ import { getConnection } from 'typeorm';
 import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 import { RequestService } from '../request/request.service';
+import { CareerEntity } from '../career/career.entity';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -76,6 +77,7 @@ describe('User Service', () => {
             OrderDetailEntity,
             ProvinceEntity,
             InvoiceEntity,
+            CareerEntity,
           ],
           synchronize: true,
           dropSchema: true,

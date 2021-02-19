@@ -26,6 +26,7 @@ import { getConnection } from 'typeorm';
 import supertest = require('supertest');
 import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
+import { CareerEntity } from '../career/career.entity';
 
 describe('UserController', () => {
   let app: INestApplication;
@@ -54,6 +55,7 @@ describe('UserController', () => {
             MaterialEntity,
             ProvinceEntity,
             InvoiceEntity,
+            CareerEntity,
           ],
           synchronize: true,
           dropSchema: true,

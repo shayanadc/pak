@@ -23,6 +23,7 @@ import { OrderDetailsRepository } from './order.details.repository';
 import { getConnection } from 'typeorm';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 import { RequestService } from '../request/request.service';
+import { CareerEntity } from '../career/career.entity';
 
 describe('OrderService', () => {
   let service: OrderService;
@@ -49,6 +50,7 @@ describe('OrderService', () => {
             OrderDetailEntity,
             ProvinceEntity,
             InvoiceEntity,
+            CareerEntity,
           ],
           synchronize: true,
           dropSchema: true,

@@ -3,6 +3,7 @@ import { AddressEntity, BuildingType } from './address.entity';
 import { UserEntity } from '../auth/user.entity';
 import { AddressDto } from './address.dto';
 import { StateEntity } from './state.entity';
+import { CareerEntity } from '../career/career.entity';
 
 @EntityRepository(AddressEntity)
 export class AddressRepository extends Repository<AddressEntity> {
@@ -16,6 +17,7 @@ export class AddressRepository extends Repository<AddressEntity> {
   async store(
     user: UserEntity,
     state: StateEntity,
+    career: CareerEntity,
     addressDto: AddressDto,
   ): Promise<AddressEntity> {
     const address = new AddressEntity();
@@ -24,6 +26,7 @@ export class AddressRepository extends Repository<AddressEntity> {
     address.state = state;
     address.type = addressDto.type;
     address.zipCode = addressDto.zipCode;
+    address.career = career;
     await address.save();
     return address;
   }
