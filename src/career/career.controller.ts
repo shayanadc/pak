@@ -8,12 +8,12 @@ import {
 } from '@nestjs/swagger';
 import { CityEntity } from '../address/city.entity';
 import { AuthGuard } from '@nestjs/passport';
-import { JobEntity } from './job.entity';
-import { JobService } from './job.service';
+import { CareerEntity } from './career.entity';
+import { CareerService } from './career.service';
 
 @Controller('job')
-export class JobController {
-  constructor(private jobService: JobService) {}
+export class CareerController {
+  constructor(private jobService: CareerService) {}
   @Get('/')
   @ApiBearerAuth()
   @ApiOkResponse({
@@ -24,9 +24,9 @@ export class JobController {
             message: {
               type: 'string',
             },
-            jobs: {
+            career: {
               type: 'array',
-              items: { $ref: getSchemaPath(JobEntity) },
+              items: { $ref: getSchemaPath(CareerEntity) },
             },
           },
         },
@@ -34,8 +34,8 @@ export class JobController {
     },
   })
   @UseGuards(AuthGuard())
-  async index(): Promise<{ message: string; jobs: JobEntity[] }> {
+  async index(): Promise<{ message: string; careers: CareerEntity[] }> {
     const jobs = await this.jobService.index();
-    return { message: 'All Jobs', jobs: jobs };
+    return { message: 'All Careers', careers: jobs };
   }
 }

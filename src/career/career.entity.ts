@@ -8,10 +8,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { CityEntity } from '../address/city.entity';
 
 @Entity('jobs')
-export class JobEntity extends BaseEntity {
+export class CareerEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   @ApiProperty()
   id: number;

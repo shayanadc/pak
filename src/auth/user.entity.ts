@@ -75,7 +75,6 @@ export class UserEntity extends BaseEntity {
   )
   @JoinTable()
   states: StateEntity[];
-  //bankcode,shebaCode
 
   @Column({ nullable: true })
   telphone: string;

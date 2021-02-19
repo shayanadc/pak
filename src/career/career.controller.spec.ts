@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { JobController } from './job.controller';
+import { CareerController } from './career.controller';
 import { UserRepository } from '../auth/user.repository';
 import {
   ExecutionContext,
@@ -24,18 +24,16 @@ import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 import { AddressRepository } from '../address/address.repository';
 import { RequestRepository } from '../request/request.repository';
-import { CityController } from '../city/city.controller';
-import { CityService } from '../city/city.service';
 import { getConnection } from 'typeorm';
-import { JobService } from './job.service';
+import { CareerService } from './career.service';
 import supertest = require('supertest');
-import { JobRepository } from './job.repository';
-import { JobEntity } from './job.entity';
+import { CareerRepository } from './career.repository';
+import { CareerEntity } from './career.entity';
 
 describe('JOB Controller', () => {
   let userRepo: UserRepository;
   let app: INestApplication;
-  let jobRepo: JobRepository;
+  let jobRepo: CareerRepository;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -60,7 +58,7 @@ describe('JOB Controller', () => {
             MaterialEntity,
             ProvinceEntity,
             InvoiceEntity,
-            JobEntity,
+            CareerEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -72,11 +70,11 @@ describe('JOB Controller', () => {
           StateRepository,
           RequestRepository,
           ProvinceRepository,
-          JobRepository,
+          CareerRepository,
         ]),
       ],
-      controllers: [JobController],
-      providers: [JobService],
+      controllers: [CareerController],
+      providers: [CareerService],
     })
       .overrideGuard(AuthGuard())
       .useValue({
@@ -91,7 +89,7 @@ describe('JOB Controller', () => {
       })
       .compile();
     userRepo = await module.get<UserRepository>(UserRepository);
-    jobRepo = await module.get<JobRepository>(JobRepository);
+    jobRepo = await module.get<CareerRepository>(CareerRepository);
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
@@ -113,8 +111,8 @@ describe('JOB Controller', () => {
       .get('/job')
       .expect(200);
     expect(body).toEqual({
-      message: 'All Jobs',
-      jobs: [
+      message: 'All Careers',
+      careers: [
         {
           id: 1,
           title: 'DR',

@@ -369,6 +369,7 @@ describe('Request Controller', () => {
           iban: null,
           nationalIdNumber: null,
           telphone: null,
+          states: [],
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },
