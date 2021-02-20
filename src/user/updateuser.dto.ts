@@ -3,7 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Column } from 'typeorm';
 
 export class UpdateUserAgentDto {
-  agentId: number;
+  @ApiProperty({ example: 'xaf25q' })
+  agentId: string;
 }
 export class UpdateuserDto {
   @ApiProperty()

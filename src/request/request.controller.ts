@@ -22,6 +22,7 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiProperty,
+  ApiPropertyOptional,
   ApiResponse,
   getSchemaPath,
 } from '@nestjs/swagger';
@@ -34,14 +35,14 @@ class requestResponse {
   request: RequestEntity;
 }
 class RequestFilterDto {
-  @ApiProperty({ example: ['1,2'], required: false })
+  @ApiProperty({ example: '1,2', required: false })
   @Type(() => String)
   states: string;
-  @ApiProperty()
+  @ApiPropertyOptional()
   suspended: boolean;
-  @ApiProperty()
+  @ApiPropertyOptional()
   take: number;
-  @ApiProperty()
+  @ApiPropertyOptional()
   skip: number;
 }
 class RequestIdDTO {
