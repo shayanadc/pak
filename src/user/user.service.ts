@@ -28,12 +28,12 @@ export class UserService {
   }
 
   async attachAgent(user, body): Promise<UserEntity> {
-    const userAgent = await this.userRepo.findOneOrFail({
-      code: body.agentCode,
-    });
     if (user.agentId) {
       throw new BadRequestException('this user has agent');
     }
+    const userAgent = await this.userRepo.findOneOrFail({
+      code: body.agentCode,
+    });
     user.agentId = userAgent.id;
     await user.save;
     return user;

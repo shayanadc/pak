@@ -219,19 +219,6 @@ describe('Request Controller', () => {
       })
       .expect(400);
   });
-  it('/request POST prevent user to save periodic request with deteriminig day', async () => {
-    const { body } = await supertest
-      .agent(app.getHttpServer())
-      .post('/request')
-      .send({
-        addressId: 1,
-        type: 3,
-        date: '1999-12-31T20:30:00.000Z',
-        work_shift: 1,
-      })
-      .expect(400);
-  });
-
   it('/request GET return requests of user', async () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
@@ -258,6 +245,7 @@ describe('Request Controller', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            agentId: null,
             code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
@@ -283,7 +271,7 @@ describe('Request Controller', () => {
               },
             },
           },
-          date: '1999-12-31T20:30:00.000Z',
+          date: '2002-02-22T10:30:00.000Z',
           period: null,
           work_shift: 1,
           done: false,
@@ -322,6 +310,7 @@ describe('Request Controller', () => {
             iban: null,
             nationalIdNumber: null,
             telphone: null,
+            agentId: null,
             code: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
@@ -383,6 +372,7 @@ describe('Request Controller', () => {
           telphone: null,
           states: [],
           code: expect.any(String),
+          agentId: null,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },
@@ -409,7 +399,7 @@ describe('Request Controller', () => {
         },
         type: 1,
         work_shift: 1,
-        date: '1999-12-31T20:30:00.000Z',
+        date: '2002-02-22T10:30:00.000Z',
         period: null,
         done: true,
         createdAt: expect.any(String),
@@ -423,5 +413,18 @@ describe('Request Controller', () => {
       .agent(app.getHttpServer())
       .delete('/request/1')
       .expect(200);
+  });
+
+  it('/request POST prevent user to save periodic request without period', async () => {
+    const { body } = await supertest
+      .agent(app.getHttpServer())
+      .post('/request')
+      .send({
+        addressId: 1,
+        type: 3,
+        date: '1999-12-31T20:30:00.000Z',
+        work_shift: 1,
+      })
+      .expect(400);
   });
 });

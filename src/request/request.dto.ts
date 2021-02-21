@@ -30,7 +30,8 @@ export class RequestDto {
   @ApiProperty({ enum: [1, 2, 3] })
   @IsEnum(WorkShiftType)
   work_shift: WorkShiftType;
-  @ValidateIf(o => RequestType[o.type] === 'PERIODIC')
-  @IsNotEmpty({ message: trs.request.validation.period.isNotEmpty })
+  // @ValidateIf(o => RequestType[o.type] == 'PERIODIC')
+  // @IsNotEmpty({ message: trs.request.validation.period.isNotEmpty })
+  @ApiProperty()
   period: number;
 }

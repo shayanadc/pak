@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -15,7 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RequestService } from './request.service';
 import { GetUser } from '../auth/get-user.decorator';
 import { UserEntity } from '../auth/user.entity';
-import { RequestEntity } from './request.entity';
+import { RequestEntity, RequestType } from './request.entity';
 import { RequestDto } from './request.dto';
 import { AllExceptionsFilter } from '../http-exception.filter';
 import {
@@ -117,6 +118,14 @@ export class RequestController {
     @GetUser() user: UserEntity,
     @Body() body: RequestDto,
   ): Promise<{ message: string; request: RequestEntity }> {
+    if ('PERIODIC' === RequestType[body.type]) {
+      if (!body.hasOwnProperty('period')) {
+        throw new BadRequestException(
+          'trs.request.validation.period.isNotEmpty',
+        );
+      }
+    }
+
     const req = await this.RequestService.store(user, body);
     return { message: 'new request created', request: req };
   }

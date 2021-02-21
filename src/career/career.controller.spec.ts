@@ -109,7 +109,7 @@ describe('JOB Controller', () => {
     });
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/job')
+      .get('/career')
       .expect(200);
     expect(body).toEqual({
       message: 'All Careers',

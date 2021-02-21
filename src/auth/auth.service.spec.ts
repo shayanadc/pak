@@ -176,7 +176,7 @@ describe('User Service', () => {
     expect(user.code).toEqual('xyz123');
   });
   it('it should save user with another mock code', async () => {
-    userRepo.save({
+    await userRepo.save({
       phone: '09120990990',
       code: 'xyz123',
     });
