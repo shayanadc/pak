@@ -4,7 +4,7 @@ import { Column } from 'typeorm';
 
 export class UpdateUserAgentDto {
   @ApiProperty({ example: 'xaf25q' })
-  agentId: string;
+  agentCode: string;
 }
 export class UpdateuserDto {
   @ApiProperty()
