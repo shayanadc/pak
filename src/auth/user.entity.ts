@@ -31,7 +31,7 @@ export class UserEntity extends BaseEntity {
   @Column()
   @ApiProperty()
   phone: string;
-  @Column({ unique: true })
+  @Column({ nullable: true })
   @ApiProperty()
   code: string;
   @OneToMany(
