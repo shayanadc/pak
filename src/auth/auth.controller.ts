@@ -40,6 +40,14 @@ class CreditType {
   @ApiProperty()
   total: AmountType;
 }
+class userLoginResponse {
+  @ApiProperty()
+  message: string;
+  @ApiProperty()
+  user: UserEntity;
+  @ApiProperty()
+  newUser: boolean;
+}
 class userResponse {
   @ApiProperty()
   message: string;
@@ -73,16 +81,17 @@ export class AuthController {
   constructor(private authServ: AuthService, private orderServ: OrderService) {}
 
   @Post('login')
-  @ApiOkResponse({ type: userResponse })
+  @ApiOkResponse({ type: userLoginResponse })
   @UsePipes(ValidationPipe)
   async findOrCreateUserWithPhone(
     @Body('phone', PhoneValidationPipe) validPhone: string,
     @Body() loginDto: LoginDto,
-  ): Promise<{ message: string; user: UserEntity }> {
-    const user = await this.authServ.findOrCreateUserWithPhone(loginDto);
+  ): Promise<{ message: string; user: UserEntity; newUser: boolean }> {
+    const result = await this.authServ.findOrCreateUserWithPhone(loginDto);
     return {
       message: 'the activation code sent for your customer',
-      user: user,
+      user: result.user,
+      newUser: result.newUser,
     };
   }
   @Post('token')

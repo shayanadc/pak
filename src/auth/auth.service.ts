@@ -28,7 +28,9 @@ export class AuthService {
     @Inject('IdentifyCodeInterface')
     private identifyCode: IdentifyCodeInterface,
   ) {}
-  async findOrCreateUserWithPhone(loginDTO: LoginDto): Promise<UserEntity> {
+  async findOrCreateUserWithPhone(
+    loginDTO: LoginDto,
+  ): Promise<{ newUser: boolean; user: UserEntity }> {
     const code = this.codeGen.generate();
     this.smsProvider.sendMessage(loginDTO.phone, code);
     this.cacheProvider.set(loginDTO.phone, code);

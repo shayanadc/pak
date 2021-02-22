@@ -146,23 +146,26 @@ describe('User Service', () => {
     await expect(
       await authServ.findOrCreateUserWithPhone({ phone: '09129120912' }),
     ).toEqual({
-      id: 1,
-      phone: '09129120912',
-      name: null,
-      lname: null,
-      disable: false,
-      roles: ['user'],
-      states: [],
-      gender: null,
-      bankCardNo: null,
-      birthDate: null,
-      iban: null,
-      nationalIdNumber: null,
-      telphone: null,
-      agentId: null,
-      code: expect.any(String),
-      createdAt: expect.any(Date),
-      updatedAt: expect.any(Date),
+      user: {
+        id: 1,
+        phone: '09129120912',
+        name: null,
+        lname: null,
+        disable: false,
+        roles: ['user'],
+        states: [],
+        gender: null,
+        bankCardNo: null,
+        birthDate: null,
+        iban: null,
+        nationalIdNumber: null,
+        telphone: null,
+        agentId: null,
+        code: expect.any(String),
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+      },
+      newUser: false,
     });
 
     expect(smsService.sendMessage).toBeCalledTimes(1);
@@ -170,20 +173,20 @@ describe('User Service', () => {
     expect(cacheService.set).toBeCalledWith('09129120912', '12345');
   });
   it('it should save user with mock code', async () => {
-    const user = await authServ.findOrCreateUserWithPhone({
+    const result = await authServ.findOrCreateUserWithPhone({
       phone: '09199120912',
     } as UserDto);
-    expect(user.code).toEqual('xyz123');
+    expect(result.user.code).toEqual('xyz123');
   });
   it('it should save user with another mock code', async () => {
     await userRepo.save({
       phone: '09120990990',
       code: 'xyz123',
     });
-    const user = await authServ.findOrCreateUserWithPhone({
+    const result = await authServ.findOrCreateUserWithPhone({
       phone: '09199120912',
     } as UserDto);
-    expect(user.code).toEqual('123tqw');
+    expect(result.user.code).toEqual('123tqw');
   });
   it('should check matching act code', async () => {
     const authCredential: AuthCredentialDTO = {

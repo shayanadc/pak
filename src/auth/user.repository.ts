@@ -4,18 +4,23 @@ import { UserEntity } from './user.entity';
 import { UserDto } from '../user/user.dto';
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
-  async findOrCreate(loginDto: LoginDto, identifyCode): Promise<UserEntity> {
-    let user = await this.findOne({ phone: loginDto.phone });
-    if (user) {
-      return user;
+  async findOrCreate(
+    loginDto: LoginDto,
+    identifyCode,
+  ): Promise<{ newUser: boolean; user: UserEntity }> {
+    let newUser = false;
+    let existedUser = await this.findOne({ phone: loginDto.phone });
+    if (existedUser) {
+      return { user: existedUser, newUser: newUser };
     }
-
-    user = new UserEntity();
+    newUser = true;
+    let user = new UserEntity();
     user.phone = loginDto.phone;
     user.code = identifyCode;
     await user.save();
 
-    return this.findOne({ id: user.id });
+    existedUser = await this.findOne({ id: user.id });
+    return { user: existedUser, newUser: newUser };
   }
 
   async store(body: UserDto): Promise<UserEntity> {

@@ -253,6 +253,7 @@ describe('Create And Toke User API', () => {
       .expect(201);
     expect(body).toEqual({
       message: 'the activation code sent for your customer',
+      newUser: true,
       user: {
         id: 1,
         phone: '09129120912',
