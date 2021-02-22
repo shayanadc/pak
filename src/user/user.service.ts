@@ -35,8 +35,8 @@ export class UserService {
       code: body.agentCode,
     });
     user.agentId = userAgent.id;
-    await user.save;
-    return user;
+    await user.save();
+    return await this.userRepo.findOne({ id: user.id });
   }
   async update(param, body: UpdateuserDto): Promise<UserEntity> {
     await this.userRepo.save({ ...body, id: param });

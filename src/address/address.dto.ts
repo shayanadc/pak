@@ -20,6 +20,7 @@ export class AddressDto {
   @ApiProperty()
   @IsOptional()
   zipCode: string;
+  @ApiProperty()
   @IsOptional()
   careerId: number;
 }
