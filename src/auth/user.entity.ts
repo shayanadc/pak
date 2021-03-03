@@ -88,8 +88,8 @@ export class UserEntity extends BaseEntity {
   nationalIdNumber: string;
   @Column({ nullable: true })
   gender: number;
-  // @Column({ type: 'datetime', nullable: true })
-  @Column({ nullable: true })
+  @Column({ type: 'datetime', nullable: true })
+  // @Column({ nullable: true })
   @ApiProperty()
   birthDate: Date;
   @Column({ nullable: true })

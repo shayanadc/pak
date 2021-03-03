@@ -288,7 +288,7 @@ describe('Request Controller', () => {
       .setSystemTime(new Date('2002-02-22T00:30:00.000Z').getTime());
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .get('/request/waiting?states=1,2&suspended=0')
+      .get('/request/waiting?states=1,2&suspended=0&work_shift=1')
       .expect(200);
     expect(body).toEqual({
       message: 'return all index',

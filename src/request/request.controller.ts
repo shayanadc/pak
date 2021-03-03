@@ -42,6 +42,9 @@ class RequestFilterDto {
   @ApiPropertyOptional()
   suspended: boolean;
   @ApiPropertyOptional()
+  @ApiProperty()
+  work_shift: number;
+  @ApiProperty()
   take: number;
   @ApiPropertyOptional()
   skip: number;
