@@ -13,11 +13,8 @@ import { UserModule } from './user/user.module';
 import { NotifyModule } from './notify/notify.module';
 import { BannerModule } from './banner/banner.module';
 import { InvoiceModule } from './invoice/invoice.module';
-<<<<<<< Updated upstream
 import { CareerModule } from './career/career.module';
-=======
-import { MessageModule } from './comments/message.module';
->>>>>>> Stashed changes
+import { CommnetModule } from './comments/commnet.module';
 import * as env from 'dotenv';
 env.config();
 
@@ -30,7 +27,7 @@ env.config();
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_SERVER || 'postgres',
-      // host: 'localhost',
+      host: 'localhost',
       username: 'postgres',
       password: 'password',
       // port: 25432,
@@ -50,11 +47,8 @@ env.config();
     NotifyModule,
     BannerModule,
     InvoiceModule,
-<<<<<<< Updated upstream
     CareerModule,
-=======
-    MessageModule,
->>>>>>> Stashed changes
+    CommnetModule,
   ],
   controllers: [AppController],
   providers: [],

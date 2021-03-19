@@ -36,4 +36,4 @@ import { CommentRepository } from './comment.repository';
   controllers: [CommentController],
   providers: [CommentService],
 })
-export class MessageModule {}
+export class CommnetModule {}
