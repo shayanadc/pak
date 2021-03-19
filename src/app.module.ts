@@ -27,7 +27,7 @@ env.config();
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_SERVER || 'postgres',
-      host: 'localhost',
+      // host: 'localhost',
       username: 'postgres',
       password: 'password',
       // port: 25432,
