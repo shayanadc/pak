@@ -29,6 +29,7 @@ import { CareerService } from './career.service';
 import supertest = require('supertest');
 import { CareerRepository } from './career.repository';
 import { CareerEntity } from './career.entity';
+import { CommentEntity } from '../comments/comment.entity';
 
 describe('JOB Controller', () => {
   let userRepo: UserRepository;
@@ -59,6 +60,7 @@ describe('JOB Controller', () => {
             ProvinceEntity,
             InvoiceEntity,
             CareerEntity,
+            CommentEntity,
           ],
           synchronize: true,
           dropSchema: true,

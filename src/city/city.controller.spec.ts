@@ -28,6 +28,7 @@ import { ProvinceEntity } from './province.entity';
 import { ProvinceRepository } from './province.repository';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 import { CareerEntity } from '../career/career.entity';
+import { CommentEntity } from '../comments/comment.entity';
 
 describe('CityController', () => {
   let userRepo: UserRepository;
@@ -60,6 +61,7 @@ describe('CityController', () => {
             ProvinceEntity,
             InvoiceEntity,
             CareerEntity,
+            CommentEntity,
           ],
           synchronize: true,
           dropSchema: true,

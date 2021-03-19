@@ -36,6 +36,7 @@ import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 import { RequestService } from '../request/request.service';
 import { CareerEntity } from '../career/career.entity';
+import { CommentEntity } from '../comments/comment.entity';
 
 describe('Create And Toke User API', () => {
   let app: INestApplication;
@@ -96,6 +97,7 @@ describe('Create And Toke User API', () => {
             ProvinceEntity,
             InvoiceEntity,
             CareerEntity,
+            CommentEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -304,6 +306,7 @@ describe('Create And Toke User API', () => {
             createdAt: expect.any(String),
             id: 1,
             title: 'BLOCK',
+            qty: 0,
             updatedAt: expect.any(String),
           },
         ],

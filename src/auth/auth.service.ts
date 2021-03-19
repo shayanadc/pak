@@ -11,6 +11,7 @@ import CodeGenerator from './code-generator';
 import CacheInterface from './cache.interface';
 import * as env from 'dotenv';
 import IdentifyCodeInterface from './identifyCode.interface';
+import { RequestService } from '../request/request.service';
 env.config();
 const lang = process.env.lang || 'en';
 const trs = require(`../${lang}.message.json`);
@@ -27,6 +28,7 @@ export class AuthService {
     private codeGen: CodeGenerator,
     @Inject('IdentifyCodeInterface')
     private identifyCode: IdentifyCodeInterface,
+    private requestServ: RequestService,
   ) {}
   async findOrCreateUserWithPhone(
     loginDTO: LoginDto,
@@ -49,6 +51,15 @@ export class AuthService {
       return true;
     }
     return false;
+  }
+  async attachUnProcessedRequestToState(user) {
+    let states = user.states;
+    for (let i = 0, l = states.length; i < l; i++) {
+      states[i].qty = await this.requestServ.getUnprocessedRequestForState(
+        states[i].id,
+      );
+    }
+    return user;
   }
   async retrieveToken(
     authCredential: AuthCredentialDTO,

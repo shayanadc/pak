@@ -11,6 +11,22 @@ export class RequestRepository extends Repository<RequestEntity> {
       order: { id: 'DESC' },
     });
   }
+
+  async getCountWaitingForState(stateId): Promise<[RequestEntity[], number]> {
+    const now = new Date();
+    now.setHours(23, 59, 59, 0);
+    var result1 = this.createQueryBuilder('request')
+      .leftJoinAndSelect('request.address', 'address')
+      .leftJoinAndSelect('request.user', 'user')
+      .leftJoinAndSelect('address.state', 'state');
+    var result2 = result1
+      .where('request.done = :done', { done: false })
+      .andWhere('request.date <= :now', { now: now.toISOString() })
+      .orderBy('state.id', 'DESC')
+      .andWhere('address.stateId IN (:...stateId)', { stateId: [stateId] })
+      .getManyAndCount();
+    return await result2;
+  }
   async getAllWaiting(states, body, workshift): Promise<RequestEntity[]> {
     let take = 10;
     let skip = 0;

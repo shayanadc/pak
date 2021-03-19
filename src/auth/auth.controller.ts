@@ -52,7 +52,7 @@ class userResponse {
   @ApiProperty()
   message: string;
   @ApiProperty()
-  user: UserEntity;
+  user: Object;
   @ApiProperty()
   credit: CreditType;
 }
@@ -115,9 +115,13 @@ export class AuthController {
     @GetUser() user: UserEntity,
     @Query() query: creditFilterDto,
   ): Promise<userResponse> {
+    let userObj = user;
+    if (user.states) {
+      userObj = await this.authServ.attachUnProcessedRequestToState(user);
+    }
     return {
       message: 'current user',
-      user: user,
+      user: userObj,
       credit: await this.orderServ.getCredit(user, query),
     };
   }

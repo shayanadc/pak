@@ -81,6 +81,12 @@ export class RequestService {
     return await this.requestRepo.deleteItem(user, id);
   }
 
+  async getUnprocessedRequestForState(stateId): Promise<number> {
+    const [unprocessed, count] = await this.requestRepo.getCountWaitingForState(
+      stateId,
+    );
+    return count;
+  }
   async update(param): Promise<RequestEntity> {
     const req = await this.requestRepo.findOneOrFail({
       where: { id: param, type: 1 },

@@ -1,5 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StateController } from './state.controller';
+import { CommentController } from './comment.controller';
+import { UserRepository } from '../auth/user.repository';
+import {
+  ExecutionContext,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
+import { StateRepository } from '../address/state.repository';
+import { CityRepository } from '../address/city.repository';
 import { AuthGuard, PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,32 +16,24 @@ import { AddressEntity } from '../address/address.entity';
 import { CityEntity } from '../address/city.entity';
 import { StateEntity } from '../address/state.entity';
 import { RequestEntity } from '../request/request.entity';
-import { UserRepository } from '../auth/user.repository';
-import { CityRepository } from '../address/city.repository';
-import { StateRepository } from '../address/state.repository';
-import {
-  ExecutionContext,
-  INestApplication,
-  ValidationPipe,
-} from '@nestjs/common';
-import supertest = require('supertest');
-import { AddressRepository } from '../address/address.repository';
-import { RequestRepository } from '../request/request.repository';
-import { StateService } from './state.service';
 import { OrderEntity } from '../order/order.entity';
 import { OrderDetailEntity } from '../order/orderDetail.entity';
 import { MaterialEntity } from '../material/material.entity';
-import { getConnection } from 'typeorm';
 import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
+import { AddressRepository } from '../address/address.repository';
+import { RequestRepository } from '../request/request.repository';
+import { getConnection } from 'typeorm';
+import { CommentRepository } from './comment.repository';
+import { CommentEntity } from './comment.entity';
+import { CommentService } from './comment.service';
+import supertest = require('supertest');
 import { CareerEntity } from '../career/career.entity';
-import { CommentEntity } from '../comments/comment.entity';
 
-describe('StateController', () => {
+describe('MessageController', () => {
   let userRepo: UserRepository;
   let app: INestApplication;
-  let stateRepo: StateRepository;
-  let cityRepo: CityRepository;
+  let messageRepo: CommentRepository;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
@@ -58,8 +58,8 @@ describe('StateController', () => {
             MaterialEntity,
             ProvinceEntity,
             InvoiceEntity,
-            CareerEntity,
             CommentEntity,
+            CareerEntity,
           ],
           synchronize: true,
           dropSchema: true,
@@ -70,17 +70,17 @@ describe('StateController', () => {
           CityRepository,
           StateRepository,
           RequestRepository,
+          CommentRepository,
         ]),
       ],
-      controllers: [StateController],
-      providers: [StateService],
+      controllers: [CommentController],
+      providers: [CommentService],
     })
       .overrideGuard(AuthGuard())
       .useValue({
         canActivate: async (context: ExecutionContext) => {
           const user = await userRepo.save({
             phone: '09129120912',
-            code: '21ag1s',
           });
           const req = context.switchToHttp().getRequest();
           req.user = userRepo.findOne({ phone: '09129120912' }); // Your user object
@@ -89,8 +89,7 @@ describe('StateController', () => {
       })
       .compile();
     userRepo = await module.get<UserRepository>(UserRepository);
-    stateRepo = await module.get<StateRepository>(StateRepository);
-    cityRepo = await module.get<CityRepository>(CityRepository);
+    messageRepo = await module.get<CommentRepository>(CommentRepository);
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
@@ -99,64 +98,34 @@ describe('StateController', () => {
     const defaultConnection = getConnection('default');
     await defaultConnection.close();
   });
-  it('/state POST save new state', async () => {
-    const city = await cityRepo.save({
-      name: 'GORGAN',
-    });
+  it('/comment POST save message for auth user', async () => {
     const { body } = await supertest
       .agent(app.getHttpServer())
-      .post('/state')
-      .send({ cityId: city.id, title: 'GORGANPARS' })
+      .post('/comment')
+      .send({
+        subject: 'question',
+        context: 'this is ...',
+      })
       .expect(201);
-    expect(body).toEqual({
-      message: 'new state created',
-      state: {
+    expect(body).toMatchObject({
+      message: 'create new comment',
+      comment: {
         id: 1,
-        title: 'GORGANPARS',
+        subject: 'question',
+        context: 'this is ...',
+        user: {
+          id: 1,
+          phone: '09129120912',
+          name: null,
+          lname: null,
+          disable: false,
+          roles: ['user'],
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        },
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
-        city: {
-          id: city.id,
-          name: 'GORGAN',
-          province: null,
-          createdAt: expect.any(String),
-          updatedAt: expect.any(String),
-        },
       },
-    });
-  });
-  it('/state GET return all states', async () => {
-    await cityRepo.save({
-      name: 'GORGAN',
-    });
-    await cityRepo.save({
-      name: 'GONBAD',
-    });
-    await stateRepo.save({
-      title: 'GRSD',
-      city: await cityRepo.findOne({ id: 1 }),
-    });
-    const { body } = await supertest
-      .agent(app.getHttpServer())
-      .get('/state?city=1')
-      .expect(200);
-    expect(body).toEqual({
-      message: 'get all states',
-      states: [
-        {
-          id: 1,
-          title: 'GRSD',
-          city: {
-            id: 1,
-            name: 'GORGAN',
-            province: null,
-            createdAt: expect.any(String),
-            updatedAt: expect.any(String),
-          },
-          createdAt: expect.any(String),
-          updatedAt: expect.any(String),
-        },
-      ],
     });
   });
 });

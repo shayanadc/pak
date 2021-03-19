@@ -28,6 +28,7 @@ import { getConnection } from 'typeorm';
 import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 import { CareerEntity } from '../career/career.entity';
+import { CommentEntity } from '../comments/comment.entity';
 
 describe('MaterialController', () => {
   let app: INestApplication;
@@ -59,6 +60,7 @@ describe('MaterialController', () => {
             ProvinceEntity,
             InvoiceEntity,
             CareerEntity,
+            CommentEntity,
           ],
           synchronize: true,
           dropSchema: true,

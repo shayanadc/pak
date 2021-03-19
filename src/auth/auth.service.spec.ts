@@ -34,6 +34,7 @@ import { RequestService } from '../request/request.service';
 import { CareerEntity } from '../career/career.entity';
 import { UserDto } from '../user/user.dto';
 import IdentifyCodeInterface from './identifyCode.interface';
+import { CommentEntity } from '../comments/comment.entity';
 
 describe('User Service', () => {
   let app: INestApplication;
@@ -90,6 +91,7 @@ describe('User Service', () => {
             ProvinceEntity,
             InvoiceEntity,
             CareerEntity,
+            CommentEntity,
           ],
           synchronize: true,
           dropSchema: true,

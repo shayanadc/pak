@@ -31,6 +31,7 @@ import { ProvinceEntity } from '../city/province.entity';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 import { RequestService } from '../request/request.service';
 import { CareerEntity } from '../career/career.entity';
+import { CommentEntity } from '../comments/comment.entity';
 
 describe('OrderController', () => {
   let app: INestApplication;
@@ -68,6 +69,7 @@ describe('OrderController', () => {
             ProvinceEntity,
             InvoiceEntity,
             CareerEntity,
+            CommentEntity,
           ],
           synchronize: true,
           dropSchema: true,

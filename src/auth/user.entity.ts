@@ -18,6 +18,7 @@ import { Role } from '../role/role.enum';
 import { Exclude } from 'class-transformer';
 import { InvoiceEntity } from '../invoice/invoice.entity';
 import { StateEntity } from '../address/state.entity';
+import { CommentEntity } from '../comments/comment.entity';
 
 @Entity('users')
 @Unique(['phone'])
@@ -46,6 +47,13 @@ export class UserEntity extends BaseEntity {
   )
   @ApiProperty()
   requests: RequestEntity[];
+
+  @OneToMany(
+    () => CommentEntity,
+    comments => comments.user,
+  )
+  @ApiProperty()
+  comments: CommentEntity[];
 
   @OneToMany(
     () => OrderEntity,
@@ -88,8 +96,8 @@ export class UserEntity extends BaseEntity {
   nationalIdNumber: string;
   @Column({ nullable: true })
   gender: number;
-  // @Column({ type: 'datetime', nullable: true })
-  @Column({ nullable: true })
+  @Column({ type: 'datetime', nullable: true })
+  // @Column({ nullable: true })
   @ApiProperty()
   birthDate: Date;
   @Column({ nullable: true })

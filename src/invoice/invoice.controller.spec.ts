@@ -32,6 +32,7 @@ import supertest = require('supertest');
 import { InvoiceService } from './invoice.service';
 import { InvoiceRepository } from './invoice.repository';
 import { CareerEntity } from '../career/career.entity';
+import { CommentEntity } from '../comments/comment.entity';
 
 describe('InvoiceController', () => {
   let app: INestApplication;
@@ -69,6 +70,7 @@ describe('InvoiceController', () => {
             ProvinceEntity,
             InvoiceEntity,
             CareerEntity,
+            CommentEntity,
           ],
           synchronize: true,
           dropSchema: true,
