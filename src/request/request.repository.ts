@@ -48,15 +48,16 @@ export class RequestRepository extends Repository<RequestEntity> {
         suspended: 0,
       });
     } else {
-      result3 = result2.andWhere('request.suspended = :suspended', {
-        suspended: 0,
-      });
+      result3 = result2
+        .andWhere('request.suspended = :suspended', {
+          suspended: 0,
+        })
+        .andWhere('request.work_shift = :workshift', {
+          workshift: workshift,
+        });
     }
     var result4 = result3
       .andWhere('request.date <= :now', { now: now.toISOString() })
-      .andWhere('request.work_shift = :workshift', {
-        workshift: workshift,
-      })
       .orderBy('state.id', 'DESC')
       .andWhere('address.stateId IN (:...stateId)', { stateId: states })
       .take(take)
