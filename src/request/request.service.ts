@@ -53,7 +53,8 @@ export class RequestService {
     if (body.hasOwnProperty('work_shift')) {
       workShift = body.work_shift;
     } else {
-      workShift = this.getWorkShift();
+      // workShift = this.getWorkShift();
+      workShift = 1;
     }
     console.log(workShift);
     return await this.requestRepo.getAllWaiting(states, body, workShift);
