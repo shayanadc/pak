@@ -26,6 +26,7 @@
   },
   "invoice": {
     "submitInvoice": {
+      "notAllowedPrice": "there is not any waiting order",
       "notAnyWaitingOrder": "there is not any waiting order"
     }
   },

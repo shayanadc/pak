@@ -26,6 +26,10 @@ export class StateEntity extends BaseEntity {
     address => address.state,
   )
   @ApiProperty()
+  @Column({ default: 0 })
+  priorityOrder: number;
+
+  @ApiProperty()
   addresses: AddressEntity[];
   @ManyToOne(
     type => CityEntity,

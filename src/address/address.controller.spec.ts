@@ -166,6 +166,7 @@ describe('AddressController', () => {
           state: {
             id: 1,
             title: 'BLOCK 24',
+            priorityOrder: 0,
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
             city: {
@@ -206,6 +207,7 @@ describe('AddressController', () => {
           state: {
             id: 1,
             title: 'BLOCK 24',
+            priorityOrder: 0,
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
             city: {
@@ -243,6 +245,7 @@ describe('AddressController', () => {
           updatedAt: expect.any(String),
           id: 1,
           title: 'OFFICE',
+          priorityOrder: 0,
         },
         user: {
           id: 1,
@@ -266,6 +269,7 @@ describe('AddressController', () => {
         state: {
           id: 1,
           title: 'BLOCK 24',
+          priorityOrder: 0,
           city: {
             id: 1,
             name: 'GORGAN',

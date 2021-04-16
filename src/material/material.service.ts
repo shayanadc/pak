@@ -8,7 +8,12 @@ export class MaterialService {
   constructor(private materialRepo: MaterialRepository) {}
 
   async index(): Promise<MaterialEntity[]> {
-    return await this.materialRepo.find();
+    return await this.materialRepo.find({
+      order: {
+        priorityOrder: 'DESC',
+        id: 'DESC',
+      },
+    });
   }
   async update(id, body): Promise<MaterialEntity> {
     const up = await this.materialRepo.update({ id: id }, body);

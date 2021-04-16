@@ -117,14 +117,16 @@ describe('JOB Controller', () => {
       message: 'All Careers',
       careers: [
         {
-          id: 1,
-          title: 'DR',
+          id: 2,
+          title: 'MANUFACTOR',
+          priorityOrder: 0,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },
         {
-          id: 2,
-          title: 'MANUFACTOR',
+          id: 1,
+          title: 'DR',
+          priorityOrder: 0,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },

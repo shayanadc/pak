@@ -27,6 +27,7 @@
   "invoice": {
     "exception": {
       "submitInvoice": {
+        "notAllowedPrice": "اعتبار شما جهت تسویه حساب کافی نمی باشد",
         "notAnyWaitingOrder": "اعتبار شما جهت تسویه حساب کافی نمی باشد"
       }
     }

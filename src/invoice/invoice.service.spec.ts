@@ -24,6 +24,7 @@ import { InvoiceRepository } from './invoice.repository';
 import { getConnection } from 'typeorm';
 import { CareerEntity } from '../career/career.entity';
 import { CommentEntity } from '../comments/comment.entity';
+import { NotFoundException } from '@nestjs/common';
 
 describe('InvoiceService', () => {
   let service: InvoiceService;
@@ -224,5 +225,119 @@ describe('InvoiceService', () => {
       where: { user: user2, invoice: null },
     });
     expect(idleOrders.length).toEqual(1);
+  });
+  it('should throw an exception when order is not over the range', async () => {
+    const driver1 = await userRepo.save({
+      phone: '09990990990',
+      code: '215gss',
+    });
+    const driver2 = await userRepo.save({
+      phone: '09120990990',
+      code: '215gs2',
+    });
+    const user1 = await userRepo.save({
+      phone: '09129120912',
+      code: '211gss',
+    });
+    const user2 = await userRepo.save({
+      phone: '09109120912',
+      code: '215gsf',
+    });
+    const user3 = await userRepo.save({
+      phone: '09199999999',
+      code: '1dggss',
+    });
+    const city = await cityRepo.save({
+      name: 'GORGAN',
+    });
+    const state = await stateRepository.save({
+      title: 'BLOCK',
+      city: await cityRepo.findOne({ id: city.id }),
+    });
+    const address = await addressRepo.save({
+      description: 'Addresss.....',
+      state: state,
+      user: user1,
+    });
+    await requestRepo.save({
+      user: user1,
+      address: address,
+      type: 3,
+      date: '2000-01-01 00:00:00',
+    });
+    await requestRepo.save({
+      user: user2,
+      address: address,
+      type: 1,
+      done: true,
+      date: '2000-01-01 00:00:00',
+    });
+    await requestRepo.save({
+      user: user3,
+      address: address,
+      type: 2,
+      done: true,
+      date: '2000-01-01 00:00:00',
+    });
+    const request1 = await requestRepo.save([
+      {
+        user: user1,
+        address: address,
+        type: 2,
+        date: '2000-01-01 00:00:00',
+      },
+      {
+        user: user1,
+        address: address,
+        type: 3,
+        date: '2000-01-01 00:00:00',
+      },
+    ]);
+    const request2 = await requestRepo.save({
+      user: user2,
+      address: address,
+      type: 2,
+      date: '2000-01-01 00:00:00',
+    });
+    const request3 = await requestRepo.save({
+      user: user3,
+      address: address,
+      type: 2,
+      date: '2000-01-01 00:00:00',
+    });
+    await orderRepo.save([
+      {
+        user: user1,
+        issuer: driver1,
+        request: request1[0],
+        price: 100,
+      },
+      {
+        user: user1,
+        issuer: driver1,
+        request: request1[1],
+        price: 200,
+      },
+      {
+        user: user2,
+        issuer: driver2,
+        request: request2,
+        price: 300,
+      },
+      {
+        user: user3,
+        issuer: driver2,
+        request: request3,
+        price: 400,
+      },
+    ]);
+    const [
+      submittedOrders,
+      countSubmittedOrders,
+    ] = await orderRepo.findAndCount({ user: user1 });
+    expect(countSubmittedOrders).toEqual(2);
+    await expect(service.submitInvoice(user1)).rejects.toThrow(
+      'Not Found Exception',
+    );
   });
 });

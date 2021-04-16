@@ -113,6 +113,7 @@ describe('StateController', () => {
       state: {
         id: 1,
         title: 'GORGANPARS',
+        priorityOrder: 0,
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
         city: {
@@ -146,6 +147,7 @@ describe('StateController', () => {
         {
           id: 1,
           title: 'GRSD',
+          priorityOrder: 0,
           city: {
             id: 1,
             name: 'GORGAN',

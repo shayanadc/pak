@@ -23,6 +23,10 @@ export class MaterialEntity extends BaseEntity {
   @Column()
   @ApiProperty()
   cost: number;
+
+  @Column({ default: 0 })
+  @ApiProperty()
+  priorityOrder: number;
   @Column({ default: 1 })
   @ApiProperty()
   weight: number;

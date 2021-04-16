@@ -188,6 +188,7 @@ describe('Request Controller', () => {
           state: {
             id: 1,
             title: 'BLOCK',
+            priorityOrder: 0,
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
             city: {
@@ -261,6 +262,7 @@ describe('Request Controller', () => {
             updatedAt: expect.any(String),
             state: {
               id: 1,
+              priorityOrder: 0,
               title: 'BLOCK',
               createdAt: expect.any(String),
               updatedAt: expect.any(String),
@@ -335,6 +337,7 @@ describe('Request Controller', () => {
               // },
               id: 1,
               title: 'BLOCK',
+              priorityOrder: 0,
               createdAt: expect.any(String),
               updatedAt: expect.any(String),
             },
@@ -388,6 +391,7 @@ describe('Request Controller', () => {
           state: {
             id: 1,
             title: 'BLOCK',
+            priorityOrder: 0,
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
             city: {

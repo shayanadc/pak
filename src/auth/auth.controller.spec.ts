@@ -306,6 +306,7 @@ describe('Create And Toke User API', () => {
             createdAt: expect.any(String),
             id: 1,
             title: 'BLOCK',
+            priorityOrder: 0,
             qty: 0,
             updatedAt: expect.any(String),
           },

@@ -20,6 +20,10 @@ export class CareerEntity extends BaseEntity {
   @Column()
   title: string;
 
+  @ApiProperty()
+  @Column({ default: 0 })
+  priorityOrder: number;
+
   @OneToMany(
     type => AddressEntity,
     address => address.career,

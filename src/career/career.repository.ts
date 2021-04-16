@@ -6,6 +6,11 @@ import { CityEntity } from '../address/city.entity';
 @EntityRepository(CareerEntity)
 export class CareerRepository extends Repository<CareerEntity> {
   async index(): Promise<CareerEntity[]> {
-    return await this.find();
+    return await this.find({
+      order: {
+        priorityOrder: 'DESC',
+        id: 'DESC',
+      },
+    });
   }
 }

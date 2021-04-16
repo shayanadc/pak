@@ -56,7 +56,6 @@ export class RequestService {
       // workShift = this.getWorkShift();
       workShift = 1;
     }
-    console.log(workShift);
     return await this.requestRepo.getAllWaiting(states, body, workShift);
   }
   async getAll(user?) {
