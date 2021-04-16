@@ -28,7 +28,7 @@
     "exception": {
       "submitInvoice": {
         "notAllowedPrice": "اعتبار شما جهت تسویه حساب کافی نمی باشد",
-        "notAnyWaitingOrder": "اعتبار شما جهت تسویه حساب کافی نمی باشد"
+        "notAnyWaitingOrder": "شما تا کنون سفارش قابل پرداختی ثبت نکرده اید."
       }
     }
   },

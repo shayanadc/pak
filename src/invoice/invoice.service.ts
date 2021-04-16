@@ -20,7 +20,7 @@ export class InvoiceService {
     });
     if (orderCount === 0) {
       throw new NotFoundException([
-        trs.invoice.submitInvoice.notAnyWaitingOrder,
+        trs.invoice.exception.submitInvoice.notAnyWaitingOrder,
       ]);
     }
     let orderIds = [];
@@ -30,7 +30,9 @@ export class InvoiceService {
       ordersTotalAmount += UnPaidOrders[i].price;
     }
     if (ordersTotalAmount < parseInt(process.env.ALLOWED_PRICE_FOR_INVOICE)) {
-      throw new NotFoundException([trs.invoice.submitInvoice.notAllowedPrice]);
+      throw new NotFoundException([
+        trs.invoice.exception.submitInvoice.notAllowedPrice,
+      ]);
     }
     const invoice = new InvoiceEntity();
     invoice.amount = ordersTotalAmount;
