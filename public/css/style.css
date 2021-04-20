@@ -13,6 +13,19 @@ body {
   color: #585a61;
 }
 
+@font-face {
+  font-family:'BMorvarid';/*تعریف یک نام برای فونت*/
+  src:url('public/myfont/BMorvarid.eot');/*اکسپلورر 9 به بعد*/
+  src:local('BMorvarid'),/*بررسی نصب بودن فونت در سیستم کاربر*/
+      local('b Morvarid.eot'),/*برای برخی از مرورگرها مانند سافاری*/
+      url('public/myfont/BMorvarid.eot?#iefix') format('embedded-opentype'),/*هک برای اکسپلورر 8 و ماقبل*/
+      url('public/myfont/BMorvarid.woff') format('woff'),/*مرورگر های جدید*/
+      url('public/myfont/BMorvarid.ttf') format('truetype'),/*تمام مرورگرها به جزء اکسپلورر*/
+      url('public/myfont/BMorvarid.svg#BYekan') format('svg');/*نسخه های قدیمی سیستم عامل iOS*/
+  font-style:normal;
+  font-weight:normal;
+}
+
 a {
   color: #5777ba;
   text-decoration: none;
@@ -104,7 +117,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #header .logo img {
   margin: 0;
-  max-height: 40px;
+  max-height: 80px;
 }
 
 /*--------------------------------------------------------------
@@ -339,7 +352,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   position: relative;
   overflow: hidden;
-  padding: 140px 0 100px 0;
+  padding: 90px 0 100px 0;
   
 }
 
@@ -362,13 +375,16 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 56px;
   color: #5777ba;
   
-  font-family: serif;
+  font-family:BMorvarid, Tahoma, Geneva, sans-serif;
 }
 
 #hero h2 {
   color: #515f7d;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   font-size: 20px;
+  text-indent: 30px;
+  text-align:justify;
+  line-height: 2.6;
 }
 
 #hero .download-btn {
@@ -439,7 +455,7 @@ h1, h2, h3, h4, h5, h6 {
 # Sections General
 --------------------------------------------------------------*/
 section {
-  padding: 60px 0;
+  padding: 20px 0;
   overflow: hidden;
 }
 
@@ -449,13 +465,13 @@ section {
 
 .section-title {
   text-align: center;
-  padding-bottom: 30px;
+  padding-bottom: 3px;
 }
 
 .section-title h2 {
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 400;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding-bottom: 0;
   color: #5777ba;
   font-family: "Poppins", sans-serif;
@@ -523,20 +539,20 @@ section {
 }
 
 .features .content .icon-box h4 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   margin: 5px 0 10px 60px;
 }
 
 .features .content .icon-box i {
   font-size: 48px;
-  float: left;
+  float: right;
   color: #5777ba;
 }
 
 .features .content .icon-box p {
-  font-size: 15px;
-  color: #979aa1;
+  font-size: 17px;
+  color: #a19798;
   margin-left: 60px;
 }
 
@@ -878,6 +894,9 @@ section {
 .faq .accordion-list p {
   margin-bottom: 0;
   padding: 10px 0 0 0;
+  text-align:justify;
+  line-height: 2;
+  text-indent: 20px;
 }
 
 .faq .accordion-list .icon-show {
